@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseBE|Win32">
+      <Configuration>ReleaseBE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseBE|x64">
+      <Configuration>ReleaseBE</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDonators|Win32">
+      <Configuration>ReleaseDonators</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDonators|x64">
+      <Configuration>ReleaseDonators</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseFinal|Win32">
+      <Configuration>ReleaseFinal</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseFinal|x64">
+      <Configuration>ReleaseFinal</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{185abba7-a7d2-4ee8-8e19-aa93f713fb2b}</ProjectGuid>
+    <RootNamespace>Parasyte</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>..\CascLib\src\;..\..\thirdpartylib\Zydis\dependencies\zycore\include;..\..\thirdpartylib\Zydis\include\;..\..\thirdpartylib\LibTom\libtomcrypt\src\headers\;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|Win32'" Label="Vcpkg">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|Win32'" Label="Vcpkg">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|Win32'" Label="Vcpkg">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|x64'" Label="Vcpkg">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|x64'" Label="Vcpkg">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|x64'" Label="Vcpkg">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZYDIS_STATIC_BUILD;PRIVATE_GRAM_GRAM;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZYDIS_STATIC_BUILD;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZYDIS_STATIC_BUILD;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LICENSING_ENABLED;ZYDIS_STATIC_BUILD;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LICENSING_ENABLED;ZYDIS_STATIC_BUILD;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZYDIS_STATIC_BUILD;PRIVATE_GRAM_GRAM;_DEBUG;_LIB;%(PreprocessorDefinitions);AUTHREQUIRED</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZYDIS_STATIC_BUILD;NDEBUG;_LIB;%(PreprocessorDefinitions);AUTHREQUIRED</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZYDIS_STATIC_BUILD;NDEBUG;_LIB;%(PreprocessorDefinitions);AUTHREQUIRED</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LICENSING_ENABLED;ZYDIS_STATIC_BUILD;NDEBUG;_LIB;%(PreprocessorDefinitions);AUTHREQUIRED</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LICENSING_ENABLED;ZYDIS_STATIC_BUILD;NDEBUG;_LIB;%(PreprocessorDefinitions);AUTHREQUIRED</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="ActivateCommand.h" />
+    <ClInclude Include="BinaryReader.h" />
+    <ClInclude Include="CascFileSystem.h" />
+    <ClInclude Include="ClearFlagsCommand.h" />
+    <ClInclude Include="CoDAWHandler.h" />
+    <ClInclude Include="CoDGhostsHandler.h" />
+    <ClInclude Include="CoDIWHandler.h" />
+    <ClInclude Include="CoDMW2RHandler.h" />
+    <ClInclude Include="CoDMW4Handler.h" />
+    <ClInclude Include="CoDMW5Handler.h" />
+    <ClInclude Include="CoDMW6Handler.h" />
+    <ClInclude Include="CoDMWRHandler.h" />
+    <ClInclude Include="CoDVGHandler.h" />
+    <ClInclude Include="Command.h" />
+    <ClInclude Include="CommandParser.h" />
+    <ClInclude Include="Decompressor.h" />
+    <ClInclude Include="DeinitCommand.h" />
+    <ClInclude Include="DisableVerbosityCommand.h" />
+    <ClInclude Include="DumpCommand.h" />
+    <ClInclude Include="DumpCommandsCommand.h" />
+    <ClInclude Include="EnableVerbosityCommand.h" />
+    <ClInclude Include="ExplainCommand.h" />
+    <ClInclude Include="FastFile.h" />
+    <ClInclude Include="FastFileFlags.h" />
+    <ClInclude Include="FileHandle.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="BitFlags.h" />
+    <ClInclude Include="ForeignProcess.h" />
+    <ClInclude Include="ForeignThread.h" />
+    <ClInclude Include="Freeable.h" />
+    <ClInclude Include="GameConfig.h" />
+    <ClInclude Include="GamePattern.h" />
+    <ClInclude Include="GamePatternFlag.h" />
+    <ClInclude Include="GamePatternType.h" />
+    <ClInclude Include="HelpCommand.h" />
+    <ClInclude Include="InitCommand.h" />
+    <ClInclude Include="Initializer.h" />
+    <ClInclude Include="Library.h" />
+    <ClInclude Include="ListFilesCommand.h" />
+    <ClInclude Include="ListLoadedFilesCommand.h" />
+    <ClInclude Include="LoadAliasCommand.h" />
+    <ClInclude Include="LoadCommand.h" />
+    <ClInclude Include="LoadCommonFilesCommand.h" />
+    <ClInclude Include="LoadListCommand.h" />
+    <ClInclude Include="LoadWildCardCommand.h" />
+    <ClInclude Include="LZ4DecompressorV2.h" />
+    <ClInclude Include="MemoryStream.h" />
+    <ClInclude Include="MoveDirCommand.h" />
+    <ClInclude Include="Oodle.h" />
+    <ClInclude Include="OodleDecompressorV1.h" />
+    <ClInclude Include="OodleDecompressorV2.h" />
+    <ClInclude Include="OodleDecompressorV3.h" />
+    <ClInclude Include="Registry.h" />
+    <ClInclude Include="RemoveFlagCommand.h" />
+    <ClInclude Include="SeekOrigin.h" />
+    <ClInclude Include="SetFlagCommand.h" />
+    <ClInclude Include="SetHandlerCommand.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="Memory.h" />
+    <ClInclude Include="MemoryPool.h" />
+    <ClInclude Include="Pattern.h" />
+    <ClInclude Include="ProcessDumper.h" />
+    <ClInclude Include="ProcessPriorityBump.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ScyllaInterface.h" />
+    <ClInclude Include="SetLocalePrefixCommand.h" />
+    <ClInclude Include="UnloadAliasCommand.h" />
+    <ClInclude Include="UnloadAllCommand.h" />
+    <ClInclude Include="UnloadAllNonCommonCommand.h" />
+    <ClInclude Include="UnloadCommand.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="WinFileSystem.h" />
+    <ClInclude Include="XAsset.h" />
+    <ClInclude Include="GameModule.h" />
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="LogType.h" />
+    <ClInclude Include="Parasyte.h" />
+    <ClInclude Include="GameHandler.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Printer.h" />
+    <ClInclude Include="XAssetAlias.h" />
+    <ClInclude Include="XAssetCache.h" />
+    <ClInclude Include="XAssetPackageRef.h" />
+    <ClInclude Include="XAssetPool.h" />
+    <ClInclude Include="ZLIBDecompressorV1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ActivateCommand.cpp" />
+    <ClCompile Include="BinaryReader.cpp" />
+    <ClCompile Include="CascFileSystem.cpp" />
+    <ClCompile Include="ClearFlagsCommand.cpp" />
+    <ClCompile Include="CoDAWHandler.cpp" />
+    <ClCompile Include="CoDGhostsHandler.cpp" />
+    <ClCompile Include="CoDIWHandler.cpp" />
+    <ClCompile Include="CoDMW2RHandler.cpp" />
+    <ClCompile Include="CoDMW4Handler.cpp" />
+    <ClCompile Include="CoDMW5Handler.cpp" />
+    <ClCompile Include="CoDMW6Handler.cpp" />
+    <ClCompile Include="CoDMWRHandler.cpp" />
+    <ClCompile Include="CoDVGHandler.cpp" />
+    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CommandParser.cpp" />
+    <ClCompile Include="Decompressor.cpp" />
+    <ClCompile Include="DeinitCommand.cpp" />
+    <ClCompile Include="DisableVerbosityCommand.cpp" />
+    <ClCompile Include="DumpCommand.cpp" />
+    <ClCompile Include="DumpCommandsCommand.cpp" />
+    <ClCompile Include="EnableVerbosityCommand.cpp" />
+    <ClCompile Include="ExplainCommand.cpp" />
+    <ClCompile Include="FastFile.cpp" />
+    <ClCompile Include="FastFileFlags.cpp" />
+    <ClCompile Include="FileHandle.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="BitFlags.cpp" />
+    <ClCompile Include="ForeignProcess.cpp" />
+    <ClCompile Include="ForeignThread.cpp" />
+    <ClCompile Include="Freeable.cpp" />
+    <ClCompile Include="GameConfig.cpp" />
+    <ClCompile Include="GamePattern.cpp" />
+    <ClCompile Include="GamePatternFlag.cpp" />
+    <ClCompile Include="GamePatternType.cpp" />
+    <ClCompile Include="HelpCommand.cpp" />
+    <ClCompile Include="InitCommand.cpp" />
+    <ClCompile Include="Initializer.cpp" />
+    <ClCompile Include="Library.cpp" />
+    <ClCompile Include="ListFilesCommand.cpp" />
+    <ClCompile Include="ListLoadedFilesCommand.cpp" />
+    <ClCompile Include="LoadAliasCommand.cpp" />
+    <ClCompile Include="LoadCommand.cpp" />
+    <ClCompile Include="LoadCommonFilesCommand.cpp" />
+    <ClCompile Include="LoadListCommand.cpp" />
+    <ClCompile Include="LoadWildCardCommand.cpp" />
+    <ClCompile Include="LZ4DecompressorV2.cpp" />
+    <ClCompile Include="MemoryStream.cpp" />
+    <ClCompile Include="MoveDirCommand.cpp" />
+    <ClCompile Include="Oodle.cpp" />
+    <ClCompile Include="OodleDecompressorV1.cpp" />
+    <ClCompile Include="OodleDecompressorV2.cpp" />
+    <ClCompile Include="OodleDecompressorV3.cpp" />
+    <ClCompile Include="Registry.cpp" />
+    <ClCompile Include="RemoveFlagCommand.cpp" />
+    <ClCompile Include="SeekOrigin.cpp" />
+    <ClCompile Include="SetFlagCommand.cpp" />
+    <ClCompile Include="SetHandlerCommand.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="MemoryPool.cpp" />
+    <ClCompile Include="Pattern.cpp" />
+    <ClCompile Include="ProcessDumper.cpp" />
+    <ClCompile Include="ProcessPriorityBump.cpp" />
+    <ClCompile Include="ScyllaInterface.cpp" />
+    <ClCompile Include="SetLocalePrefixCommand.cpp" />
+    <ClCompile Include="UnloadAliasCommand.cpp" />
+    <ClCompile Include="UnloadAllCommand.cpp" />
+    <ClCompile Include="UnloadAllNonCommonCommand.cpp" />
+    <ClCompile Include="UnloadCommand.cpp" />
+    <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="WinFileSystem.cpp" />
+    <ClCompile Include="XAsset.cpp" />
+    <ClCompile Include="GameModule.cpp" />
+    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="LogType.cpp" />
+    <ClCompile Include="Parasyte.cpp" />
+    <ClCompile Include="GameHandler.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseFinal|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDonators|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseBE|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Printer.cpp" />
+    <ClCompile Include="XAssetAlias.cpp" />
+    <ClCompile Include="XAssetCache.cpp" />
+    <ClCompile Include="XAssetPackageRef.cpp" />
+    <ClCompile Include="XAssetPool.cpp" />
+    <ClCompile Include="ZLIBDecompressorV1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Parasyte.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ext\CascLib\CascLib.vcxproj">
+      <Project>{78424708-1f6e-4d4b-920c-fb6d26847055}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ext\libtomcrypt\libtomcrypt_VS2008.vcxproj">
+      <Project>{e3802982-dcb6-4d85-a2bd-6b08f0657e79}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ext\libtommath\libtommath_VS2008.vcxproj">
+      <Project>{42109fee-b0b9-4fcd-9e56-2863bf8c55d2}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

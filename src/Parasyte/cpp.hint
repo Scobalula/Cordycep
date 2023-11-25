@@ -1,0 +1,7 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define USERCALL_FUNCTION
+#define PS_CINIT#define PSO(data) AY_OBFUSCATE_KEY(data, AY_OBFUSCATE_DEFAULT_KEY)
+#define PS_CINIT(AT, T, A) namespace { ps::Initializer<AT, T> ___init___ = ps::Initializer<AT, T>(A); }
+#define PSO(data) AY_OBFUSCATE_KEY(data, AY_OBFUSCATE_DEFAULT_KEY)
