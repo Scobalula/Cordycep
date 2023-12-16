@@ -27,7 +27,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 // File Version
-const char* FileVersion = "2.3.5.1";
+const char* FileVersion = "2.4.0.0";
 
 // Our exception handler for when a fatal error occurs.
 LONG WINAPI MyUnhandledExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
@@ -141,10 +141,10 @@ void Print(const char* header, const char* value, bool newLine)
 int main_ex(int argc, const char** argv)
 {
     // Initialize libtom
-    register_all_ciphers();
-    register_all_hashes();
-    register_all_prngs();
-    crypt_mp_init("ltm");
+    // register_all_ciphers();
+    // register_all_hashes();
+    // register_all_prngs();
+    // crypt_mp_init("ltm"); // Can be re-added if WW2 support goes ahead
 
     InitializeConsole();
 

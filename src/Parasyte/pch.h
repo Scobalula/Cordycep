@@ -50,7 +50,4 @@
 #include <set>
 #include <array>
 
-#define ARGTYPE 4
-#include "..\..\ext\libtomcrypt\src\headers\tomcrypt.h"
-
 #endif

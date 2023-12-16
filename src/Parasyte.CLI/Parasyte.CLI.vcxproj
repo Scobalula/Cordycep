@@ -432,7 +432,8 @@
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
     </ProjectReference>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)\..\build\Data $(SolutionDir)$(Platform)\$(Configuration)\Data /y /s /e </Command>
+      <Command>mkdir 
+xcopy $(SolutionDir)\..\build\Data $(SolutionDir)$(Platform)\$(Configuration)\Data\ /y /s /e </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -570,12 +571,6 @@
     <ClCompile Include="Parasyte.CLI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ext\libtomcrypt\libtomcrypt_VS2008.vcxproj">
-      <Project>{e3802982-dcb6-4d85-a2bd-6b08f0657e79}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ext\libtommath\libtommath_VS2008.vcxproj">
-      <Project>{42109fee-b0b9-4fcd-9e56-2863bf8c55d2}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Parasyte\Parasyte.vcxproj">
       <Project>{185abba7-a7d2-4ee8-8e19-aa93f713fb2b}</Project>
     </ProjectReference>

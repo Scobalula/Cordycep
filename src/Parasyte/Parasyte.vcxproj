@@ -664,12 +664,6 @@
     <ProjectReference Include="..\..\ext\CascLib\CascLib.vcxproj">
       <Project>{78424708-1f6e-4d4b-920c-fb6d26847055}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\ext\libtomcrypt\libtomcrypt_VS2008.vcxproj">
-      <Project>{e3802982-dcb6-4d85-a2bd-6b08f0657e79}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ext\libtommath\libtommath_VS2008.vcxproj">
-      <Project>{42109fee-b0b9-4fcd-9e56-2863bf8c55d2}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
