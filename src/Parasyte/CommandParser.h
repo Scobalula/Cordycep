@@ -8,6 +8,7 @@ namespace ps
 	private:
 		// The current index.
 		int CurrentIndex;
+
 	public:
 		// Args from the command line.
 		std::vector<std::string> Args;
@@ -24,7 +25,7 @@ namespace ps
 		// Parses the commands from a string.
 		void Parse(const std::string& cmd);
 		// Checks if we have commands left.
-		const bool HasCommands() const;
+		bool HasCommands() const;
 		// Requests the previous item from the command list.
 		const std::string& Previous();
 		// Requests the next item from the command list.

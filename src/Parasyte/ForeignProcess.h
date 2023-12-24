@@ -62,11 +62,11 @@ namespace ps
 		// Gets the number of threads.
 		const size_t ThreadCount() const;
 		// Enumerates over each thread.
-		const bool EndAllThreads() const;
+		bool EndAllThreads() const;
 		// Checks if the process is still open and running.
-		const bool IsOpen() const;
+		bool IsOpen() const;
 		// Checks if the process is valid.
-		const bool IsValid() const;
+		bool IsValid() const;
 		// Gets the process Handle.
 		const HANDLE GetHandle() const;
 		// Gets the process ID.

@@ -1,0 +1,22 @@
+{
+  "name": "parasyte",
+  "version": "1.0.0",
+  "dependencies": [
+    {
+      "name": "lz4"
+    },
+    {
+      "name": "detours"
+    },
+    {
+      "name": "zlib"
+    },
+    {
+      "name": "nlohmann-json"
+    },
+    {
+      "name": "tomlplusplus"
+    }
+  ],
+  "builtin-baseline": "48e95d1aa3fedd24234f1d436226d07fc2b4f45f"
+}

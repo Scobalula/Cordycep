@@ -4,46 +4,27 @@
 #include "FileSystem.h"
 #include "nlohmann/json.hpp"
 
-// Supported flags within json files.
-std::map<std::string, ps::GamePatternFlag> PatternFlags
+bool ps::GameHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
 {
-	{ "NoResolving",					ps::GamePatternFlag::NoResolving },
-	{ "ResolveFromModuleBegin",			ps::GamePatternFlag::ResolveFromModuleBegin },
-	{ "ResolveFromCmpToAddress",		ps::GamePatternFlag::ResolveFromCmpToAddress },
-	{ "ResolveFromEndOfData",			ps::GamePatternFlag::ResolveFromEndOfData },
-	{ "ResolveFromEndOfByteCmp",		ps::GamePatternFlag::ResolveFromEndOfByteCmp },
-	{ "ResolveMultipleValues",			ps::GamePatternFlag::ResolveMultipleValues },
-};
-
-// Supported types within json files.
-std::map<std::string, ps::GamePatternType> PatternTypes
-{
-	{ "Null",							ps::GamePatternType::Null },
-	{ "Variable",						ps::GamePatternType::Variable },
-};
-
-const bool ps::GameHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
-{
-	if (FileSystem != nullptr)
+	if (!FileSystem)
 	{
-		auto& filesDirectory = CurrentConfig->FilesDirectory;
-
-		FileSystem->EnumerateFiles(CurrentConfig->FilesDirectory, pattern + ".ff", true, [&results, &filesDirectory](const std::string& fileName, const size_t size)
-		{
-			if (fileName.find(filesDirectory) == 0)
-			{
-				results.emplace_back(fileName.substr(0, fileName.find(".ff")).substr(filesDirectory.size()));
-			}
-			else
-			{
-				results.emplace_back(fileName.substr(0, fileName.find(".ff")));
-			}
-		});
-
-		return true;
+		// TODO: Log error
+		return false;
 	}
 
-	return false;
+	ps::log::Log(ps::LogType::Normal, "GameHandler filesDirectory: %s.", CurrentConfig->FilesDirectory.c_str());
+
+	// Get all the files in the directory and convert them to the form we want
+	FileSystem->EnumerateFiles(CurrentConfig->FilesDirectory, pattern + ".ff", true, [&results](const std::string& fileName, const size_t size)
+	{
+		// We just need the base name of file
+		std::string fileStemName = std::filesystem::path(fileName).stem().string();
+
+		// Store it away
+		results.emplace_back(fileStemName);
+	});
+
+	return true;
 }
 
 const std::vector<std::string>& ps::GameHandler::GetCommonFileNames() const
@@ -64,7 +45,8 @@ void ps::GameHandler::OpenGameDirectory(const std::string& gameDirectory)
 		ps::log::Log(ps::LogType::Error, "Here's the error code returned: %llu", FileSystem->GetLastError());
 		ps::log::Log(ps::LogType::Error, "Make sure you've provided the directory path and not a file path.");
 		ps::log::Log(ps::LogType::Error, "Also make sure you've provided the game's base path, and not a sub path.");
-		ps::log::Log(ps::LogType::Error, "For example, do not provide _retail_ or sp22, just the base folder, usually with the game's name.");
+		ps::log::Log(ps::LogType::Error, R"(For CoD HQ, do not provide "_retail_" or "sp22", just the base folder, usually with the game's name.)");
+		ps::log::Log(ps::LogType::Error, R"(For example, steam's path looks like: "F:\Call of Duty HQ".)");
 		ps::log::Log(ps::LogType::Error, "Cordycep may also not have permissions, try running as Admin.");
 
 		throw std::exception("Failed to open the game's directory, check the log file for more information.");
@@ -107,7 +89,7 @@ void ps::GameHandler::ListLoaded()
 
 	size_t totalMemoryUsage = 0;
 
-	for (auto& fastFile : FastFiles)
+	for (const auto& fastFile : FastFiles)
 	{
 		ps::log::Log(ps::LogType::Normal, "Loaded File: %s", fastFile->Name.c_str());
 
@@ -115,7 +97,8 @@ void ps::GameHandler::ListLoaded()
 		{
 			if (fastFile->MemoryBlocks[i].MemorySize > 0)
 			{
-				ps::log::Log(ps::LogType::Verbose, "Memory Block: %llu @ 0x%llx using 0x%llx bytes of memory.",
+				ps::log::Log(ps::LogType::Verbose,
+					"Memory Block: %llu @ 0x%llx using 0x%llx bytes of memory.",
 					i,
 					(uint64_t)fastFile->MemoryBlocks[i].Memory,
 					(uint64_t)fastFile->MemoryBlocks[i].MemorySize);
@@ -143,10 +126,19 @@ bool ps::GameHandler::LoadCache()
 
 bool ps::GameHandler::LoadAliases(const std::string& aliasesFile)
 {
+	if (aliasesFile.empty())
+	{
+		ps::log::Log(LogType::Error, "This handler currently doesn't support asset aliases.");
+		return false;
+	}
+
 	std::ifstream stream(aliasesFile);
 
 	if (!stream)
+	{
+		ps::log::Log(LogType::Error, "The current handler can't locate the corresponding asset aliases file.");
 		return false;
+	}
 
 	nlohmann::json j;
 
@@ -154,16 +146,20 @@ bool ps::GameHandler::LoadAliases(const std::string& aliasesFile)
 
 	for (auto& jEntry : j)
 	{
-		XAssetAlias alias(jEntry["alias"].get<std::string>().c_str(), jEntry["name"].get<std::string>().c_str());
+		XAssetAlias alias(jEntry["alias"].get<std::string>(), jEntry["name"].get<std::string>());
+
 		// Append the fast files for this alias.
 		for (auto& file : jEntry["fast_files"])
 			alias.Files.push_back(file.get<std::string>());
-		std::transform(alias.Alias.begin(), alias.Alias.end(), alias.Alias.begin(), toupper);
+		std::ranges::transform(alias.Alias, alias.Alias.begin(), toupper);
+
 		// If we have nothing to add, don't bother
-		if (alias.Files.size() == 0)
+		if (alias.Files.empty())
 			continue;
 		Aliases.emplace(alias.Alias, alias);
 	}
+
+	ps::log::Log(LogType::Normal, "The current handler has successfully located the corresponding asset aliases file.");
 
 	return true;
 }
@@ -182,15 +178,11 @@ bool ps::GameHandler::IsFastFileLoaded(const std::string& ffName)
 {
 	auto id = XXHash64::hash(ffName.c_str(), ffName.size(), 0);
 
-	for (auto& ff : FastFiles)
-	{
-		if (ff->ID == id)
-		{
-			return true;
-		}
-	}
+    const bool isFound = std::ranges::any_of(FastFiles, [&](auto& ff) {
+        return ff->ID == id;
+    });
 
-	return false;
+	return isFound;
 }
 
 bool ps::GameHandler::UnloadAllFastFiles()
@@ -224,7 +216,7 @@ bool ps::GameHandler::UnloadNonCommonFastFiles()
 		}
 		else
 		{
-			ffIterator++;
+			++ffIterator;
 		}
 	}
 
@@ -233,10 +225,10 @@ bool ps::GameHandler::UnloadNonCommonFastFiles()
 
 bool ps::GameHandler::UnloadFastFile(const std::string& ffName)
 {
-	auto id = XXHash64::hash(ffName.c_str(), ffName.size(), 0);
+	const auto id = XXHash64::hash(ffName.c_str(), ffName.size(), 0);
 	auto found = false;
 
-	for (auto& ff : FastFiles)
+	for (const auto& ff : FastFiles)
 	{
 		if (ff->ID == id)
 		{
@@ -264,7 +256,7 @@ bool ps::GameHandler::UnloadFastFile(const std::string& ffName)
 		}
 		else
 		{
-			ffIterator++;
+			++ffIterator;
 		}
 	}
 
@@ -282,7 +274,7 @@ bool ps::GameHandler::UnloadFastFile(const std::string& ffName)
 		}
 		else
 		{
-			ffIterator++;
+			++ffIterator;
 		}
 	}
 
@@ -291,10 +283,10 @@ bool ps::GameHandler::UnloadFastFile(const std::string& ffName)
 
 ps::FastFile* ps::GameHandler::CreateUniqueFastFile(const std::string& name)
 {
-	auto id = XXHash64::hash(name.c_str(), name.size(), 0);
+	const auto id = XXHash64::hash(name.c_str(), name.size(), 0);
 
 	// Ensure unique
-	for (auto& ff : FastFiles)
+	for (const auto& ff : FastFiles)
 		if (ff->ID == id)
 			throw std::exception("A fast file with the provided name is already loaded.");
 
@@ -363,66 +355,35 @@ std::string ps::GameHandler::GetFileName(const std::string& name)
 	return name;
 }
 
-bool ps::GameHandler::LoadConfigs(const std::string& name)
+bool ps::GameHandler::LoadConfigs(const std::string& fileName)
 {
-	Configs.clear();
-	std::ifstream stream(name);
+	const auto configPath = std::filesystem::path("Data/Configs/" + fileName);
+	auto ext = configPath.extension().string();
 
-	if (!stream)
-		return false;
-
-	nlohmann::json j;
-
-	stream >> j;
-
-	for (auto& jEntry : j)
+	// Failed to find the file or it has no extension
+	if (!exists(configPath) || ext.empty())
 	{
-		GameConfig config(jEntry["Flag"]);
+		// TODO: Log 
+		return false;
+	}
 
-		config.ModuleName = jEntry["ModuleName"];
-		config.CacheName = jEntry["CacheName"];
-		config.FilesDirectory = jEntry["FilesDirectory"];
+	// Clear the configs of handler
+	// Configs.clear();
 
-		// Append the fast files for this alias.
-		for (auto& file : jEntry["CommonFiles"])
-			config.CommonFiles.push_back(file);
-		for (auto& file : jEntry["Dependencies"])
-			config.Dependencies.push_back(file);
-
-		// Append patterns
-		for (auto& pattern : jEntry["Patterns"])
-		{
-			GamePattern gamePattern;
-
-			gamePattern.Signature = pattern["PatternSignature"];
-			gamePattern.Name = pattern.value("PatternName", "Anon");
-			gamePattern.Offset = pattern.value("Offset", (size_t)0);
-			gamePattern.Type = ps::GamePatternType::Variable;
-
-			if (pattern["PatternType"].is_string())
-			{
-				auto foundType = PatternTypes.find(pattern["PatternType"]);
-
-				if (foundType != PatternTypes.end())
-				{
-					gamePattern.Type = foundType->second;
-				}
-			}
-
-			for (auto& flag : pattern["PatternFlags"])
-			{
-				auto foundFlag = PatternFlags.find(flag);
-
-				if (foundFlag != PatternFlags.end())
-				{
-					gamePattern.AddFlag(foundFlag->second);
-				}
-			}
-
-			config.Patterns.emplace_back(gamePattern);
-		}
-
-		Configs.emplace(config.Flag, config);
+	// Check if the extension is supported
+	std::ranges::transform(ext, ext.begin(), tolower);
+	if (ext == ".toml")
+	{
+		GameConfig::LoadConfigsToml(configPath.string(), Configs);
+	}
+	else if (ext == ".json")
+	{
+		GameConfig::LoadConfigsJson(configPath.string(), Configs);
+	}
+	else
+	{
+		// TODO: Log if the file is unsupported
+		return false;
 	}
 
 	return true;
@@ -430,24 +391,39 @@ bool ps::GameHandler::LoadConfigs(const std::string& name)
 
 bool ps::GameHandler::SetConfig()
 {
+	// Failed to find any config
+	if (Configs.empty())
+	{
+		// TODO: Log 
+		return false;
+	}
+
+	// Use the config with the flag set when we have more than one config.
 	if (Configs.size() > 1)
 	{
-		for (auto& config : Configs)
+		for (auto& [flag, config] : Configs)
 		{
-			if (HasFlag(config.first))
+			if (HasFlag(flag))
 			{
-				CurrentConfig = &config.second;
+				CurrentConfig = &config;
 				return true;
 			}
 		}
 	}
 
+	// If no flag is set or we just have only one config, the first config is used.
 	CurrentConfig = &Configs.begin()->second;
 	return true;
 }
 
 bool ps::GameHandler::ResolvePatterns()
 {
+	if (CurrentConfig->Patterns.empty())
+	{
+		// TODO: Log
+		return false;
+	}
+
 	Pattern patternBytes;
 	bool success = true;
 
@@ -458,14 +434,14 @@ bool ps::GameHandler::ResolvePatterns()
 		
 		auto addresses = Module.Scan(patternBytes, gamePattern.HasFlag(ps::GamePatternFlag::ResolveMultipleValues));
 
-		if (addresses.size() == 0)
+		if (addresses.empty())
 		{
-			ps::log::Log(ps::LogType::Error, "Failed to find pattern: %s", gamePattern.Signature.c_str());
+			ps::log::Log(ps::LogType::Error, "Failed to find pattern Name: %s, Signature: %s, Offset: %d", gamePattern.Name.c_str(), gamePattern.Signature.c_str(), gamePattern.Offset);
 			success = false;	
 		}
 		else
 		{
-			for (auto& address : addresses)
+			for (const auto& address : addresses)
 			{
 				char* resolved = nullptr;
 
@@ -475,19 +451,19 @@ bool ps::GameHandler::ResolvePatterns()
 				}
 				else if (gamePattern.HasFlag(ps::GamePatternFlag::ResolveFromEndOfData))
 				{
-					auto to = *(int32_t*)(address + gamePattern.Offset);
-					auto from = address + gamePattern.Offset + 4;
+					const auto to = *(int32_t*)(address + gamePattern.Offset);
+					const auto from = address + gamePattern.Offset + 4;
 					resolved = from + to;
 				}
 				else if (gamePattern.HasFlag(ps::GamePatternFlag::ResolveFromEndOfByteCmp))
 				{
-					auto to = *(int32_t*)(address + gamePattern.Offset);
-					auto from = address + gamePattern.Offset + 5;
+					const auto to = *(int32_t*)(address + gamePattern.Offset);
+					const auto from = address + gamePattern.Offset + 5;
 					resolved = from + to;
 				}
 				else if (gamePattern.HasFlag(ps::GamePatternFlag::ResolveFromModuleBegin))
 				{
-					auto from = *(int32_t*)(address + gamePattern.Offset);
+					const auto from = *(int32_t*)(address + gamePattern.Offset);
 					resolved = (char*)Module.Handle + from;
 				}
 
@@ -498,20 +474,22 @@ bool ps::GameHandler::ResolvePatterns()
 
 				switch (gamePattern.Type)
 				{
-				case ps::GamePatternType::Null:
-				{
-					DWORD d = 0;
-					VirtualProtect((LPVOID)resolved, sizeof(uint8_t), PAGE_EXECUTE_READWRITE, &d);
-					*(uint8_t*)resolved = 0xC3;
-					VirtualProtect((LPVOID)resolved, sizeof(uint8_t), d, &d);
-					FlushInstructionCache(GetCurrentProcess(), (LPVOID)resolved, sizeof(uint8_t));
-					break;
-				}
-				case ps::GamePatternType::Variable:
-				{
-					Variables[gamePattern.Name] = resolved;
-					break;
-				}
+					case ps::GamePatternType::Null:
+					{
+						DWORD d = 0;
+						VirtualProtect((LPVOID)resolved, sizeof(uint8_t), PAGE_EXECUTE_READWRITE, &d);
+						*(uint8_t*)resolved = 0xC3;
+						VirtualProtect((LPVOID)resolved, sizeof(uint8_t), d, &d);
+						FlushInstructionCache(GetCurrentProcess(), (LPVOID)resolved, sizeof(uint8_t));
+						break;
+					}
+					case ps::GamePatternType::Variable:
+					{
+						Variables[gamePattern.Name] = resolved;
+						break;
+					}
+					case GamePatternType::Unknown:
+						break;
 				}
 			}
 		}
@@ -525,7 +503,7 @@ bool ps::GameHandler::ResolvePatterns()
 
 bool ps::GameHandler::CopyDependencies()
 {
-	auto depsDir = "Data\\Deps\\";
+	const auto depsDir = "Data/Deps";
 
 	for (auto& dep : CurrentConfig->Dependencies)
 	{
@@ -548,7 +526,7 @@ std::list<std::unique_ptr<ps::GameHandler>>& ps::GameHandler::GetHandlers()
 
 ps::GameHandler* ps::GameHandler::FindHandler(const std::string& param)
 {
-	for (auto& handler : GetHandlers())
+	for (const auto& handler : GetHandlers())
 	{
 		if (handler->IsValid(param))
 		{

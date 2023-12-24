@@ -652,7 +652,7 @@ const std::string ps::CoDMW2RHandler::GetName()
 	return "Call of Duty: Modern Warfare 2 Campaign Remastered";
 }
 
-const bool ps::CoDMW2RHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
+bool ps::CoDMW2RHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
 {
 	if (MW2CR_StorageHandle != NULL)
 	{
@@ -1064,16 +1064,18 @@ bool ps::CoDMW2RHandler::Initialize(const std::string& gameDirectory)
 
 	Module.SaveCache("Data\\Dumps\\MW2CR_dump.cache");
 
-#if _DEBUG
-	LoadAliases("F:\\Data\\Dumps\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareRemasteredAliases.json");
-#else
-	LoadAliases("Data\\Dumps\\ModernWarfareRemasteredAliases.json");
-#endif
+// #if _DEBUG
+// 	LoadAliases("F:\\Data\\Dumps\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareRemasteredAliases.json");
+// #else
+// 	LoadAliases("Data\\Dumps\\ModernWarfareRemasteredAliases.json");
+// #endif
+
+	// LoadAliases(CurrentConfig->AliasesName);
 
 	return true;
 }
 
-bool ps::CoDMW2RHandler::Uninitialize()
+bool ps::CoDMW2RHandler::Deinitialize()
 {
 	MW2CR_DB_Reset();
 
@@ -1084,23 +1086,24 @@ bool ps::CoDMW2RHandler::Uninitialize()
 	StringPoolSize    = 0;
 	Initialized       = false;
 	StringLookupTable = nullptr;
+	FileSystem        = nullptr;
 	GameDirectory.clear();
 
-	for (size_t i = 0; i < MW2CR_SoundFiles.size(); i++)
+	for (auto& MW2CR_SoundFile : MW2CR_SoundFiles)
 	{
-		if (MW2CR_SoundFiles[i] != NULL && MW2CR_SoundFiles[i] != INVALID_HANDLE_VALUE)
+		if (MW2CR_SoundFile != NULL && MW2CR_SoundFile != INVALID_HANDLE_VALUE)
 		{
-			CascCloseFile(MW2CR_SoundFiles[i]);
-			MW2CR_SoundFiles[i] = NULL;
+			CascCloseFile(MW2CR_SoundFile);
+			MW2CR_SoundFile = NULL;
 		}
 	}
 
-	for (size_t i = 0; i < MW2CR_LocalizedSoundFiles.size(); i++)
+	for (auto& MW2CR_LocalizedSoundFile : MW2CR_LocalizedSoundFiles)
 	{
-		if (MW2CR_LocalizedSoundFiles[i] != NULL && MW2CR_LocalizedSoundFiles[i] != INVALID_HANDLE_VALUE)
+		if (MW2CR_LocalizedSoundFile != NULL && MW2CR_LocalizedSoundFile != INVALID_HANDLE_VALUE)
 		{
-			CascCloseFile(MW2CR_LocalizedSoundFiles[i]);
-			MW2CR_LocalizedSoundFiles[i] = NULL;
+			CascCloseFile(MW2CR_LocalizedSoundFile);
+			MW2CR_LocalizedSoundFile = NULL;
 		}
 	}
 
@@ -1114,21 +1117,22 @@ bool ps::CoDMW2RHandler::IsValid(const std::string& param)
 	return strcmp(param.c_str(), "mw2cr") == 0;
 }
 
-bool ps::CoDMW2RHandler::ListFiles()
-{
-	std::vector<std::string> files;
-	GetFiles("*", files);
-	ps::log::Log(ps::LogType::Normal, "Listing files from: %s", GetName().c_str());
-
-	for (auto& file : files)
-	{
-		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", file.c_str());
-	}
-
-	ps::log::Log(ps::LogType::Normal, "Listed: %lu files.", files.size());
-
-	return true;
-}
+// TODO:
+// bool ps::CoDMW2RHandler::ListFiles()
+// {
+// 	std::vector<std::string> files;
+// 	GetFiles("*", files);
+// 	ps::log::Log(ps::LogType::Normal, "Listing files from: %s", GetName().c_str());
+//
+// 	for (auto& file : files)
+// 	{
+// 		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", file.c_str());
+// 	}
+//
+// 	ps::log::Log(ps::LogType::Normal, "Listed: %lu files.", files.size());
+//
+// 	return true;
+// }
 
 bool ps::CoDMW2RHandler::DoesFastFileExists(const std::string& ffName)
 {

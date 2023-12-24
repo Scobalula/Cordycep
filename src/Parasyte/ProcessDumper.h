@@ -18,12 +18,12 @@ namespace ps
 		ProcessDumper();
 
 		// Initializes the process dumper.
-		const bool Initialize();
+		bool Initialize();
 		// Suspends the process.
-		const bool Suspend(const HANDLE processHandle);
+		bool Suspend(const HANDLE processHandle);
 		// Resumes the process.
-		const bool Resume(const HANDLE processHandle);
+		bool Resume(const HANDLE processHandle);
 		// Dumps the provided path.
-		const bool Dump(const std::string& path);
+		bool Dump(const std::string& path);
 	};
 }

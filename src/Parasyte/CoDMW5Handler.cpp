@@ -295,7 +295,7 @@ namespace ps::CoDMW5Internal
 			std::memcpy(result->ExtendedData.get(), *(uint8_t**)(result->Header + 0x40), result->ExtendedDataSize);
 			*(uint64_t*)(result->Header + 0x40) = (uint64_t)result->ExtendedData.get();
 		}
-#if PRIVATE_GRAM_GRAM
+// #if PRIVATE_GRAM_GRAM
 		if (assetType == 60 && DecrpytString != nullptr)
 		{
 			char* str = *(char**)(result->Header + 8);
@@ -305,39 +305,39 @@ namespace ps::CoDMW5Internal
 			}
 			memcpy(*(char**)(result->Header + 8), str, strlen(str) + 1);
 		}
-#else
-		switch (assetType)
-		{
-			// Kill localized
-		case 60:
-		{
-			char* str = *(char**)(result->Header + 8);
-			std::memset(str, 0, strlen(str));
-			*(uint64_t*)result->Header = 0;
-			break;
-		}
-		// Kill Lua files
-		case 82:
-		{
-			*(uint64_t*)result->Header = 0;
-			auto sizeOfRawFile = *(uint32_t*)(result->Header + 8);
-			auto rawFileData = *(char**)(result->Header + 16);
-			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
-			break;
-		}
-		// Kill raw files
-		case 70:
-		{
-			*(uint64_t*)result->Header = 0;
-			auto sizeOfRawFile = *(uint32_t*)(result->Header + 12);
-			auto rawFileData = *(char**)(result->Header + 24);
-			if (sizeOfRawFile == 0)
-				sizeOfRawFile = *(uint32_t*)(result->Header + 16) + 1;
-			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
-			break;
-		}
-		}
-#endif
+// #else
+// 		switch (assetType)
+// 		{
+// 		// Kill localized
+// 		case 60:
+// 		{
+// 			char* str = *(char**)(result->Header + 8);
+// 			std::memset(str, 0, strlen(str));
+// 			*(uint64_t*)result->Header = 0;
+// 			break;
+// 		}
+// 		// Kill Lua files
+// 		case 82:
+// 		{
+// 			*(uint64_t*)result->Header = 0;
+// 			auto sizeOfRawFile = *(uint32_t*)(result->Header + 8);
+// 			auto rawFileData = *(char**)(result->Header + 16);
+// 			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
+// 			break;
+// 		}
+// 		// Kill raw files
+// 		case 70:
+// 		{
+// 			*(uint64_t*)result->Header = 0;
+// 			auto sizeOfRawFile = *(uint32_t*)(result->Header + 12);
+// 			auto rawFileData = *(char**)(result->Header + 24);
+// 			if (sizeOfRawFile == 0)
+// 				sizeOfRawFile = *(uint32_t*)(result->Header + 16) + 1;
+// 			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
+// 			break;
+// 		}
+// 		}
+// #endif
 
 		size_t toPop[2]{ assetType, (size_t)*asset };
 		AddAssetOffset(toPop);
@@ -405,9 +405,12 @@ const std::string ps::CoDMW5Handler::GetName()
 
 bool ps::CoDMW5Handler::Initialize(const std::string& gameDirectory)
 {
+	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	LoadConfigs("Data\\Configs\\CoDMW5Handler.json");
+	// LoadConfigs("Data\\Configs\\CoDMW5Handler.json");
+	LoadConfigs("CoDMW5Handler.toml");
+	LoadConfigs("CoDMW5HandlerSP.toml");
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);
@@ -470,7 +473,7 @@ bool ps::CoDMW5Handler::Initialize(const std::string& gameDirectory)
 	return true;
 }
 
-bool ps::CoDMW5Handler::Uninitialize()
+bool ps::CoDMW5Handler::Deinitialize()
 {
 	Module.Free();
 	XAssetPoolCount       = 256;
@@ -628,7 +631,7 @@ bool ps::CoDMW5Handler::CleanUp()
 
 std::string ps::CoDMW5Handler::GetFileName(const std::string& name)
 {
-	return CurrentConfig->FilesDirectory + name;
+	return (CurrentConfig->FilesDirectory.empty()) ? (name) : (CurrentConfig->FilesDirectory + "/" + name);
 }
 
 const std::string ps::CoDMW5Handler::GetShorthand()

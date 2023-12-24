@@ -27,7 +27,7 @@ namespace ps
 		// Returns the global Parasyte instance/singleton.
 		static Parasyte& Instance();
 		// Returns the global Parasyte registry instance/singleton.
-		static Registry& GetRegistry();
+		// static Registry& GetRegistry();
 		// Sets the current handler.
 		static void SetCurrentHandler(GameHandler* handler);
 		// Gets the current handler.

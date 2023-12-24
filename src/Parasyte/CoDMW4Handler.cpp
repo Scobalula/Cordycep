@@ -35,6 +35,9 @@ namespace ps::CoDMW4Internal
 	// Initializes Asset Alignment.
 	void(__cdecl* InitAssetAlignmentInternal)();
 
+	// Gets the xasset type name.
+	// const char* (__fastcall* GetXAssetTypeName)(uint32_t xassetType);
+
 	// Zone Loader Flag (must be 1)
 	uint8_t* ZoneLoaderFlag = nullptr;
 	// The size of the below buffer
@@ -118,7 +121,7 @@ namespace ps::CoDMW4Internal
 						RequestFinalFileData))
 					{
 						ps::log::Log(ps::LogType::Error, "Failed to patch fast file, error code: %lli", *(uint32_t*)(PatchFileState.get() + 380));
-						throw std::exception("MW5_PatchFile_RequestData(...) failed");
+						throw std::exception("MW4_PatchFile_RequestData(...) failed");
 					}
 				}
 
@@ -251,7 +254,8 @@ namespace ps::CoDMW4Internal
 		AddAssetOffset(toPop);
 
 		// Loggary for Stiggary
-		ps::log::Log(ps::LogType::Verbose, "%s Type: %i @ %llu.", **asset, assetType, (uint64_t)result->Header);
+		ps::log::Log(ps::LogType::Verbose, "%s Type: %i @ %llu.", name, assetType, (uint64_t)result->Header);
+		// ps::log::Log(ps::LogType::Verbose, "Linked: (Name: %s) Type: 0x%llx (%s) @ 0x%llx", name, (uint64_t)assetType, GetXAssetTypeName(assetType), (uint64_t)result->Header);
 
 		return result->Header;
 	}
@@ -274,9 +278,11 @@ const std::string ps::CoDMW4Handler::GetName()
 
 bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 {
+	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	LoadConfigs("Data\\Configs\\CoDMW4Handler.json");
+	// LoadConfigs("Data\\Configs\\CoDMW4Handler.json");
+	LoadConfigs("CoDMW4Handler.toml");
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);
@@ -305,6 +311,9 @@ bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 	PS_SETGAMEVAR(ps::CoDMW4Internal::XAssetOffsetList);
 	PS_SETGAMEVAR(ps::CoDMW4Internal::ZoneLoaderFlag);
 	PS_SETGAMEVAR(ps::CoDMW4Internal::ParseFastFile);
+
+	// PS_SETGAMEVAR(ps::CoDMW4Internal::GetXAssetTypeName);
+
 	PS_SETGAMEVAR(ps::CoDMW4Internal::DecrpytString);
 	PS_DETGAMEVAR(ps::CoDMW4Internal::ReadXFile);
 	PS_DETGAMEVAR(ps::CoDMW4Internal::AllocateUniqueString);
@@ -324,18 +333,19 @@ bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 	StringLookupTable = std::make_unique<std::map<uint64_t, size_t>>();
 
 	Module.SaveCache(CurrentConfig->CacheName);
-#if _DEBUG
-	LoadAliases("F:\\Data\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareAliases.json");
-#else
-	LoadAliases("Data\\ModernWarfareAliases.json");
-#endif
+// #if _DEBUG
+// 	LoadAliases("F:\\Data\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareAliases.json");
+// #else
+// 	LoadAliases("Data\\Aliases\\ModernWarfareAliases.json");
+// #endif
+	LoadAliases(CurrentConfig->AliasesName);
 
 	// ps::XAsset::XAssetMemory = std::make_unique<ps::Memory>();
 
 	return true;
 }
 
-bool ps::CoDMW4Handler::Uninitialize()
+bool ps::CoDMW4Handler::Deinitialize()
 {
 	Module.Free();
 
@@ -356,16 +366,16 @@ bool ps::CoDMW4Handler::IsValid(const std::string& param)
 	return strcmp(param.c_str(), "mw4") == 0;
 }
 
-
-bool ps::CoDMW4Handler::ListFiles()
-{
-	FileSystem->EnumerateFiles(CurrentConfig->FilesDirectory, "*.ff", false, [](const std::string& name, const size_t size)
-	{
-		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", name.c_str());
-	});
-
-	return true;
-}
+// TODO:
+// bool ps::CoDMW4Handler::ListFiles()
+// {
+// 	FileSystem->EnumerateFiles(CurrentConfig->FilesDirectory, "*.ff", false, [](const std::string& name, const size_t size)
+// 	{
+// 		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", name.c_str());
+// 	});
+//
+// 	return true;
+// }
 
 bool ps::CoDMW4Handler::Exists(const std::string& ffName)
 {

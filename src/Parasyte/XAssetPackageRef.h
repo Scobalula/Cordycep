@@ -18,7 +18,7 @@ namespace ps
 		XAssetPackageRef(HANDLE handle);
 
 		// Checks if the package reference is valid.
-		const bool IsValid() { return FileHandle != NULL && FileHandle != INVALID_HANDLE_VALUE; }
+		bool IsValid() { return FileHandle != NULL && FileHandle != INVALID_HANDLE_VALUE; }
 		// Gets the file handle.
 		HANDLE GetHandle() { return FileHandle; }
 

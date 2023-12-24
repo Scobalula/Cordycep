@@ -15,7 +15,7 @@ void ps::HelpCommand::Execute(ps::CommandParser& parser) const
 	ps::log::Print("HELP", "To use Cordycep, you can simply pass it commands to tell it what to do.");
 	ps::log::Print("HELP", "Here's a list of commands:");
 
-	for (auto& command : ps::Command::GetCommands())
+	for (const auto& command : ps::Command::GetCommands())
 	{
 		if (command->IsVisible())
 		{

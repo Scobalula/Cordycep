@@ -33,12 +33,12 @@ ps::Parasyte& ps::Parasyte::Instance()
 	return instance;
 }
 
-ps::Registry& ps::Parasyte::GetRegistry()
-{
-	static Registry instance("SOFTWARE\\Scobalula\\Parasyte");
-
-	return instance;
-}
+// ps::Registry& ps::Parasyte::GetRegistry()
+// {
+// 	static Registry instance("SOFTWARE\\Scobalula\\Parasyte");
+//
+// 	return instance;
+// }
 
 void ps::Parasyte::SetCurrentHandler(GameHandler* handler)
 {
@@ -74,20 +74,19 @@ void ps::Parasyte::VerifyHandler(bool needsInit)
 
 bool ps::Parasyte::LoadFile(const std::string& name, size_t index, size_t count, BitFlags<FastFileFlags> flags)
 {
-	ps::log::Print("MAIN", "Attempting to load: %s (%llu/%llu), please wait...", name.c_str(), index, count);
+	ps::log::Print("MAIN", "Loading: %s (%llu/%llu)...", name.c_str(), index, count);
 
 	try
 	{
 		if (!ps::Parasyte::GetCurrentHandler()->DoesFastFileExists(name))
 		{
-			ps::log::Print("ERROR", "The file: %s could not be found, check the name and the platform you installed it from for available downloads (i.e. MP/SP).", name.c_str());
-			ps::log::Print("ERROR", "If an update was recently performed, you may need to launch the game to perform any fix ups to the file system.", name.c_str());
+			ps::log::Print("ERROR", "The file: %s could not be found.", name.c_str());
 			return false;
 		}
 		if (ps::Parasyte::GetCurrentHandler()->IsFastFileLoaded(name))
 		{
-			ps::log::Print("ERROR", "The file: %s is already loaded.", name.c_str());
-			return false;
+			ps::log::Print("WARNING", "The file: %s is already loaded.", name.c_str());
+			return true;
 		}
 		if (!ps::Parasyte::GetCurrentHandler()->LoadFastFile(name, nullptr, flags))
 		{
@@ -99,14 +98,14 @@ bool ps::Parasyte::LoadFile(const std::string& name, size_t index, size_t count,
 		}
 		else
 		{
-			ps::log::Print("MAIN", "The file: %s loaded successfully.", name.c_str());
+			ps::log::Print("SUCCESS", "Loaded: %s successfully.", name.c_str());
 			ps::Parasyte::GetCurrentHandler()->CleanUp();
 			return true;
 		}
 	}
 	catch (std::exception& ex)
 	{
-		ps::log::Print("ERROR", "An internal error has occured while loading the file: %s.", ex.what());
+		ps::log::Print("ERROR", "An internal error has occured while loading the file: %s", ex.what());
 		ps::Parasyte::GetCurrentHandler()->UnloadFastFile(name);
 		ps::Parasyte::GetCurrentHandler()->CleanUp();
 		return false;
@@ -134,7 +133,7 @@ const std::string ps::Parasyte::GetTelemtry(const std::string& key)
 {
 	auto& instance = Instance();
 
-	if (instance.Telemtry.size() > 0)
+	if (!instance.Telemtry.empty())
 	{
 		for (auto it = instance.Telemtry.end(); it != instance.Telemtry.begin(); it--)
 		{

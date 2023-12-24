@@ -15,6 +15,6 @@ const std::filesystem::path ps::helper::GetExePath()
 
 void ps::helper::SetWorkingDirectoryToExe()
 {
-	auto path = GetExePath().parent_path();
+	const auto path = GetExePath().parent_path();
 	std::filesystem::current_path(path);
 }

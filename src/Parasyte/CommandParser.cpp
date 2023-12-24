@@ -84,7 +84,7 @@ void ps::CommandParser::Parse(const char* cmd, const size_t len)
 
 			auto subView = view.substr(start, end - start);
 
-			if (subView.size() > 0 && subView.find_first_not_of(' ') != std::string::npos)
+			if (!subView.empty() && subView.find_first_not_of(' ') != std::string::npos)
 			{
 				Args.emplace_back(view.substr(start, end - start));
 			}
@@ -97,7 +97,7 @@ void ps::CommandParser::Parse(const std::string& cmd)
 	return Parse(cmd.c_str(), cmd.size());
 }
 
-const bool ps::CommandParser::HasCommands() const
+bool ps::CommandParser::HasCommands() const
 {
 	return CurrentIndex < Args.size();
 }

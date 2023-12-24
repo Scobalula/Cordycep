@@ -109,7 +109,7 @@ namespace ps::CoDMW6Internal
 						RequestFinalFileData))
 					{
 						ps::log::Log(ps::LogType::Error, "Failed to patch fast file, error code: %lli", *(uint32_t*)(PatchFileState.get() + 380));
-						throw std::exception("MW5_PatchFile_RequestData(...) failed");
+						throw std::exception("MW6_PatchFile_RequestData(...) failed");
 					}
 				}
 
@@ -180,7 +180,7 @@ namespace ps::CoDMW6Internal
 	// Allocates a unique string entry.
 	void* AllocateUniqueString(char* a, char* str, int type)
 	{
-		std::ofstream out("chunky.csv", std::ios::app);
+		// std::ofstream out("chunky.csv", std::ios::app);
 
 		char* decrypted = str;
 
@@ -206,7 +206,7 @@ namespace ps::CoDMW6Internal
 
 		StrBufferOffset = (uint32_t)offset;
 
-		out << decrypted << std::endl;
+		// out << decrypted << std::endl;
 
 		return &StrBufferOffset;
 	}
@@ -241,7 +241,7 @@ namespace ps::CoDMW6Internal
 		auto temp = flag != 0;
 		auto pool = &ps::Parasyte::GetCurrentHandler()->XAssetPools[assetType];
 
-		// Some assets in MW2 have names, we need it for logging below
+		// Some assets in MW3 have names, we need it for logging below
 		// and to remove the appended comma to indicate a temp asset.
 		const char* name = nullptr;
 
@@ -297,7 +297,7 @@ namespace ps::CoDMW6Internal
 				temp);
 		}
 
-#if PRIVATE_GRAM_GRAM
+// #if PRIVATE_GRAM_GRAM
 		if (assetType == 0x3b && DecrpytString != nullptr)
 		{
 			char* str = *(char**)(result->Header + 8);
@@ -307,54 +307,54 @@ namespace ps::CoDMW6Internal
 			}
 			memcpy(*(char**)(result->Header + 8), str, strlen(str) + 1);
 		}
-#else
-		switch (assetType)
-		{
-		// Kill localized
-		case 0x3b:
-		{
-			char* str = *(char**)(result->Header + 8);
-			std::memset(str, 0, strlen(str));
-			*(uint64_t*)result->Header = 0;
-			break;
-		}
-		// Kill Weapons
-		case 0x3d:
-		{
-			if (*(char**)(result->Header + 32) != nullptr)
-				std::memset(*(char**)(result->Header + 32), 0, 15784);
-
-			std::memset(result->Header, 0, 1400);
-			break;
-		}
-		// Kill Attachments
-		case 0x3c:
-		{
-			std::memset(result->Header, 0, 2576);
-			break;
-		}
-		// Kill Lua files
-		case 0x4c:
-		{
-			*(uint64_t*)result->Header = 0;
-			auto sizeOfRawFile = *(uint32_t*)(result->Header + 8);
-			auto rawFileData = *(char**)(result->Header + 16);
-			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
-			break;
-		}
-		// Kill raw files
-		case 0x44:
-		{
-			*(uint64_t*)result->Header = 0;
-			auto sizeOfRawFile = *(uint32_t*)(result->Header + 12);
-			auto rawFileData = *(char**)(result->Header + 24);
-			if (sizeOfRawFile == 0)
-				sizeOfRawFile = *(uint32_t*)(result->Header + 16) + 1;
-			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
-			break;
-		}
-		}
-#endif
+// #else
+// 		switch (assetType)
+// 		{
+// 		// Kill localize 59
+// 		case 0x3b:
+// 		{
+// 			char* str = *(char**)(result->Header + 8);
+// 			std::memset(str, 0, strlen(str));
+// 			*(uint64_t*)result->Header = 0;
+// 			break;
+// 		}
+// 		// Kill Weapons 61
+// 		case 0x3d:
+// 		{
+// 			if (*(char**)(result->Header + 32) != nullptr)
+// 				std::memset(*(char**)(result->Header + 32), 0, 15784);
+//
+// 			std::memset(result->Header, 0, 1400);
+// 			break;
+// 		}
+// 		// Kill Attachments 60
+// 		case 0x3c:
+// 		{
+// 			std::memset(result->Header, 0, 2576);
+// 			break;
+// 		}
+// 		// Kill Lua files 76
+// 		case 0x4c:
+// 		{
+// 			*(uint64_t*)result->Header = 0;
+// 			auto sizeOfRawFile = *(uint32_t*)(result->Header + 8);
+// 			auto rawFileData = *(char**)(result->Header + 16);
+// 			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
+// 			break;
+// 		}
+// 		// Kill raw files 68
+// 		case 0x44:
+// 		{
+// 			*(uint64_t*)result->Header = 0;
+// 			auto sizeOfRawFile = *(uint32_t*)(result->Header + 12);
+// 			auto rawFileData = *(char**)(result->Header + 24);
+// 			if (sizeOfRawFile == 0)
+// 				sizeOfRawFile = *(uint32_t*)(result->Header + 16) + 1;
+// 			if (rawFileData != nullptr) std::memset(rawFileData, 0, sizeOfRawFile);
+// 			break;
+// 		}
+// 		}
+// #endif
 
 		size_t toPop[2]{ assetType, (size_t)*asset };
 		AddAssetOffset(toPop);
@@ -400,9 +400,12 @@ const std::string ps::CoDMW6Handler::GetName()
 
 bool ps::CoDMW6Handler::Initialize(const std::string& gameDirectory)
 {
+	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	LoadConfigs("Data\\Configs\\CoDMW6Handler.json");
+	// LoadConfigs("Data\\Configs\\CoDMW6Handler.json");
+	LoadConfigs("CoDMW6Handler.toml");
+	LoadConfigs("CoDMW6HandlerSP.toml");
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);
@@ -466,7 +469,7 @@ bool ps::CoDMW6Handler::Initialize(const std::string& gameDirectory)
 	return true;
 }
 
-bool ps::CoDMW6Handler::Uninitialize()
+bool ps::CoDMW6Handler::Deinitialize()
 {
 	Module.Free();
 	XAssetPoolCount       = 256;
@@ -601,7 +604,7 @@ bool ps::CoDMW6Handler::LoadFastFile(const std::string& ffName, FastFile* parent
 			LoadFastFile(wwName, newFastFile, flags);
 
 		// Check for locale prefix
-		if (RegionPrefix.size() > 0)
+		if (!RegionPrefix.empty())
 		{
 			auto localeName = RegionPrefix + ffName;
 
@@ -625,7 +628,7 @@ bool ps::CoDMW6Handler::CleanUp()
 
 std::string ps::CoDMW6Handler::GetFileName(const std::string& name)
 {
-	return CurrentConfig->FilesDirectory + name;
+	return (CurrentConfig->FilesDirectory.empty()) ? (name) : (CurrentConfig->FilesDirectory + "/" + name);
 }
 
 const std::string ps::CoDMW6Handler::GetShorthand()

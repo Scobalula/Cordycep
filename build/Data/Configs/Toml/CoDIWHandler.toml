@@ -1,0 +1,366 @@
+Flag = "default"
+ModuleName = "Data/Dumps/iw7_ship_dump.exe"
+CacheName = "Data/Dumps/iw7_ship_dump.cache"
+FilesDirectory = ""
+AliasesName = ""
+Dependencies = []
+CommonFiles = [
+  "code_pre_gfx",
+  "code_post_gfx",
+  "global",
+  "global_sp",
+  "global_mp",
+  "global_core_mp",
+  "common",
+  "common_sp",
+  "common_mp",
+  "common_core_mp"
+]
+
+# IW7::Var0
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? 00 EB 05 E8 ?? ?? ?? 00 8B D8 83"
+PatternName = "ps::CoDIWInternal::ParseFastFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+# IW7::Var1
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? 00 E8 ?? ?? ?? FF 80 3D ?? ?? ?? ?? 00 74 05 E8"
+PatternName = "ps::CoDIWInternal::AssignMemoryPointers"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# IW7::Var2
+[[Patterns]]
+PatternSignature = "00 E8 ?? ?? ?? FF 80 3D ?? ?? ?? ?? 00 74 05 E8"
+PatternName = "ps::CoDIWInternal::AssetAlignmentInit"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 2
+
+# IW7::Var3
+[[Patterns]]
+PatternSignature = "0F ?? ?? 11 48 ?? ?? E8 ?? ?? ?? ?? BA 04 00 00 00 48"
+PatternName = "ps::CoDIWInternal::GetXAssetName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+# IW7::Var4
+[[Patterns]]
+PatternSignature = "4C ?? ?? B9 12 00 00 00 E8 ?? ?? ?? 00 48"
+PatternName = "ps::CoDIWInternal::SetXAssetName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 9
+
+# IW7::Var5
+[[Patterns]]
+PatternSignature = "CE 4C 8D 3D ?? ?? ?? ?? E8 ?? ?? ?? ?? 4D 8B 04"
+PatternName = "ps::CoDIWInternal::GetXAssetPoolSize"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 9
+
+# IW7::Var6
+[[Patterns]]
+PatternSignature = "48 C7 02 00 00 00 00 48 ?? ?? 48 8B 05 ?? ?? ?? ?? 48 8B F9"
+PatternName = "ps::CoDIWInternal::GraphicsDvar"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 13
+
+# IW7::Var7
+[[Patterns]]
+PatternSignature = "48 8D 35 ?? ?? ?? ?? 8B 0D ?? ?? ?? ?? 44 8B DA"
+PatternName = "ps::CoDIWInternal::AssetAlignmentPointers"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 3
+
+# IW7::Var8
+[[Patterns]]
+PatternSignature = "48 8D 15 ?? ?? ?? ?? 3D FF FF FF 7F 74"
+PatternName = "ps::CoDIWInternal::AssetAlignmentBuffer"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 3
+
+# IW7::Var9
+[[Patterns]]
+PatternSignature = "48 8D ?? ?? 20 89 ?? ?? 20 E8 ?? ?? ?? ?? 48 ?? C4"
+PatternName = "ps::CoDIWInternal::AssetAlignmentOnAssetLink"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 10
+
+# IW7::Var10
+[[Patterns]]
+PatternSignature = "B1 01 48 89 05 ?? ?? ?? ?? E8 ?? ?? ?? ?? E8"
+PatternName = "ps::CoDIWInternal::LoadXAssetHeader"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 10
+
+# IW7::Var11
+[[Patterns]]
+PatternSignature = "48 C1 E1 04 48 03 48 18 48 89 0D ?? ?? ?? ?? 33 C9 E8"
+PatternName = "ps::CoDIWInternal::VarXAssetHeader"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 11
+
+# IW7::Var12
+[[Patterns]]
+PatternSignature = "39 9F 18 01 00 00 76 ?? E8 ?? ?? ?? ?? B1 01 48"
+PatternName = "ps::CoDIWInternal::AllocXAssetHeader"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 9
+
+# IW7::Var13
+[[Patterns]]
+PatternSignature = "41 B8 A8 11 00 00 0F B6 CB E8 ?? ?? ?? ?? B9 08 00 00 00 E8"
+PatternName = "ps::CoDIWInternal::PushZoneBlock"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 20
+
+# IW7::Var14
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 8B C3 48 8D 0C 40 48 8B 87 10 01 00 00 48"
+PatternName = "ps::CoDIWInternal::PopZoneBlock"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# IW7::Det0
+[[Patterns]]
+PatternSignature = "28 00 00 00 48 ?? ?? E8 ?? ?? ?? ?? ?? 08 00 00 00 E8"
+PatternName = "ps::CoDIWInternal::ReadXFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+# IW7::Det1
+[[Patterns]]
+PatternSignature = "74 ?? ?? 04 00 00 00 E8 ?? ?? ?? 00 48 ?? ?? 48"
+PatternName = "ps::CoDIWInternal::AllocateString"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+# IW7::Det2
+[[Patterns]]
+PatternSignature = "B9 47 00 00 00 E8 ?? ?? ?? 00 48 ?? ?? E8"
+PatternName = "ps::CoDIWInternal::LinkAsset"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 6
+
+# IW7::Det3
+[[Patterns]]
+PatternSignature = "40 57 48 ?? ?? 20 48 ?? ?? 48 8D ?? ?? 30 48 8B F9 48 ?? ?? ?? 30 B9 1C 00 00 00 E8 ?? ?? ?? ?? 48"
+PatternName = "ps::CoDIWInternal::LinkXAsset28"
+PatternType = "Variable"
+PatternFlags = [ "NoResolving" ]
+Offset = 0
+
+# IW7::Null0
+[[Patterns]]
+PatternSignature = "48 ?? ?? 18 44 ?? 02 48 ?? ?? 08 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 12
+
+# IW7::Null1
+[[Patterns]]
+PatternSignature = "48 ?? ?? 20 44 ?? ?? 04 48 ?? ?? 10 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 13
+
+# IW7::Null2
+[[Patterns]]
+PatternSignature = "48 ?? ?? 50 33 D2 45 ?? ?? 28 4D ?? ?? 38 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 15
+
+# IW7::Null3
+[[Patterns]]
+PatternSignature = "B9 47 00 00 00 E8 ?? ?? ?? 00 48 ?? ?? E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 14
+
+# IW7::Null4
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? 00 48 8B 1D ?? ?? ?? ?? 41 B8 08 00"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# IW7::Null5
+[[Patterns]]
+PatternSignature = "48 ?? ?? 30 44 ?? ?? C0 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null6
+[[Patterns]]
+PatternSignature = "48 ?? ?? 28 44 ?? ?? 40 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null7
+[[Patterns]]
+PatternSignature = "48 ?? ?? 28 44 ?? ?? 40 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null8
+[[Patterns]]
+PatternSignature = "44 ?? ?? 18 48 ?? ?? 50 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null9
+[[Patterns]]
+PatternSignature = "4C ?? ?? 50 48 ?? ?? 58 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null10
+[[Patterns]]
+PatternSignature = "48 ?? ?? 68 41 ?? ?? 03 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null11
+[[Patterns]]
+PatternSignature = "48 ?? ?? 70 41 ?? ?? 03 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null12
+[[Patterns]]
+PatternSignature = "48 ?? ?? 90 00 00 00 41 ?? ?? 05 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 12
+
+# IW7::Null13
+[[Patterns]]
+PatternSignature = "48 ?? ?? 98 00 00 00 41 ?? ?? 05 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 12
+
+# IW7::Null14
+[[Patterns]]
+PatternSignature = "30 B9 40 00 00 00 E8 F0 D8 6B 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 15
+
+# IW7::Null15
+[[Patterns]]
+PatternSignature = "30 B9 40 00 00 00 E8 F0 D8 6B 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 25
+
+# IW7::Null16
+[[Patterns]]
+PatternSignature = "30 B9 40 00 00 00 E8 F0 D8 6B 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 25
+
+# IW7::Null17
+[[Patterns]]
+PatternSignature = "30 B9 40 00 00 00 E8 F0 D8 6B 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 44
+
+# IW7::Null18
+[[Patterns]]
+PatternSignature = "30 B9 40 00 00 00 E8 F0 D8 6B 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 52
+
+# IW7::Null19
+[[Patterns]]
+PatternSignature = "08 75 09 49 8B 0C 87 E8 43 00 00 00 49 8B C4"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 8
+
+# IW7::Null20
+[[Patterns]]
+PatternSignature = "41 B8 18 00 00 00 33 C9 E8 ?? ?? ?? ?? 48 8B CB E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 17
+
+# IW7::Null21
+[[Patterns]]
+PatternSignature = "48 8B 52 58 C1 E0 05 89 44 24 20 E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 12
+
+# IW7::Null22
+[[Patterns]]
+PatternSignature = "4D 8B 40 50 41 C1 E1 05 E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 9
+
+# IW7::Null23
+[[Patterns]]
+PatternSignature = "41 ?? ?? 00 20 00 00 48 ?? ?? 18 41 ?? ?? 06 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 16
+
+# IW7::Null24
+[[Patterns]]
+PatternSignature = "48 8B 15 ?? ?? ?? ?? 49 8D 4E 20 48 8B 52 20 E8 ?? ?? ?? 00 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 16
+
+# IW7::Null25
+[[Patterns]]
+PatternSignature = "B9 14 00 00 00 E8 ?? ?? ?? ?? 48 89 03 48 8B C8 0F B6 15 ?? ?? ?? ?? E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 24
+
+# IW7::Null26
+[[Patterns]]
+PatternSignature = "48 81 C3 08 01 00 00 48 ?? ?? 48 89 1D ?? ?? ?? ?? 33 C9"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 35
+
+# IW7::Null27
+[[Patterns]]
+PatternSignature = "44 8B 40 08 E8 ?? ?? ?? ?? 48 8B 15 ?? ?? ?? ?? 48 8B CF E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 20

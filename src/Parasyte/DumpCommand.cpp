@@ -9,7 +9,6 @@ ps::DumpCommand::DumpCommand() : Command(
 	"dump \"C:\\iw6mp64_ship.exe\"",
 	true)
 {
-
 }
 
 void ps::DumpCommand::Execute(ps::CommandParser& parser) const
@@ -29,7 +28,7 @@ void ps::DumpCommand::Execute(ps::CommandParser& parser) const
 	}
 	else
 	{
-		ps::log::Print("ERROR", "Successfully dumped the required data, this can now be used with the title its intended for.");
+		ps::log::Print("SUCCESS", "Successfully dumped the required data, this can now be used with the title its intended for.");
 	}
 }
 

@@ -24,7 +24,7 @@ void ps::DeinitCommand::DeinitializeCurrentHandler(bool implicit)
 		ps::Parasyte::GetCurrentHandler()->UnloadAllFastFiles();
 		ps::log::Print("MAIN", "Successfully unloaded all files.");
 		ps::log::Print("MAIN", "Deinitializing...");
-		ps::Parasyte::GetCurrentHandler()->Uninitialize();
+		ps::Parasyte::GetCurrentHandler()->Deinitialize();
 		ps::log::Print("MAIN", "Handler successfully deinitialized.");
 		ps::Parasyte::SetCurrentHandler(nullptr);
 	}

@@ -28,7 +28,7 @@ namespace ps
 			return *this;
 		}
 		// Checks if the provided flag is present in this.
-		const bool HasFlag(const T& flag) const
+		bool HasFlag(const T& flag) const
 		{
 			return ((size_t)Value & (size_t)flag) != 0;
 		}

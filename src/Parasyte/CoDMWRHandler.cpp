@@ -592,12 +592,12 @@ const std::string ps::CoDMWRHandler::GetName()
 	return "Call of Duty: Modern Warfare Remastered";
 }
 
-const bool ps::CoDMWRHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
+bool ps::CoDMWRHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
 {
 	HANDLE findHandle;
 	WIN32_FIND_DATA findData;
 
-	auto fullPath = GameDirectory + "\\" + pattern;
+	auto fullPath = GameDirectory + "/" + pattern;
 	findHandle = FindFirstFileA(fullPath.c_str(), &findData);
 
 	if (findHandle != INVALID_HANDLE_VALUE)
@@ -1028,35 +1028,37 @@ bool ps::CoDMWRHandler::Initialize(const std::string& gameDirectory)
 
 	Module.SaveCache("Data\\Dumps\\h1_mp64_ship_dump.cache");
 
-#if _DEBUG
-	LoadAliases("F:\\Data\\Dumps\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareRemasteredAliases.json");
-#else
-	LoadAliases("Data\\Dumps\\ModernWarfareRemasteredAliases.json");
-#endif
+// #if _DEBUG
+// 	LoadAliases("F:\\Data\\Dumps\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareRemasteredAliases.json");
+// #else
+// 	LoadAliases("Data\\Dumps\\ModernWarfareRemasteredAliases.json");
+// #endif
+	// LoadAliases(CurrentConfig->AliasesName);
 
 	return true;
 }
 
-bool ps::CoDMWRHandler::Uninitialize()
+bool ps::CoDMWRHandler::Deinitialize()
 {
 	MWR_DB_Reset();
 
 	Module.Free();
-	XAssetPoolCount = 256;
-	XAssetPools = nullptr;
-	Strings = nullptr;
-	StringPoolSize = 0;
-	Initialized = false;
+	XAssetPoolCount   = 256;
+	XAssetPools       = nullptr;
+	Strings           = nullptr;
+	StringPoolSize    = 0;
+	Initialized       = false;
 	StringLookupTable = nullptr;
+	FileSystem        = nullptr;
 	GameDirectory.clear();
 
 	// Clear out open handles to reference files.
-	for (size_t i = 0; i < SoundFiles.size(); i++)
+	for (auto& SoundFile : SoundFiles)
 	{
-		if (SoundFiles[i] != NULL && SoundFiles[i] != INVALID_HANDLE_VALUE)
+		if (SoundFile != NULL && SoundFile != INVALID_HANDLE_VALUE)
 		{
-			CloseHandle(SoundFiles[i]);
-			SoundFiles[i] = NULL;
+			CloseHandle(SoundFile);
+			SoundFile = NULL;
 		}
 	}
 
@@ -1068,21 +1070,22 @@ bool ps::CoDMWRHandler::IsValid(const std::string& param)
 	return strcmp(param.c_str(), "mwr") == 0;
 }
 
-bool ps::CoDMWRHandler::ListFiles()
-{
-	std::vector<std::string> files;
-	GetFiles("*", files);
-	ps::log::Log(ps::LogType::Normal, "Listing files from: %s", GetName().c_str());
-
-	for (auto& file : files)
-	{
-		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", file.c_str());
-	}
-
-	ps::log::Log(ps::LogType::Normal, "Listed: %lu files.", files.size());
-
-	return true;
-}
+// TODO:
+// bool ps::CoDMWRHandler::ListFiles()
+// {
+// 	std::vector<std::string> files;
+// 	GetFiles("*", files);
+// 	ps::log::Log(ps::LogType::Normal, "Listing files from: %s", GetName().c_str());
+//
+// 	for (auto& file : files)
+// 	{
+// 		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", file.c_str());
+// 	}
+//
+// 	ps::log::Log(ps::LogType::Normal, "Listed: %lu files.", files.size());
+//
+// 	return true;
+// }
 
 bool ps::CoDMWRHandler::DoesFastFileExists(const std::string& ffName)
 {
@@ -1176,7 +1179,7 @@ bool ps::CoDMWRHandler::LoadFastFile(const std::string& ffName, FastFile* parent
 			LoadFastFile(pathName, newFastFile, flags);
 
 		// Check for locale prefix
-		if (RegionPrefix.size() > 0)
+		if (!RegionPrefix.empty())
 		{
 			auto localeName = RegionPrefix + ffName;
 			auto localePatchName = RegionPrefix + "patch_" + ffName;

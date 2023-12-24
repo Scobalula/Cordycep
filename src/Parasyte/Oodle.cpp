@@ -17,7 +17,7 @@ int64_t(__fastcall* OodleLZ_Decompress)(
 	uint64_t scratchSize,
 	int threadPhase);
 
-const bool ps::oodle::Initialize(const std::string& fileName)
+bool ps::oodle::Initialize(const std::string& fileName)
 {
 	FreeLibrary(Oodle);
 	Oodle = LoadLibraryA(fileName.c_str());
@@ -61,7 +61,7 @@ size_t ps::oodle::Decompress(uint8_t* input, size_t inputSize, uint8_t* output, 
 	return result;
 }
 
-const bool ps::oodle::Clear()
+bool ps::oodle::Clear()
 {
 	FreeLibrary(Oodle);
 	return false;

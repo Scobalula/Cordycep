@@ -69,12 +69,12 @@ bool ps::FileSystem::CopyToDisk(const std::string& from, const std::string& to)
 	return true;
 }
 
-const size_t ps::FileSystem::GetLastError() const
+size_t ps::FileSystem::GetLastError() const
 {
 	return LastErrorCode;
 }
 
-const bool ps::FileSystem::IsValid() const
+bool ps::FileSystem::IsValid() const
 {
 	return LastErrorCode == 0;
 }
@@ -88,7 +88,7 @@ std::unique_ptr<ps::FileSystem> ps::FileSystem::Open(const std::string& dir)
 {
 	std::error_code c;
 
-	if (std::filesystem::exists(dir + "\\.build.info", c))
+	if (std::filesystem::exists(dir + "/.build.info", c))
 	{
 		return std::make_unique<ps::CascFileSystem>(dir);
 	}
@@ -96,4 +96,30 @@ std::unique_ptr<ps::FileSystem> ps::FileSystem::Open(const std::string& dir)
 	{
 		return std::make_unique<ps::WinFileSystem>(dir);
 	}
+}
+
+std::string ps::FileSystem::GetLastDirectoryName(const std::string& directory)
+{
+	const std::filesystem::path path(directory);
+
+	// If the path is empty, return directly
+	if (path.empty())
+	{
+		return directory;
+	}
+
+	// If the path has no parent path, returns the path itself
+	if (path.parent_path().empty())
+	{
+		return path.filename().string();
+	}
+
+	// If the path is a directory, returns the name of the last element (folder or file) of the path
+	if (std::filesystem::is_directory(path))
+	{
+		return path.filename().string();
+	}
+
+	// If the path is a file, returns the name of the last element (folder or file) of the parent path
+	return path.parent_path().filename().string();
 }

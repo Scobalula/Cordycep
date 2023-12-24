@@ -593,12 +593,12 @@ const std::string ps::CoDAWHandler::GetName()
 	return "Call of Duty: Advanced Warfare";
 }
 
-const bool ps::CoDAWHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
+bool ps::CoDAWHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
 {
 	HANDLE findHandle;
 	WIN32_FIND_DATA findData;
 
-	auto fullPath = GameDirectory + "\\" + pattern;
+	auto fullPath = GameDirectory + "/" + pattern;
 	findHandle = FindFirstFileA(fullPath.c_str(), &findData);
 
 	if (findHandle != INVALID_HANDLE_VALUE)
@@ -1027,37 +1027,39 @@ bool ps::CoDAWHandler::Initialize(const std::string& gameDirectory)
 
 		Module.SaveCache("Data\\Dumps\\s1_mp64_ship_dump.cache");
 
-#if _DEBUG
-		LoadAliases("F:\\Data\\Dumps\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareRemasteredAliases.json");
-#else
-		LoadAliases("Data\\Dumps\\ModernWarfareRemasteredAliases.json");
-#endif
+// #if _DEBUG
+// 		LoadAliases("F:\\Data\\Dumps\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareRemasteredAliases.json");
+// #else
+// 		LoadAliases("Data\\Dumps\\ModernWarfareRemasteredAliases.json");
+// #endif
+		// LoadAliases(CurrentConfig->AliasesName);
 	}
 
 
 	return success;
 }
 
-bool ps::CoDAWHandler::Uninitialize()
+bool ps::CoDAWHandler::Deinitialize()
 {
 	AW_DB_Reset();
 
 	Module.Free();
-	XAssetPoolCount = 256;
-	XAssetPools = nullptr;
-	Strings = nullptr;
-	StringPoolSize = 0;
-	Initialized = false;
+	XAssetPoolCount   = 256;
+	XAssetPools       = nullptr;
+	Strings           = nullptr;
+	StringPoolSize    = 0;
+	Initialized       = false;
 	StringLookupTable = nullptr;
+	FileSystem        = nullptr;
 	GameDirectory.clear();
 
 	// Clear out open handles to reference files.
-	for (size_t i = 0; i < AW_SoundFiles.size(); i++)
+	for (auto& AW_SoundFile : AW_SoundFiles)
 	{
-		if (AW_SoundFiles[i] != NULL && AW_SoundFiles[i] != INVALID_HANDLE_VALUE)
+		if (AW_SoundFile != NULL && AW_SoundFile != INVALID_HANDLE_VALUE)
 		{
-			CloseHandle(AW_SoundFiles[i]);
-			AW_SoundFiles[i] = NULL;
+			CloseHandle(AW_SoundFile);
+			AW_SoundFile = NULL;
 		}
 	}
 

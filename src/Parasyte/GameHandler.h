@@ -51,12 +51,12 @@ namespace ps
 
 		// Creates a new game handler.
 		GameHandler(uint64_t id) :
+            ID(id),
 			Initialized(false),
 			XAssetPoolCount(0),
-			StringPoolSize(0),
 			Strings(nullptr),
-			CurrentConfig(nullptr),
-			ID(id)
+			StringPoolSize(0),
+			CurrentConfig(nullptr)
 		{
 		}
 
@@ -65,7 +65,7 @@ namespace ps
 		// Gets the name of the handler.
 		virtual const std::string GetName() = 0;
 		// Gets the names of common files required to be loaded.
-		virtual const bool GetFiles(const std::string& pattern, std::vector<std::string>& results);
+		virtual bool GetFiles(const std::string& pattern, std::vector<std::string>& results);
 		// Gets the names of common files required to be loaded.
 		virtual const std::vector<std::string>& GetCommonFileNames() const;
 		// Initializes the handler, including loading any common fast files.
@@ -74,8 +74,8 @@ namespace ps
 		virtual void OpenGameDirectory(const std::string& gameDirectory);
 		// Opens the game's module.
 		virtual void OpenGameModule(const std::string& moduleName);
-		// Uinitializes the handler, including deloading any fast files and closing file handles.
-		virtual bool Uninitialize() = 0;
+		// Deinitializes the handler, including unloading any fast files and closing file handles.
+		virtual bool Deinitialize() = 0;
 		// Checks if this handler is valid for the provided directory.
 		virtual bool IsValid(const std::string& param) = 0;
 		// Lists all supported files within the game.
@@ -118,8 +118,8 @@ namespace ps
 		virtual bool HasFlag(const std::string& flag);
 		// Gets a file path for the provided fast file name with the current flags and directory.
 		virtual std::string GetFileName(const std::string& name);
-		// Loads the game configs json file.
-		virtual bool LoadConfigs(const std::string& name);
+		// Loads a game configs file.
+		virtual bool LoadConfigs(const std::string& fileName);
 		// Calculates the config if the required flag is set. If no flag is set, the first config is used.
 		virtual bool SetConfig();
 		// Resolves patterns within the game module.

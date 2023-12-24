@@ -5,7 +5,7 @@ ps::UnloadCommand::UnloadCommand() : Command(
 	"unload",
 	"Unloads a file with the given name.",
 	"This command unloads the file with the provided name.",
-	"unload Ma_rv",
+	"unload mp_frontend_jup_01",
 	true)
 {
 }

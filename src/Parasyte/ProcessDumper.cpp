@@ -16,7 +16,7 @@ ps::ProcessDumper::ProcessDumper()
 	NtResumeProcess = NULL;
 }
 
-const bool ps::ProcessDumper::Initialize()
+bool ps::ProcessDumper::Initialize()
 {
 	// Load NTDLL, note: unlike Scylla, we're not taking control
 	// of NTDLL, and it can remain loaded for entire duration.
@@ -33,12 +33,12 @@ const bool ps::ProcessDumper::Initialize()
 	return NtSuspendProcess != NULL && NtResumeProcess != NULL;
 }
 
-const bool ps::ProcessDumper::Suspend(const HANDLE processHandle)
+bool ps::ProcessDumper::Suspend(const HANDLE processHandle)
 {
 	return NtSuspendProcess != NULL && NT_SUCCESS(NtSuspendProcess(processHandle));
 }
 
-const bool ps::ProcessDumper::Resume(const HANDLE processHandle)
+bool ps::ProcessDumper::Resume(const HANDLE processHandle)
 {
 	return NtResumeProcess != NULL && NT_SUCCESS(NtResumeProcess(processHandle));
 }
@@ -70,7 +70,7 @@ BOOL SetPrivilege(HANDLE hToken, LPCTSTR lpszPrivilege, BOOL bEnablePrivilege)
 	return bRet;
 }
 
-const bool ps::ProcessDumper::Dump(const std::string& path)
+bool ps::ProcessDumper::Dump(const std::string& path)
 {
 	// Bump our priority so we have more priority over stuff going on.
 	ps::ProcessPriorityBump bump;

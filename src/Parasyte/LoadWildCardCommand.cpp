@@ -20,33 +20,31 @@ void ps::LoadWildCardCommand::Execute(ps::CommandParser& parser) const
 
 	ps::log::Print("MAIN", "Searching for files with pattern, please wait...");
 
-	if (ps::Parasyte::GetCurrentHandler()->GetFiles(pattern, files) && files.size() > 0)
-	{
-		if (files.size() > 0)
-		{
-			ps::log::Print("MAIN", "Found %llu files.", files.size());
-			ps::log::Print("MAIN", "Loading %llu files, please wait...", files.size());
+	const bool isFound = ps::Parasyte::GetCurrentHandler()->GetFiles(pattern, files) && !files.empty();
 
-			size_t idx = 1;
-			size_t count = files.size();
-
-			for (auto& fileName : files)
-			{
-				ps::Parasyte::LoadFile(fileName, idx, count, FastFileFlags::None);
-				idx++;
-			}
-
-			ps::log::Print("MAIN", "Loaded %llu files matching pattern.", files.size());
-		}
-		else
-		{
-			ps::log::Print("ERROR", "Failed to find files with pattern.");
-		}
-	}
-	else
+	if (!isFound)
 	{
 		ps::log::Print("ERROR", "Failed to find files with pattern.");
+		return;
 	}
+
+	ps::log::Print("MAIN", "Found %llu files.", files.size());
+	ps::log::Print("MAIN", "Loading %llu files, please wait...", files.size());
+
+	size_t idx = 1;
+	size_t loadedFilesCount = 0;
+	size_t count = files.size();
+
+	for (auto& fileName : files)
+	{
+		const bool isLoaded = ps::Parasyte::LoadFile(fileName, idx, count, FastFileFlags::None);
+		idx++;
+
+		if (isLoaded)
+			loadedFilesCount++;
+	}
+
+	ps::log::Print("MAIN", "Loaded (%llu/%llu) files matching pattern successfully.", loadedFilesCount, files.size());
 }
 
 PS_CINIT(ps::Command, ps::LoadWildCardCommand, ps::Command::GetCommands());

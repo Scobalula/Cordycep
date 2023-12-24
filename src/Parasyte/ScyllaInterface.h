@@ -18,8 +18,8 @@ namespace ps
 		~ScyllaInterface();
 
 		// Initializes Scylla Interface.
-		const bool Initialize();
+		bool Initialize();
 		// Dumps the provided process to the given path.
-		const int Dump(const ps::ForeignProcess& foreignProcess, const std::string& path) const;
+		int Dump(const ps::ForeignProcess& foreignProcess, const std::string& path) const;
 	};
 }

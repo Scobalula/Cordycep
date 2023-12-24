@@ -27,6 +27,6 @@ namespace ps
 		// Removes the provided flag from the game pattern.
 		void RemoveFlag(const GamePatternFlag& flag);
 		// Checks if the provided flag is present in the game pattern.
-		const bool HasFlag(const GamePatternFlag& flag) const;
+		bool HasFlag(const GamePatternFlag& flag) const;
 	};
 }

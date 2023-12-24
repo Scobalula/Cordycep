@@ -1,22 +1,14 @@
-﻿#include "..\Parasyte\pch.h"
-#include "..\Parasyte\GameHandler.h"
-#include "..\Parasyte\Helper.h"
-#include "..\Parasyte\Printer.h"
-#include "..\Parasyte\Parasyte.h"
-#include "..\Parasyte\CommandParser.h"
-#include "..\Parasyte\Command.h"
+﻿#include "../Parasyte/pch.h"
+#include "../Parasyte/GameHandler.h"
+#include "../Parasyte/Helper.h"
+#include "../Parasyte/Printer.h"
+#include "../Parasyte/Parasyte.h"
+#include "../Parasyte/CommandParser.h"
+#include "../Parasyte/Command.h"
 
 // Debug
 #include <dbghelp.h>
 #include <Psapi.h>
-
-// Dumping utilities
-#include "..\Parasyte\ScyllaInterface.h"
-#include "..\Parasyte\ProcessDumper.h"
-#include "..\Parasyte\ForeignProcess.h"
-
-// File System
-#include "..\Parasyte\FileSystem.h"
 
 #if defined _WIN64
 #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -102,7 +94,7 @@ void HandleCommands(ps::CommandParser& parser)
         auto commandFound = false;
         auto& commandName = parser.Next();
 
-        for (auto& command : ps::Command::GetCommands())
+        for (const auto& command : ps::Command::GetCommands())
         {
             if (command->IsValid(commandName))
             {
@@ -132,10 +124,27 @@ void InitializeConsole()
 
 void Print(const char* header, const char* value, bool newLine)
 {
-    if (newLine)
-        ps::printer::WriteLineHeader(header, value);
+    // TODO:
+    if (strcmp(header, "SUCCESS") == 0)
+    {
+        ps::printer::WriteHeaderWithColor(header, value, ps::printer::Color::DarkGreen);
+    }
+    else if (strcmp(header, "ERROR") == 0)
+    {
+        ps::printer::WriteHeaderWithColor(header, value, ps::printer::Color::DarkRed);
+    }
+    else if (strcmp(header, "WARNING") == 0)
+    {
+        ps::printer::WriteHeaderWithColor(header, value, ps::printer::Color::DarkGray);
+    }
     else
-        ps::printer::WriteHeader(header, value);
+    {
+        // Source method to print
+        if (newLine)
+            ps::printer::WriteLineHeader(header, value);
+        else
+            ps::printer::WriteHeader(header, value);
+    }
 }
 
 int main_ex(int argc, const char** argv)
@@ -156,16 +165,16 @@ int main_ex(int argc, const char** argv)
     ps::log::EnableLogType(ps::LogType::Normal);
     ps::log::EnableLogType(ps::LogType::Error);
     ps::log::SetOnPrint(Print);
-    // Bleeding Edge
-#if DONATORBE
-    ps::printer::WriteErrorHeader("NOTE", "Bleeding Edge Build! No support provided!");
-#endif
+
+    // Print the initialization information
     ps::log::Print("INIT", "-----------------------");
-    ps::log::Print("INIT", "  oo  Cordycep - Version: %s", FileVersion);
-    ps::log::Print("INIT", "  |\"  Fast File Loader");
-    ps::log::Print("INIT", "  |   Discord: https://discord.gg/RyqyThu");
-    ps::log::Print("INIT", "--'   Donate: https://ko-fi.com/scobalula");
-    ps::log::Print("INIT", "      Developed by the Scobalula");
+    ps::log::Print("INIT", "Cordycep - Version: %s", FileVersion);
+    ps::log::Print("INIT", "Fast File Loader");
+    ps::log::Print("INIT", "Discord: https://discord.gg/RyqyThu");
+    ps::log::Print("INIT", "Donate: https://ko-fi.com/scobalula"); 
+    ps::log::Print("INIT", "Support: https://github.com/Scobalula/Cordycep");
+    ps::log::Print("INIT", "Developed by Scobalula");
+    ps::log::Print("INIT", "Updated by dest1yo");
     ps::log::Print("INIT", "-----------------------");
     ps::log::Print("INIT", "Cordycep is initializing, please wait...");
 
@@ -203,7 +212,7 @@ int main_ex(int argc, const char** argv)
 
             parser.Parse(line);
 
-            if (parser.Args.size() == 0)
+            if (parser.Args.empty())
             {
                 ps::printer::WriteErrorHeader("ERROR", "No commands were provided to Cordycep, type: \"help\" to get some usage info.");
                 continue;

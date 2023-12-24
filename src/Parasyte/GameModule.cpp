@@ -21,7 +21,6 @@ bool ps::GameModule::Load(std::string filePath)
     if (Handle == NULL)
     {
         // TODO: Log
-        Handle = NULL;
         Checksum = 0;
         Loaded = false;
         return false;
@@ -66,31 +65,27 @@ char* ps::GameModule::Resolve(char* result, ScanType type)
 
     switch (type)
     {
-    case ScanType::NoResolving:
-    {
-        return result;
-    }
-    case ScanType::FromEndOfData:
-    {
-        auto to = *(int32_t*)result;
-        auto from = result + 4;
-        return from + to;
-
-        return result;
-    }
-    case ScanType::FromEndOfByteCmp:
-    {
-        auto to = *(int32_t*)result;
-        auto from = result + 5;
-        return from + to;
-
-        return result;
-    }
-    case ScanType::FromModuleBegin:
-    {
-        auto from = *(int32_t*)result;
-        return (char*)Handle + from;
-    }
+        case ScanType::NoResolving:
+        {
+            return result;
+        }
+        case ScanType::FromEndOfData:
+        {
+            auto to = *(int32_t*)result;
+            auto from = result + 4;
+            return from + to;
+        }
+        case ScanType::FromEndOfByteCmp:
+        {
+            auto to = *(int32_t*)result;
+            auto from = result + 5;
+            return from + to;
+        }
+        case ScanType::FromModuleBegin:
+        {
+            auto from = *(int32_t*)result;
+            return (char*)Handle + from;
+        }
     }
 
     return nullptr;
@@ -102,7 +97,7 @@ char* ps::GameModule::FindVariableAddress(const Pattern& pattern, size_t offsetT
 
     auto scan = Scan(pattern, false);
 
-    if (scan.size() == 0)
+    if (scan.empty()) 
     {
         ps::log::Log(ps::LogType::Normal, "Failed to locate: %s", name.c_str());
         return nullptr;
@@ -132,7 +127,7 @@ bool ps::GameModule::NullifyFunction(const Pattern& pattern, size_t offsetFromSi
 
     auto scan = Scan(pattern, multiple);
 
-    if (scan.size() == 0)
+    if (scan.empty())
     {
         throw std::exception("Failed to locate");
         return false;
@@ -172,7 +167,7 @@ bool ps::GameModule::PatchBytes(const Pattern& pattern, size_t offsetFromSig, st
 
     auto scan = Scan(pattern, multiple);
 
-    if (scan.size() == 0)
+    if (scan.empty())
     {
         ps::log::Log(ps::LogType::Normal, "Failed to locate: %s", name.c_str());
         return false;
@@ -252,7 +247,7 @@ bool ps::GameModule::CreateDetourEx(uintptr_t* source, uintptr_t destination)
 
 std::vector<char*> ps::GameModule::Scan(const Pattern& pattern, bool multiple)
 {
-    size_t index = 0;
+    // size_t index = 0;
 
     auto header = ImageNtHeader(Handle);
     auto section = IMAGE_FIRST_SECTION(header);

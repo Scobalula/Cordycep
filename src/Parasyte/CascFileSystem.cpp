@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "..\..\ext\CascLib\src\CascLib.h"
+#include "../../ext/CascLib/src/CascLib.h"
 #include "CascFileSystem.h"
 #include "Parasyte.h"
 #include "../../ext/CascLib/src/CascCommon.h"
@@ -33,7 +33,7 @@ ps::CascFileSystem::CascFileSystem(const std::string& directory)
 
 ps::CascFileSystem::~CascFileSystem()
 {
-    for (auto openHandle : OpenHandles)
+    for (const auto openHandle : OpenHandles)
     {
         CascCloseFile(openHandle);
     }
@@ -160,39 +160,49 @@ size_t ps::CascFileSystem::Size(HANDLE handle)
 
 size_t ps::CascFileSystem::EnumerateFiles(const std::string& directory, const std::string& pattern, bool topDirectory, std::function<void(const std::string&, const size_t)> onFileFound)
 {
-    size_t entriesConsumed = 0;
+    // size_t entriesConsumed = 0;
     HANDLE fileHandle;
     CASC_FIND_DATA findData;
+    size_t results = 0;
 
+    // New handle for searching
     fileHandle = CascFindFirstFile(StorageHandle, pattern.c_str(), &findData, NULL);
-
-    if (fileHandle != INVALID_HANDLE_VALUE)
+    if (fileHandle == INVALID_HANDLE_VALUE)
     {
-        do
-        {
-            if (findData.bFileAvailable)
-            {
-                if (findData.bFileAvailable)
-                {
-                    if (topDirectory)
-                    {
-                        std::filesystem::path fullPath = findData.szFileName;
-
-                        if (fullPath.parent_path() == directory)
-                        {
-                            onFileFound(findData.szFileName, findData.FileSize);
-                        }
-                    }
-                    else
-                    {
-                        onFileFound(findData.szFileName, findData.FileSize);
-                    }
-                }
-            }
-        } while (CascFindNextFile(fileHandle, &findData));
+        return 0;
     }
 
+    // Get the last directory path if using topDirectory
+    std::filesystem::path lastDirPath;
+    if (topDirectory)
+    {
+        lastDirPath = std::filesystem::path(GetLastDirectoryName(directory));
+        ps::log::Log(ps::LogType::Verbose, "CascFileSystem is searching last dir path: %s.", lastDirPath.c_str());
+    }
+
+    // Searching
+    do
+    {
+        // Check file if available
+        if (!findData.bFileAvailable)
+            continue;
+
+        // Skip if the parent dir of file is not match config
+        if (topDirectory)
+        {
+            const auto parentPath = std::filesystem::path(findData.szFileName).parent_path();
+
+            if (parentPath != lastDirPath)
+                continue;
+        }
+
+        // Call back if we found it
+        onFileFound(findData.szFileName, findData.FileSize);
+        results++;
+    } while (CascFindNextFile(fileHandle, &findData));
+
+    // Close handle
     CascFindClose(fileHandle);
 
-    return false;
+    return results;
 }

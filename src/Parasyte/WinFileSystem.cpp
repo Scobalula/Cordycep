@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "WinFileSystem.h"
 
+#include "Log.h"
+
 ps::WinFileSystem::WinFileSystem(const std::string& directory)
 {
 	Directory = directory;
 
 	// Check if the directory actually exists.
-	DWORD dwAttrib = GetFileAttributesA(directory.c_str());
+	const DWORD dwAttrib = GetFileAttributesA(directory.c_str());
 	
 	if (dwAttrib == INVALID_FILE_ATTRIBUTES || (dwAttrib & FILE_ATTRIBUTE_DIRECTORY) == 0)
 	{
@@ -22,9 +24,9 @@ ps::WinFileSystem::WinFileSystem(const std::string& directory)
 
 ps::WinFileSystem::~WinFileSystem()
 {
-	for (auto openHandle : OpenHandles)
+	for (const auto openHandle : OpenHandles)
 	{
-		CloseHandle(openHandle);
+		WinFileSystem::CloseHandle(openHandle);
 	}
 
 	OpenHandles.clear();
@@ -35,7 +37,7 @@ HANDLE ps::WinFileSystem::OpenFile(const std::string& fileName, const std::strin
 	HANDLE result = NULL;
 	char buffer[MAX_PATH]{};
 
-	if (sprintf_s(buffer, "%s%s%s", Directory.c_str(), (Directory.size() > 0 ? "\\" : ""), fileName.c_str()) <= 0)
+	if (sprintf_s(buffer, "%s%s%s", Directory.c_str(), (!Directory.empty() ? "/" : ""), fileName.c_str()) <= 0)
 	{
 		LastErrorCode = 0x505000;
 		return NULL;
@@ -86,8 +88,9 @@ void ps::WinFileSystem::CloseHandle(HANDLE handle)
 
 bool ps::WinFileSystem::Exists(const std::string& fileName)
 {
-	auto fullPath = Directory + "\\" + fileName;
-	DWORD dwAttrib = GetFileAttributesA(fullPath.c_str());
+	const auto fullPath = Directory + "/" + fileName;
+	const DWORD dwAttrib = GetFileAttributesA(fullPath.c_str());
+
 	LastErrorCode = 0;
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
@@ -166,20 +169,32 @@ size_t ps::WinFileSystem::EnumerateFiles(const std::string& directory, const std
 	HANDLE findHandle;
 	WIN32_FIND_DATA findData;
 	size_t results = 0;
+	std::string fullPath;
 
-	auto fullPath = Directory + "\\" + pattern;
+	if (topDirectory)
+		fullPath = Directory + "/" + directory + "/" + pattern;
+	else
+		fullPath = Directory + "/" + pattern;
+
+	ps::log::Log(ps::LogType::Verbose, "WinFileSystem is searching full path: %s.", fullPath.c_str());
+
+	// New handle for searching
 	findHandle = FindFirstFileA(fullPath.c_str(), &findData);
-
-	if (findHandle != INVALID_HANDLE_VALUE)
+	if (findHandle == INVALID_HANDLE_VALUE)
 	{
-		do
-		{
-			onFileFound(findData.cFileName, (size_t)findData.nFileSizeLow | ((size_t)findData.nFileSizeHigh << 32));
-			results++;
-		} while (FindNextFileA(findHandle, &findData));
-
-		FindClose(findHandle);
+		return 0;
 	}
+
+	// Searching
+	do
+	{
+		// Call back if we found it
+		onFileFound(findData.cFileName, (size_t)findData.nFileSizeLow | ((size_t)findData.nFileSizeHigh << 32));
+		results++;
+	} while (FindNextFileA(findHandle, &findData));
+
+	// Close handle
+	FindClose(findHandle);
 
 	return results;
 }

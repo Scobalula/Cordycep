@@ -15,7 +15,7 @@ void ps::UnloadAliasCommand::Execute(ps::CommandParser& parser) const
 	ps::Parasyte::VerifyHandler();
 
 	std::string aliasName = parser.Next();
-	std::transform(aliasName.begin(), aliasName.end(), aliasName.begin(), toupper);
+	std::ranges::transform(aliasName, aliasName.begin(), toupper);
 
 	auto alias = ps::Parasyte::GetCurrentHandler()->Aliases.find(aliasName);
 	if (alias == ps::Parasyte::GetCurrentHandler()->Aliases.end())
@@ -38,6 +38,7 @@ void ps::UnloadAliasCommand::Execute(ps::CommandParser& parser) const
 		ps::log::Print("MAIN", "Successfully unloaded: %s and all its assets.", fileName.c_str());
 	}
 
+	// TODO: Print actual unloaded files count
 	ps::log::Print("MAIN", "Unloaded %llu files.", files.size());
 }
 

@@ -121,7 +121,7 @@ const uintptr_t ps::ForeignProcess::GetForeignProcessAddress(const uintptr_t mod
 			auto ordinal = Read<WORD>(moduleAddress + exports.AddressOfNameOrdinals + i * sizeof(WORD));
 			auto address = Read<DWORD>(moduleAddress + exports.AddressOfFunctions + ordinal * sizeof(DWORD));
 
-			//Function is forwarded
+			// Function is forwarded
 			if (address > newHeader.OptionalHeader.DataDirectory[0].VirtualAddress && address < (newHeader.OptionalHeader.DataDirectory[0].VirtualAddress + newHeader.OptionalHeader.DataDirectory[0].Size))
 			{
 				return 0;
@@ -223,11 +223,11 @@ public:
 	~ForeignThread();
 
 	// Closes the thread.
-	const bool Close();
+	bool Close();
 	// Checks if the process is still open and running.
-	const bool IsOpen() const;
+	bool IsOpen() const;
 	// Checks if the process is valid.
-	const bool IsValid() const;
+	bool IsValid() const;
 	// Gets the process Handle.
 	const HANDLE GetHandle() const;
 	// Gets the process ID.
@@ -260,7 +260,7 @@ const size_t ps::ForeignProcess::ThreadCount() const
 	return c;
 }
 
-const bool ps::ForeignProcess::EndAllThreads() const
+bool ps::ForeignProcess::EndAllThreads() const
 {
 	bool success = false;
 	HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
@@ -288,12 +288,12 @@ const bool ps::ForeignProcess::EndAllThreads() const
 	return success;
 }
 
-const bool ps::ForeignProcess::IsOpen() const
+bool ps::ForeignProcess::IsOpen() const
 {
 	return Handle != NULL && WaitForSingleObject(Handle, 0) == WAIT_TIMEOUT;
 }
 
-const bool ps::ForeignProcess::IsValid() const
+bool ps::ForeignProcess::IsValid() const
 {
 	return Handle == NULL || Handle == INVALID_HANDLE_VALUE;
 }
@@ -355,7 +355,7 @@ ForeignThread::~ForeignThread()
 	CloseHandle(Handle);
 }
 
-const bool ForeignThread::Close()
+bool ForeignThread::Close()
 {
 	TerminateThread(Handle, 0);
 	CloseHandle(Handle);
@@ -363,12 +363,12 @@ const bool ForeignThread::Close()
 	return true;
 }
 
-const bool ForeignThread::IsOpen() const
+bool ForeignThread::IsOpen() const
 {
 	return false;
 }
 
-const bool ForeignThread::IsValid() const
+bool ForeignThread::IsValid() const
 {
 	return false;
 }

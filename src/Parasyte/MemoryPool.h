@@ -29,11 +29,11 @@ namespace ps
 		// Deallocates data from the memory pool.
 		void Deallocate(void* elem);
 		// Gets the free slot.
-		const bool HasFreeSlot() const;
+		bool HasFreeSlot() const;
 		// Gets the number of allocations.
 		const size_t AllocationCount() const;
 		// Returns if this pool is empty.
-		const bool IsEmpty() const;
+		bool IsEmpty() const;
 		// Gets the time this pool was created at.
 		const time_t GetCreationTime() const;
 	};

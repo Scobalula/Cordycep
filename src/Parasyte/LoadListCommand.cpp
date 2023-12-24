@@ -27,7 +27,7 @@ void ps::LoadListCommand::Execute(ps::CommandParser& parser) const
 		files.push_back(line);
 	}
 
-	if (files.size() == 0)
+	if (files.empty())
 	{
 		ps::log::Print("ERROR", "Failed to find files in file list.");
 		return;

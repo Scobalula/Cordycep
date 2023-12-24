@@ -1,7 +1,6 @@
 #pragma once
 #include "Parasyte.h"
 #include "CommandParser.h"
-#include "Initializer.h"
 
 namespace ps
 {
@@ -57,17 +56,17 @@ namespace ps
 			return Name;
 		}
 		// Gets if this command is visible.
-		const bool IsVisible() const
+		bool IsVisible() const
 		{
 			return Visible;
 		}
 		// Checks if this command is valid.
-		const bool IsValid(const std::string& command) const
+		bool IsValid(const std::string& command) const
 		{
 			return GetName() == command;
 		}
 		// Checks if this command is valid.
-		const bool IsValid(const char* command) const
+		bool IsValid(const char* command) const
 		{
 			return GetName() == command;
 		}

@@ -25,6 +25,7 @@ const std::string ps::CoDGhostsHandler::GetName()
 
 bool ps::CoDGhostsHandler::Initialize(const std::string& gameDirectory)
 {
+	Configs.clear();
 	GameDirectory = gameDirectory;
 
 	//LoadConfigs("Data\\Configs\\CoDMW4Handler.json");
@@ -37,7 +38,7 @@ bool ps::CoDGhostsHandler::Initialize(const std::string& gameDirectory)
 	return true;
 }
 
-bool ps::CoDGhostsHandler::Uninitialize()
+bool ps::CoDGhostsHandler::Deinitialize()
 {
 	return true;
 }

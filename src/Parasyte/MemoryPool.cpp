@@ -37,7 +37,7 @@ void ps::MemoryPool::Deallocate(void* elem)
 	Allocations--;
 }
 
-const bool ps::MemoryPool::HasFreeSlot() const
+bool ps::MemoryPool::HasFreeSlot() const
 {
 	return *(uintptr_t*)FreeSlot != 0;
 }
@@ -47,7 +47,7 @@ const size_t ps::MemoryPool::AllocationCount() const
 	return Allocations;
 }
 
-const bool ps::MemoryPool::IsEmpty() const
+bool ps::MemoryPool::IsEmpty() const
 {
 	return AllocationCount() == 0;
 }

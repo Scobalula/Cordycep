@@ -52,7 +52,7 @@ namespace ps
 			LogStream << "[ ";
 			LogStream << timeStr << std::setw(24 - timeStr.size());
 			LogStream << " ]";
-			LogStream << ": ";
+			LogStream << " ";
 
 			size_t size = (size_t)std::snprintf(nullptr, 0, value, args ...) + 1;
 			std::unique_ptr<char[]> buf(new char[size]);
@@ -89,7 +89,7 @@ namespace ps
 			LogStream << "[ ";
 			LogStream << timeStr << std::setw(24 - timeStr.size());
 			LogStream << " ]";
-			LogStream << ": ";
+			LogStream << " ";
 
 			size_t size = (size_t)std::snprintf(nullptr, 0, value, args ...) + 1;
 			std::unique_ptr<char[]> buf(new char[size]);
@@ -131,7 +131,7 @@ namespace ps
 			LogStream << "[ ";
 			LogStream << timeStr << std::setw(24 - timeStr.size());
 			LogStream << " ]";
-			LogStream << ": ";
+			LogStream << " ";
 
 			size_t size = (size_t)std::snprintf(nullptr, 0, value, args ...) + 1;
 			std::unique_ptr<char[]> buf(new char[size]);

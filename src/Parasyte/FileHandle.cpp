@@ -12,7 +12,7 @@ ps::FileHandle::~FileHandle()
     FileSystem->CloseFile(Handle);
 }
 
-const bool ps::FileHandle::IsValid() const
+bool ps::FileHandle::IsValid() const
 {
     return Handle != NULL && Handle != INVALID_HANDLE_VALUE;
 }

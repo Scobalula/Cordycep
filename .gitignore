@@ -355,3 +355,10 @@ MigrationBackup/
 
 # Ignore .dump_dat files, they are used for dumping memory for debug.
 *.dump_dat
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# vcpkg
+vcpkg_installed/

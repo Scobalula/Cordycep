@@ -49,7 +49,7 @@ size_t ps::ZLIBDecompressorV1::ReadSecure(uint8_t* buffer, const size_t size)
 size_t ps::ZLIBDecompressorV1::Read(void* ptr, const size_t size, const size_t offset)
 {
 	ZStream.next_out = (uint8_t*)ptr;
-	ZStream.avail_out = size;
+	ZStream.avail_out = (uInt)size;
 	ZStream.total_out = 0;
 
 	while (true)
@@ -63,7 +63,7 @@ size_t ps::ZLIBDecompressorV1::Read(void* ptr, const size_t size, const size_t o
 		if (ZStream.avail_out == 0)
 			break;
 
-		ZStream.avail_in = ReadSecure(CompressedBuffer.get(), CompressedBufferSize);
+		ZStream.avail_in = (uInt)ReadSecure(CompressedBuffer.get(), CompressedBufferSize);
 		ZStream.next_in = CompressedBuffer.get();
 
 		if (ZStream.avail_in == 0)

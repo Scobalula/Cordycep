@@ -17,7 +17,7 @@ namespace ps
 		// Destroys the file handle.
 		~FileHandle();
 		// Checks if the file handle is valid.
-		const bool IsValid() const;
+		bool IsValid() const;
 		// Reads data from the file.
 		std::unique_ptr<uint8_t[]> Read(const size_t size);
 		// Reads data from the file.

@@ -26,6 +26,11 @@ namespace ps
 
 		// Creates a new config.
 		GameConfig(const std::string& flag);
+
+		// Loads a game configs json file.
+		static bool LoadConfigsJson(const std::string& filePath, std::map<std::string, GameConfig>& configs);
+		// Loads a game configs toml file.
+		static bool LoadConfigsToml(const std::string& filePath, std::map<std::string, GameConfig>& configs);
 	};
 }
 

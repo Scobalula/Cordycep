@@ -12,16 +12,9 @@ Cordycep should in theory be 90% identical to reading from a game directly, and 
 
 Building Cordycep is simple.
 
-First you'll need the following vcpkg libraries:
+You should to install [vcpkg](https://github.com/microsoft/vcpkg) and run `vcpkg.bat` in the source code.
 
-```
-vcpkg install lz4:x64-windows-static
-vcpkg install detours:x64-windows-static
-vcpkg install zlib:x64-windows-static
-vcpkg install nlohmann-json:x64-windows-static
-```
-
-Then you can clone the repo and compile directly.
+After all required libraries are properly installed then you can compile it directly with x64 configuration.
 
 # Understanding the Source Code
 
@@ -29,8 +22,10 @@ Ultimately a lot of the juicy stuff happens under Commands and Handlers, the res
 
 Code quality is mixed as a lot of Cordycep is code from when Celerium was a thing, it was constantly evolving and the focus was on getting it out the door given how fast things were changing.
 
-For a lot of the handlers there is a json file that dictates game patterns, files, and other info.
+For a lot of the handlers there is a toml file that dictates game patterns, files, and other info.
 
 # Future of Cordycep
 
-Cordycep is now abandoned but I have opened sourced it for the community to work on. 
+Cordycep was originally developed by [Scobalula](https://github.com/Scobalula).
+
+Now it's mainly maintained by [dest1yo](https://github.com/dest1yo).

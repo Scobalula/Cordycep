@@ -11,7 +11,7 @@ ps::Decompressor::Decompressor(ps::FileHandle& file, bool secure) :
 {
 }
 
-const bool ps::Decompressor::IsValid() const
+bool ps::Decompressor::IsValid() const
 {
 	return File.IsValid();
 }

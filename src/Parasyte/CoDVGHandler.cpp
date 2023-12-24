@@ -122,7 +122,7 @@ namespace ps::CoDVGInternal
 						RequestFinalFileData))
 					{
 						ps::log::Log(ps::LogType::Error, "Failed to patch fast file, error code: %lli", *(uint32_t*)(PatchFileState.get() + 380));
-						throw std::exception("MW5_PatchFile_RequestData(...) failed");
+						throw std::exception("VG_PatchFile_RequestData(...) failed");
 					}
 				}
 
@@ -294,20 +294,20 @@ namespace ps::CoDVGInternal
 		//		ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for %s.", *asset, assetType);
 		//	}
 		//}
-#if PRIVATE_GRAM_GRAM
+// #if PRIVATE_GRAM_GRAM
 		//if (assetType == 41 && ModernWarfare_Str_Decrypt != nullptr)
 		//{
 		//	*(uint64_t*)(result->Header + 8) = (uint64_t)ModernWarfare_Str_Decrypt(*(char**)(result->Header + 8));
 		//}
-#else
-		if (assetType == 41)
-		{
-			char* name = *(char**)(result->Header);
-			std::memset(name, 0, strlen(name));
-			char* str = *(char**)(result->Header + 8);
-			std::memset(str, 0, strlen(str));
-		}
-#endif
+// #else
+// 		if (assetType == 41)
+// 		{
+// 			char* name = *(char**)(result->Header);
+// 			std::memset(name, 0, strlen(name));
+// 			char* str = *(char**)(result->Header + 8);
+// 			std::memset(str, 0, strlen(str));
+// 		}
+// #endif
 		size_t toPop[2]{ assetType, (size_t)*asset };
 
 		AddAssetOffset(toPop);
@@ -337,9 +337,11 @@ const std::string ps::CoDVGHandler::GetName()
 
 bool ps::CoDVGHandler::Initialize(const std::string& gameDirectory)
 {
+	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	LoadConfigs("Data\\Configs\\CoDVGHandler.json");
+	// LoadConfigs("Data\\Configs\\CoDVGHandler.json");
+	LoadConfigs("CoDVGHandler.toml");
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);
@@ -392,7 +394,7 @@ bool ps::CoDVGHandler::Initialize(const std::string& gameDirectory)
 	return true;
 }
 
-bool ps::CoDVGHandler::Uninitialize()
+bool ps::CoDVGHandler::Deinitialize()
 {
 	Module.Free();
 
@@ -402,6 +404,7 @@ bool ps::CoDVGHandler::Uninitialize()
 	StringPoolSize    = 0;
 	Initialized       = false;
 	StringLookupTable = nullptr;
+	FileSystem        = nullptr;
 	GameDirectory.clear();
 
 	return true;
@@ -453,11 +456,11 @@ bool ps::CoDVGHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 	{
 		fpHandle.Read(&fpHeader[0], 0, sizeof(fpHeader));
 
-		std::ofstream a0("header0.dat", std::ios::binary);
-		std::ofstream a1("header1.dat", std::ios::binary);
+		// std::ofstream a0("header0.dat", std::ios::binary);
+		// std::ofstream a1("header1.dat", std::ios::binary);
 
-		a0.write((const char*)&ffHeader[0], sizeof(ffHeader));
-		a1.write((const char*)&fpHeader[0], sizeof(fpHeader));
+		// a0.write((const char*)&ffHeader[0], sizeof(ffHeader));
+		// a1.write((const char*)&fpHeader[0], sizeof(fpHeader));
 
 		if (std::memcmp(&ffHeader[0], &fpHeader[56], sizeof(ffHeader)) != 0)
 		{
@@ -524,7 +527,7 @@ bool ps::CoDVGHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 			LoadFastFile(wwName, newFastFile, flags);
 
 		// Check for locale prefix
-		if (RegionPrefix.size() > 0)
+		if (!RegionPrefix.empty())
 		{
 			auto localeName = RegionPrefix + ffName;
 

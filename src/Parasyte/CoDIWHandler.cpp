@@ -373,12 +373,12 @@ const std::string ps::CoDIWHandler::GetName()
 	return "Call of Duty: Infinite Warfare";
 }
 
-const bool ps::CoDIWHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
+bool ps::CoDIWHandler::GetFiles(const std::string& pattern, std::vector<std::string>& results)
 {
 	HANDLE findHandle;
 	WIN32_FIND_DATA findData;
 
-	auto fullPath = GameDirectory + "\\" + pattern + ".ff";
+	auto fullPath = GameDirectory + "/" + pattern + ".ff";
 	findHandle = FindFirstFileA(fullPath.c_str(), &findData);
 
 	if (findHandle != INVALID_HANDLE_VALUE)
@@ -401,374 +401,62 @@ const bool ps::CoDIWHandler::GetFiles(const std::string& pattern, std::vector<st
 	return true;
 }
 
+const std::vector<std::string>& ps::CoDIWHandler::GetCommonFileNames() const
+{
+	static std::vector<std::string> results
+	{
+		"code_pre_gfx",
+		"code_post_gfx",
+		"global",
+		"global_sp",
+		"global_mp",
+		"global_core_mp",
+		"common",
+		"common_sp",
+		"common_mp",
+		"common_core_mp",
+	};
+
+	return results;
+}
+
 bool ps::CoDIWHandler::Initialize(const std::string& gameDirectory)
 {
+	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	//LoadConfigs("Data\\Configs\\CoDVGHandler.json");
-	//SetConfig();
+	LoadConfigs("CoDIWHandler.toml");
+	SetConfig();
+	CopyDependencies();
+	OpenGameDirectory(GameDirectory);
+	OpenGameModule(CurrentConfig->ModuleName);
 
-	ps::log::Log(ps::LogType::Normal, "Attempting to open game directory: %s...", GameDirectory.c_str());
+	Module.LoadCache(CurrentConfig->CacheName);
 
-	FileSystem = ps::FileSystem::Open(GameDirectory);
+	ResolvePatterns();
 
-	ps::log::Log(ps::LogType::Verbose, "Using: %s for file system.", FileSystem->GetName());
+	PS_SETGAMEVAR(ps::CoDIWInternal::ParseFastFile);
+	PS_SETGAMEVAR(ps::CoDIWInternal::AssignMemoryPointers);
+	PS_SETGAMEVAR(ps::CoDIWInternal::AssetAlignmentInit);
+	PS_SETGAMEVAR(ps::CoDIWInternal::GetXAssetName);
+	PS_SETGAMEVAR(ps::CoDIWInternal::SetXAssetName);
+	PS_SETGAMEVAR(ps::CoDIWInternal::GetXAssetPoolSize);
+	PS_SETGAMEVAR(ps::CoDIWInternal::GraphicsDvar);
+	PS_SETGAMEVAR(ps::CoDIWInternal::AssetAlignmentPointers);
+	PS_SETGAMEVAR(ps::CoDIWInternal::AssetAlignmentBuffer);
+	PS_SETGAMEVAR(ps::CoDIWInternal::AssetAlignmentOnAssetLink);
+	PS_SETGAMEVAR(ps::CoDIWInternal::LoadXAssetHeader);
+	PS_SETGAMEVAR(ps::CoDIWInternal::VarXAssetHeader);
+	PS_SETGAMEVAR(ps::CoDIWInternal::AllocXAssetHeader);
+	PS_SETGAMEVAR(ps::CoDIWInternal::PushZoneBlock);
+	PS_SETGAMEVAR(ps::CoDIWInternal::PopZoneBlock);
 
-	ps::log::Log(ps::LogType::Normal, "Attempting to initialize Call of Duty: Infinite Warfare....");
-	ps::log::Log(ps::LogType::Normal, "Attempting to open directory: %s", gameDirectory.c_str());
-
-	if (!std::filesystem::exists(gameDirectory))
-	{
-		ps::log::Log(ps::LogType::Error, "Failed to locate Call of Duty: Infinite Warfare Remastered's at: %s", gameDirectory.c_str());
-		ps::log::Log(ps::LogType::Error, "Check to your path and if it has spaces, make sure to put it inside quotes.");
-		ps::log::Log(ps::LogType::Error, "Check the wiki for examples on how to pass the game path correctly.");
-		return false;
-	}
-
-	ps::log::Log(ps::LogType::Normal, "Successfully opened directory: %s", gameDirectory.c_str());
-
-	if (!Module.Load("Data\\Dumps\\iw7_ship_dump.exe"))
-	{
-		ps::log::Log(ps::LogType::Error, "Failed to load Call of Duty: Infinite Warfares's Module: Data\\iw7_ship_dump.exe");
-		ps::log::Log(ps::LogType::Error, "Please refer to the Wiki for information producing a game dump.");
-		return false;
-	}
-
-	Module.LoadCache("Data\\Dumps\\iw7_ship_dump.cache");
-
-	Pattern pattern;
-
-	pattern.Update("E8 ?? ?? ?? 00 EB 05 E8 ?? ?? ?? 00 8B D8 83");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::ParseFastFile,
-		pattern,
-		8,
-		"IW7::Var0",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("E8 ?? ?? ?? 00 E8 ?? ?? ?? FF 80 3D ?? ?? ?? ?? 00 74 05 E8");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::AssignMemoryPointers,
-		pattern,
-		1,
-		"IW7::Var1",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("00 E8 ?? ?? ?? FF 80 3D ?? ?? ?? ?? 00 74 05 E8");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::AssetAlignmentInit,
-		pattern,
-		2,
-		"IW7::Var2",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("0F ?? ?? 11 48 ?? ?? E8 ?? ?? ?? ?? BA 04 00 00 00 48");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::GetXAssetName,
-		pattern,
-		8,
-		"IW8::Var3",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("4C ?? ?? B9 12 00 00 00 E8 ?? ?? ?? 00 48");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::SetXAssetName,
-		pattern,
-		9,
-		"IW8::Var4",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("CE 4C 8D 3D ?? ?? ?? ?? E8 ?? ?? ?? ?? 4D 8B 04");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::GetXAssetPoolSize,
-		pattern,
-		9,
-		"IW8::Var5",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("48 C7 02 00 00 00 00 48 ?? ?? 48 8B 05 ?? ?? ?? ?? 48 8B F9");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::GraphicsDvar,
-		pattern,
-		13,
-		"IW8::Var6",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("48 8D 35 ?? ?? ?? ?? 8B 0D ?? ?? ?? ?? 44 8B DA");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::AssetAlignmentPointers,
-		pattern,
-		3,
-		"IW8::Var7",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("48 8D 15 ?? ?? ?? ?? 3D FF FF FF 7F 74");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::AssetAlignmentBuffer,
-		pattern,
-		3,
-		"IW8::Var8",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("48 8D ?? ?? 20 89 ?? ?? 20 E8 ?? ?? ?? ?? 48 ?? C4");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::AssetAlignmentOnAssetLink,
-		pattern,
-		10,
-		"IW7::Var9",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("B1 01 48 89 05 ?? ?? ?? ?? E8 ?? ?? ?? ?? E8");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::LoadXAssetHeader,
-		pattern,
-		10,
-		"IW7::Var9",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("48 C1 E1 04 48 03 48 18 48 89 0D ?? ?? ?? ?? 33 C9 E8");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::VarXAssetHeader,
-		pattern,
-		11,
-		"IW7::Var10",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("39 9F 18 01 00 00 76 ?? E8 ?? ?? ?? ?? B1 01 48");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::AllocXAssetHeader,
-		pattern,
-		9,
-		"IW7::Var11",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("41 B8 A8 11 00 00 0F B6 CB E8 ?? ?? ?? ?? B9 08 00 00 00 E8");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::PushZoneBlock,
-		pattern,
-		20,
-		"IW7::Var12",
-		ps::ScanType::FromEndOfData)) return false;
-	pattern.Update("E8 ?? ?? ?? ?? 8B C3 48 8D 0C 40 48 8B 87 10 01 00 00 48");
-	if (!Module.FindVariableAddress(
-		&ps::CoDIWInternal::PopZoneBlock,
-		pattern,
-		1,
-		"IW7::Var13",
-		ps::ScanType::FromEndOfData)) return false;
-
-	pattern.Update("28 00 00 00 48 ?? ?? E8 ?? ?? ?? ?? ?? 08 00 00 00 E8");
-	if (!Module.CreateDetour((uintptr_t)Module.FindVariableAddress(
-		pattern,
-		8,
-		"IW7::Det0",
-		ps::ScanType::FromEndOfData), (uintptr_t)&ps::CoDIWInternal::ReadXFile)) return false;
-	pattern.Update("74 ?? ?? 04 00 00 00 E8 ?? ?? ?? 00 48 ?? ?? 48");
-	if (!Module.CreateDetour((uintptr_t)Module.FindVariableAddress(
-		pattern,
-		8,
-		"IW7::Det1",
-		ps::ScanType::FromEndOfData), (uintptr_t)&ps::CoDIWInternal::AllocateString)) return false;
-	pattern.Update("B9 47 00 00 00 E8 ?? ?? ?? 00 48 ?? ?? E8");
-	if (!Module.CreateDetour((uintptr_t)Module.FindVariableAddress(
-		pattern,
-		6,
-		"IW7::Det2",
-		ps::ScanType::FromEndOfData), (uintptr_t)&ps::CoDIWInternal::LinkAsset)) return false;
-	pattern.Update("40 57 48 ?? ?? 20 48 ?? ?? 48 8D ?? ?? 30 48 8B F9 48 ?? ?? ?? 30 B9 1C 00 00 00 E8 ?? ?? ?? ?? 48");
-	if (!Module.CreateDetour((uintptr_t)Module.FindVariableAddress(
-		pattern,
-		0,
-		"IW7::Det3",
-		ps::ScanType::NoResolving), (uintptr_t)&ps::CoDIWInternal::LinkXAsset28)) return false;
-
-	pattern.Update("48 ?? ?? 18 44 ?? 02 48 ?? ?? 08 E8 ?? ?? ?? 00 48");
-	if(!Module.NullifyFunction(
-		pattern,
-		12,
-		"IW7::Null0",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 20 44 ?? ?? 04 48 ?? ?? 10 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		13,
-		"IW7::Null1",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 50 33 D2 45 ?? ?? 28 4D ?? ?? 38 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		15,
-		"IW7::Null2",
-		true,
-		true)) return false;
-	pattern.Update("B9 47 00 00 00 E8 ?? ?? ?? 00 48 ?? ?? E8");
-	if (!Module.NullifyFunction(
-		pattern,
-		14,
-		"IW7::Null3",
-		true,
-		true)) return false;
-	pattern.Update("E8 ?? ?? ?? 00 48 8B 1D ?? ?? ?? ?? 41 B8 08 00");
-	if (!Module.NullifyFunction(
-		pattern,
-		1,
-		"IW7::Null4",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 30 44 ?? ?? C0 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null5",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 28 44 ?? ?? 40 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null6",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 28 44 ?? ?? 40 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null6",
-		true,
-		true)) return false;
-	pattern.Update("44 ?? ?? 18 48 ?? ?? 50 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null7",
-		true,
-		true)) return false;
-	pattern.Update("4C ?? ?? 50 48 ?? ?? 58 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null8",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 68 41 ?? ?? 03 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null9",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 70 41 ?? ?? 03 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null10",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 90 00 00 00 41 ?? ?? 05 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		12,
-		"IW7::Null11",
-		true,
-		true)) return false;
-	pattern.Update("48 ?? ?? 98 00 00 00 41 ?? ?? 05 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		12,
-		"IW7::Null12",
-		true,
-		true)) return false;
-	pattern.Update("30 B9 40 00 00 00 E8 F0 D8 6B 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		15,
-		"IW7::Null13",
-		true,
-		true)) return false;
-	pattern.Update("30 B9 40 00 00 00 E8 F0 D8 6B 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		25,
-		"IW7::Null14",
-		true,
-		true)) return false;
-	pattern.Update("30 B9 40 00 00 00 E8 F0 D8 6B 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		25,
-		"IW7::Null15",
-		true,
-		true)) return false;
-	pattern.Update("30 B9 40 00 00 00 E8 F0 D8 6B 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		44,
-		"IW7::Null16",
-		true,
-		true)) return false;
-	pattern.Update("30 B9 40 00 00 00 E8 F0 D8 6B 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		52,
-		"IW7::Null17",
-		true,
-		true)) return false;
-	pattern.Update("08 75 09 49 8B 0C 87 E8 43 00 00 00 49 8B C4");
-	if (!Module.NullifyFunction(
-		pattern,
-		8,
-		"IW7::Null18",
-		true,
-		true)) return false;
-	pattern.Update("41 B8 18 00 00 00 33 C9 E8 ?? ?? ?? ?? 48 8B CB E8");
-	if (!Module.NullifyFunction(
-		pattern,
-		17,
-		"IW7::Null19",
-		true,
-		true)) return false;
-	pattern.Update("48 8B 52 58 C1 E0 05 89 44 24 20 E8 ?? ?? ?? ?? 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		12,
-		"IW7::Null20",
-		true,
-		true)) return false;
-	pattern.Update("4D 8B 40 50 41 C1 E1 05 E8 ?? ?? ?? ?? 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		9,
-		"IW7::Null21",
-		true,
-		true)) return false;
-	pattern.Update("41 ?? ?? 00 20 00 00 48 ?? ?? 18 41 ?? ?? 06 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		16,
-		"IW7::Null22",
-		true,
-		true)) return false;
-	pattern.Update("48 8B 15 ?? ?? ?? ?? 49 8D 4E 20 48 8B 52 20 E8 ?? ?? ?? 00 48");
-	if (!Module.NullifyFunction(
-		pattern,
-		16,
-		"IW7::Null23",
-		true,
-		true)) return false;
-	pattern.Update("B9 14 00 00 00 E8 ?? ?? ?? ?? 48 89 03 48 8B C8 0F B6 15 ?? ?? ?? ?? E8");
-	if (!Module.NullifyFunction(
-		pattern,
-		24,
-		"IW7::Null24",
-		true,
-		true)) return false;
-	pattern.Update("48 81 C3 08 01 00 00 48 ?? ?? 48 89 1D ?? ?? ?? ?? 33 C9");
-	if (!Module.NullifyFunction(
-		pattern,
-		35,
-		"IW7::Null25",
-		true,
-		true)) return false;
-	pattern.Update("44 8B 40 08 E8 ?? ?? ?? ?? 48 8B 15 ?? ?? ?? ?? 48 8B CF E8");
-	if (!Module.NullifyFunction(
-		pattern,
-		20,
-		"IW7::Null26",
-		true,
-		true)) return false;;
+	PS_DETGAMEVAR(ps::CoDIWInternal::ReadXFile);
+	PS_DETGAMEVAR(ps::CoDIWInternal::AllocateString);
+	PS_DETGAMEVAR(ps::CoDIWInternal::LinkAsset);
+	PS_DETGAMEVAR(ps::CoDIWInternal::LinkXAsset28);
 
 	*ps::CoDIWInternal::GraphicsDvar = ps::CoDIWInternal::GraphicsDvarBuffer;
-
-	GameDirectory = gameDirectory;
 
 	XAssetPoolCount   = 256;
 	XAssetPools       = std::make_unique<XAssetPool[]>(XAssetPoolCount);
@@ -777,17 +465,18 @@ bool ps::CoDIWHandler::Initialize(const std::string& gameDirectory)
 	Initialized       = true;
 	StringLookupTable = std::make_unique<std::map<uint64_t, size_t>>();
 
-	Module.SaveCache("Data\\Dumps\\iw7_ship_dump.cache");
-#if _DEBUG
-	LoadAliases("F:\\Data\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\InfiniteWarfareAliases.json");
-#else
-	LoadAliases("Data\\InfiniteWarfareAliases.json");
-#endif
+	Module.SaveCache(CurrentConfig->CacheName);
+// #if _DEBUG
+// 	LoadAliases("F:\\Data\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\InfiniteWarfareAliases.json");
+// #else
+// 	LoadAliases("Data\\InfiniteWarfareAliases.json");
+// #endif
+	// LoadAliases(CurrentConfig->AliasesName);
 
 	return true;
 }
 
-bool ps::CoDIWHandler::Uninitialize()
+bool ps::CoDIWHandler::Deinitialize()
 {
 	Module.Free();
 	XAssetPoolCount   = 256;
@@ -796,15 +485,16 @@ bool ps::CoDIWHandler::Uninitialize()
 	StringPoolSize    = 0;
 	Initialized       = false;
 	StringLookupTable = nullptr;
+	FileSystem        = nullptr;
 	GameDirectory.clear();
 
 	// Clear out open handles to reference files.
-	for(size_t i = 0; i < ps::CoDIWInternal::AssetPacks.size(); i++)
+	for (auto& AssetPack : ps::CoDIWInternal::AssetPacks)
 	{
-		if (ps::CoDIWInternal::AssetPacks[i] != NULL && ps::CoDIWInternal::AssetPacks[i] != INVALID_HANDLE_VALUE)
+		if (AssetPack != NULL && AssetPack != INVALID_HANDLE_VALUE)
 		{
-			CloseHandle(ps::CoDIWInternal::AssetPacks[i]);
-			ps::CoDIWInternal::AssetPacks[i] = NULL;
+			CloseHandle(AssetPack);
+			AssetPack = NULL;
 		}
 	}
 
@@ -816,22 +506,22 @@ bool ps::CoDIWHandler::IsValid(const std::string& param)
 	return strcmp(param.c_str(), "iw") == 0;
 }
 
-
-bool ps::CoDIWHandler::ListFiles()
-{
-	std::vector<std::string> files;
-	GetFiles("*", files);
-	ps::log::Log(ps::LogType::Normal, "Listing files from: %s", GetName().c_str());
-
-	for (auto& file : files)
-	{
-		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", file.c_str());
-	}
-
-	ps::log::Log(ps::LogType::Normal, "Listed: %lu files.", files.size());
-
-	return true;
-}
+// TODO:
+// bool ps::CoDIWHandler::ListFiles()
+// {
+// 	std::vector<std::string> files;
+// 	GetFiles("*", files);
+// 	ps::log::Log(ps::LogType::Normal, "Listing files from: %s", GetName().c_str());
+//
+// 	for (auto& file : files)
+// 	{
+// 		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", file.c_str());
+// 	}
+//
+// 	ps::log::Log(ps::LogType::Normal, "Listed: %lu files.", files.size());
+//
+// 	return true;
+// }
 
 bool ps::CoDIWHandler::Exists(const std::string& ffName)
 {
@@ -976,7 +666,7 @@ bool ps::CoDIWHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 			LoadFastFile(patchName, newFastFile, flags);
 
 		// Check for locale prefix
-		if (RegionPrefix.size() > 0)
+		if (!RegionPrefix.empty())
 		{
 			auto localeName      = RegionPrefix + ffName;
 			auto localePatchName = RegionPrefix + "patch_" + ffName;

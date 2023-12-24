@@ -55,7 +55,7 @@ void ps::InitCommand::Execute(ps::CommandParser& parser) const
 	}
 	else
 	{
-		ps::Parasyte::GetCurrentHandler()->Uninitialize();
+		ps::Parasyte::GetCurrentHandler()->Deinitialize();
 		ps::log::Print("ERROR", "The handler failed to initialize, the log file has more information on why this happened.");
 		ps::log::Print("ERROR", "Check the game path provided and ensure you've dumped the game correctly.");
 		throw std::exception("Initialization failed.");

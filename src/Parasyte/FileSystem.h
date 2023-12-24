@@ -42,14 +42,16 @@ namespace ps
 		// Copies the file from the provided directory within the file system to the given on-disk directory.
 		virtual bool CopyToDisk(const std::string& from, const std::string& to);
 		// Gets the last error.
-		const size_t GetLastError() const;
+		size_t GetLastError() const;
 		// Checks if the last call provided a valid result.
-		const bool IsValid() const;
+		bool IsValid() const;
 		// Gets the name of the file system.
 		const std::string& GetName() const;
 
 		// Opens a directory at the given path. This method will automatically use the appropiate fs.
 		static std::unique_ptr<FileSystem> Open(const std::string& dir);
+
+		// Get the last dir name from a dir
+		static std::string GetLastDirectoryName(const std::string& directory);
 	};
 }
-

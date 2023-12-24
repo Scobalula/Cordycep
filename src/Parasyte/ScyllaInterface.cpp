@@ -12,7 +12,7 @@ ps::ScyllaInterface::~ScyllaInterface()
 	FreeLibrary(Module);
 }
 
-const bool ps::ScyllaInterface::Initialize()
+bool ps::ScyllaInterface::Initialize()
 {
 #if _WIN64
 	Module = LoadLibraryA("Data\\Deps\\Scylla_x64.dll");
@@ -36,7 +36,7 @@ const bool ps::ScyllaInterface::Initialize()
 	return true;
 }
 
-const int ps::ScyllaInterface::Dump(const ps::ForeignProcess& foreignProcess, const std::string& path) const
+int ps::ScyllaInterface::Dump(const ps::ForeignProcess& foreignProcess, const std::string& path) const
 {
 	if (Module == NULL)
 		return -1;

@@ -18,7 +18,7 @@ void ps::GamePattern::RemoveFlag(const GamePatternFlag& flag)
     Flags = (GamePatternFlag)((int)Flags ^ (int)flag);
 }
 
-const bool ps::GamePattern::HasFlag(const GamePatternFlag& flag) const
+bool ps::GamePattern::HasFlag(const GamePatternFlag& flag) const
 {
     return ((int)Flags & (int)flag) != 0;
 }

@@ -67,7 +67,7 @@ namespace ps
             if (size >= sizeof(buffer))
                 size = sizeof(buffer) - 1;
             std::snprintf(buffer, size, value, args ...);
-            std::cout << ": " << buffer;
+            std::cout << " " << buffer;
             std::cout.flush();
         }
         // Outputs the message to the Console
@@ -89,7 +89,7 @@ namespace ps
             if (size >= sizeof(buffer))
                 size = sizeof(buffer) - 1;
             std::snprintf(buffer, size, value, args ...);
-            std::cout << ": " << buffer << "\n";
+            std::cout << " " << buffer << "\n";
             std::cout.flush();
         }
         // Outputs the message to the Console
@@ -111,7 +111,33 @@ namespace ps
             if (size >= sizeof(buffer))
                 size = sizeof(buffer) - 1;
             std::snprintf(buffer, size, value, args ...);
-            std::cout << ": " << buffer;
+            std::cout << " " << buffer;
+            ResetBackgroundColor();
+            ResetForegroundColor();
+            std::cout << "\n";
+            std::cout.flush();
+        }
+
+        // Outputs the message to the Console
+        template<typename ... Args>
+        void WriteHeaderWithColor(const char* header, const char* value, ps::printer::Color color, Args ... args)
+        {
+            size_t headerSize = strlen(header);
+            char buffer[1024]{};
+            SetBackgroundColor(Color::DarkBlue);
+            SetForegroundColor(Color::Gray);
+            std::cout << "[";
+            SetForegroundColor(Color::White);
+            std::cout << header << std::setw(12 - headerSize);
+            SetForegroundColor(Color::Gray);
+            std::cout << "]";
+            SetForegroundColor(Color::White);
+            SetBackgroundColor(color);
+            size_t size = (size_t)std::snprintf(nullptr, 0, value, args ...) + 1;
+            if (size >= sizeof(buffer))
+                size = sizeof(buffer) - 1;
+            std::snprintf(buffer, size, value, args ...);
+            std::cout << " " << buffer;
             ResetBackgroundColor();
             ResetForegroundColor();
             std::cout << "\n";

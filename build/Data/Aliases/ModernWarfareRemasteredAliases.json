@@ -1,0 +1,1856 @@
+[
+    {
+        "alias": "Ambush",
+        "fast_files": [
+            "mp_convoy"
+        ],
+        "name": "mp_convoy",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Bloc",
+        "fast_files": [
+            "mp_bloc"
+        ],
+        "name": "mp_bloc",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Bog",
+        "fast_files": [
+            "mp_bog"
+        ],
+        "name": "mp_bog",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Countdown",
+        "fast_files": [
+            "mp_countdown"
+        ],
+        "name": "mp_countdown",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Crash",
+        "fast_files": [
+            "mp_crash"
+        ],
+        "name": "mp_crash",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Crossfire",
+        "fast_files": [
+            "mp_crossfire"
+        ],
+        "name": "mp_crossfire",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "District",
+        "fast_files": [
+            "mp_citystreets"
+        ],
+        "name": "mp_citystreets",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Downpour",
+        "fast_files": [
+            "mp_farm"
+        ],
+        "name": "mp_farm",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Overgrown",
+        "fast_files": [
+            "mp_overgrown"
+        ],
+        "name": "mp_overgrown",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Pipeline",
+        "fast_files": [
+            "mp_pipeline"
+        ],
+        "name": "mp_pipeline",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Shipment",
+        "fast_files": [
+            "mp_shipment"
+        ],
+        "name": "mp_shipment",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Showdown",
+        "fast_files": [
+            "mp_showdown"
+        ],
+        "name": "mp_showdown",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Strike",
+        "fast_files": [
+            "mp_strike"
+        ],
+        "name": "mp_strike",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Vacant",
+        "fast_files": [
+            "mp_vacant"
+        ],
+        "name": "mp_vacant",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Wet Work",
+        "fast_files": [
+            "mp_cargoship"
+        ],
+        "name": "mp_cargoship",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Winter Crash",
+        "fast_files": [
+            "mp_crash_snow"
+        ],
+        "name": "mp_crash_snow",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Daybreak",
+        "fast_files": [
+            "mp_farm_spring"
+        ],
+        "name": "mp_farm_spring",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Beach Bog",
+        "fast_files": [
+            "mp_bog_summer"
+        ],
+        "name": "mp_bog_summer",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Claymore",
+        "fast_files": [],
+        "name": "artillery_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Explosion",
+        "fast_files": [],
+        "name": "barrel_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Bomb Explosion",
+        "fast_files": [],
+        "name": "bomb_site_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "MP5",
+        "fast_files": [],
+        "name": "camera_10fov",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "MP5",
+        "fast_files": [],
+        "name": "camera_20fov",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "MP5",
+        "fast_files": [],
+        "name": "camera_30fov",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "MP5",
+        "fast_files": [],
+        "name": "camera_45fov",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "MP5",
+        "fast_files": [],
+        "name": "camera_5fov",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Default Weapon",
+        "fast_files": [],
+        "name": "defaultweapon_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Vehicle Explosion",
+        "fast_files": [],
+        "name": "destructible_car",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Claymore",
+        "fast_files": [],
+        "name": "destructible_toy",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "AK-47",
+        "fast_files": [
+            "mp_vm_ak47_base_tr",
+            "mp_wm_ak47_base_tr",
+            "mp_vm_ak47_base_p_tr",
+            "mp_wm_ak47_base_p_tr",
+            "mp_vm_ak47_bko_tr",
+            "mp_wm_ak47_bko_tr",
+            "mp_vm_ak47_btw_tr",
+            "mp_wm_ak47_btw_tr",
+            "mp_vm_ak47_clr_tr",
+            "mp_wm_ak47_clr_tr",
+            "mp_vm_ak47_ctm_tr",
+            "mp_wm_ak47_ctm_tr",
+            "mp_vm_ak47_don_tr",
+            "mp_wm_ak47_don_tr",
+            "mp_vm_ak47_frd_tr",
+            "mp_wm_ak47_frd_tr",
+            "mp_vm_ak47_hnn_tr",
+            "mp_wm_ak47_hnn_tr",
+            "mp_vm_ak47_ish_tr",
+            "mp_wm_ak47_ish_tr",
+            "mp_vm_ak47_mtp_tr",
+            "mp_wm_ak47_mtp_tr",
+            "mp_vm_ak47_ntb_tr",
+            "mp_wm_ak47_ntb_tr",
+            "mp_vm_ak47_scn_tr",
+            "mp_wm_ak47_scn_tr",
+            "mp_vm_ak47_ttf_tr",
+            "mp_wm_ak47_ttf_tr",
+            "mp_vm_ak47_wlf_tr",
+            "mp_wm_ak47_wlf_tr"
+        ],
+        "name": "h1_ak47_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "AK-74u",
+        "fast_files": [
+            "mp_vm_ak74u_base_tr",
+            "mp_wm_ak74u_base_tr",
+            "mp_vm_ak74u_bts_tr",
+            "mp_wm_ak74u_bts_tr",
+            "mp_vm_ak74u_clh_tr",
+            "mp_wm_ak74u_clh_tr",
+            "mp_vm_ak74u_kin_tr",
+            "mp_wm_ak74u_kin_tr",
+            "mp_vm_ak74u_msp_tr",
+            "mp_wm_ak74u_msp_tr",
+            "mp_vm_ak74u_prm_tr",
+            "mp_wm_ak74u_prm_tr",
+            "mp_vm_ak74u_rpr_tr",
+            "mp_wm_ak74u_rpr_tr",
+            "mp_vm_ak74u_rwr_tr",
+            "mp_wm_ak74u_rwr_tr",
+            "mp_vm_ak74u_stg_tr",
+            "mp_wm_ak74u_stg_tr",
+            "mp_vm_ak74u_tki_tr",
+            "mp_wm_ak74u_tki_tr",
+            "mp_vm_ak74u_uop_tr",
+            "mp_wm_ak74u_uop_tr"
+        ],
+        "name": "h1_ak74u_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "BOS14",
+        "fast_files": [
+            "mp_vm_aprast_base_tr",
+            "mp_wm_aprast_base_tr",
+            "mp_vm_aprast_bko_tr",
+            "mp_wm_aprast_bko_tr",
+            "mp_vm_aprast_btw_tr",
+            "mp_wm_aprast_btw_tr",
+            "mp_vm_aprast_clr_tr",
+            "mp_wm_aprast_clr_tr",
+            "mp_vm_aprast_ctm_tr",
+            "mp_wm_aprast_ctm_tr",
+            "mp_vm_aprast_don_tr",
+            "mp_wm_aprast_don_tr",
+            "mp_vm_aprast_frd_tr",
+            "mp_wm_aprast_frd_tr",
+            "mp_vm_aprast_hnn_tr",
+            "mp_wm_aprast_hnn_tr",
+            "mp_vm_aprast_ish_tr",
+            "mp_wm_aprast_ish_tr",
+            "mp_vm_aprast_mtp_tr",
+            "mp_wm_aprast_mtp_tr",
+            "mp_vm_aprast_ntb_tr",
+            "mp_wm_aprast_ntb_tr",
+            "mp_vm_aprast_scn_tr",
+            "mp_wm_aprast_scn_tr",
+            "mp_vm_aprast_ttf_tr",
+            "mp_wm_aprast_ttf_tr",
+            "mp_vm_aprast_wlf_tr",
+            "mp_wm_aprast_wlf_tr"
+        ],
+        "name": "h1_aprast_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Prokolot",
+        "fast_files": [
+            "mp_vm_aprpst_base_tr",
+            "mp_wm_aprpst_base_tr",
+            "mp_vm_aprpst_bss_tr",
+            "mp_wm_aprpst_bss_tr",
+            "mp_vm_aprpst_btt_tr",
+            "mp_wm_aprpst_btt_tr",
+            "mp_vm_aprpst_cpr_tr",
+            "mp_wm_aprpst_cpr_tr",
+            "mp_vm_aprpst_eqr_tr",
+            "mp_wm_aprpst_eqr_tr",
+            "mp_vm_aprpst_gsr_tr",
+            "mp_wm_aprpst_gsr_tr",
+            "mp_vm_aprpst_rlc_tr",
+            "mp_wm_aprpst_rlc_tr",
+            "mp_vm_aprpst_spo_tr",
+            "mp_wm_aprpst_spo_tr"
+        ],
+        "name": "h1_aprpst_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Fang 45",
+        "fast_files": [
+            "mp_vm_skorpion_base_tr",
+            "mp_wm_skorpion_base_tr",
+            "mp_vm_aprsmg_base_tr",
+            "mp_wm_aprsmg_base_tr",
+            "mp_vm_aprsmg_bts_tr",
+            "mp_wm_aprsmg_bts_tr",
+            "mp_vm_aprsmg_clh_tr",
+            "mp_wm_aprsmg_clh_tr",
+            "mp_vm_aprsmg_kin_tr",
+            "mp_wm_aprsmg_kin_tr",
+            "mp_vm_aprsmg_msp_tr",
+            "mp_wm_aprsmg_msp_tr",
+            "mp_vm_aprsmg_prm_tr",
+            "mp_wm_aprsmg_prm_tr",
+            "mp_vm_aprsmg_rpr_tr",
+            "mp_wm_aprsmg_rpr_tr",
+            "mp_vm_aprsmg_rwr_tr",
+            "mp_wm_aprsmg_rwr_tr",
+            "mp_vm_aprsmg_stg_tr",
+            "mp_wm_aprsmg_stg_tr",
+            "mp_vm_aprsmg_tki_tr",
+            "mp_wm_aprsmg_tki_tr",
+            "mp_vm_aprsmg_uop_tr",
+            "mp_wm_aprsmg_uop_tr"
+        ],
+        "name": "h1_aprsmg_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Lynx CQ300",
+        "fast_files": [
+            "mp_vm_augast_base_tr",
+            "mp_wm_augast_base_tr",
+            "mp_vm_augast_btw_tr",
+            "mp_wm_augast_btw_tr",
+            "mp_vm_augast_ctm_tr",
+            "mp_wm_augast_ctm_tr",
+            "mp_vm_augast_don_tr",
+            "mp_wm_augast_don_tr",
+            "mp_vm_augast_frd_tr",
+            "mp_wm_augast_frd_tr",
+            "mp_vm_augast_hnn_tr",
+            "mp_wm_augast_hnn_tr",
+            "mp_vm_augast_ish_tr",
+            "mp_wm_augast_ish_tr",
+            "mp_vm_augast_mtp_tr",
+            "mp_wm_augast_mtp_tr",
+            "mp_vm_augast_ntb_tr",
+            "mp_wm_augast_ntb_tr",
+            "mp_vm_augast_scn_tr",
+            "mp_wm_augast_scn_tr",
+            "mp_vm_augast_ttf_tr",
+            "mp_wm_augast_ttf_tr",
+            "mp_vm_augast_wlf_tr",
+            "mp_wm_augast_wlf_tr"
+        ],
+        "name": "h1_augast_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "BR9",
+        "fast_files": [
+            "mp_vm_augpst_base_tr",
+            "mp_wm_augpst_base_tr",
+            "mp_vm_augpst_bss_tr",
+            "mp_wm_augpst_bss_tr",
+            "mp_vm_augpst_btt_tr",
+            "mp_wm_augpst_btt_tr",
+            "mp_vm_augpst_cpr_tr",
+            "mp_wm_augpst_cpr_tr",
+            "mp_vm_augpst_eqr_tr",
+            "mp_wm_augpst_eqr_tr",
+            "mp_vm_augpst_gsr_tr",
+            "mp_wm_augpst_gsr_tr",
+            "mp_vm_augpst_rlc_tr",
+            "mp_wm_augpst_rlc_tr",
+            "mp_vm_augpst_spo_tr",
+            "mp_wm_augpst_spo_tr"
+        ],
+        "name": "h1_augpst_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "PK-PSD9",
+        "fast_files": [
+            "mp_vm_augsmg_base_tr",
+            "mp_wm_augsmg_base_tr",
+            "mp_vm_augsmg_bts_tr",
+            "mp_wm_augsmg_bts_tr",
+            "mp_vm_augsmg_clh_tr",
+            "mp_wm_augsmg_clh_tr",
+            "mp_vm_augsmg_kin_tr",
+            "mp_wm_augsmg_kin_tr",
+            "mp_vm_augsmg_msp_tr",
+            "mp_wm_augsmg_msp_tr",
+            "mp_vm_augsmg_prm_tr",
+            "mp_wm_augsmg_prm_tr",
+            "mp_vm_augsmg_rpr_tr",
+            "mp_wm_augsmg_rpr_tr",
+            "mp_vm_augsmg_rwr_tr",
+            "mp_wm_augsmg_rwr_tr",
+            "mp_vm_augsmg_stg_tr",
+            "mp_wm_augsmg_stg_tr",
+            "mp_vm_augsmg_tki_tr",
+            "mp_wm_augsmg_tki_tr",
+            "mp_vm_augsmg_uop_tr",
+            "mp_wm_augsmg_uop_tr"
+        ],
+        "name": "h1_augsmg_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Barrett .50cal",
+        "fast_files": [
+            "mp_vm_barrett_base_p_tr",
+            "mp_wm_barrett_base_tr",
+            "mp_vm_barrett_asn_p_tr",
+            "mp_wm_barrett_asn_p_tr",
+            "mp_vm_barrett_fcn_tr",
+            "mp_wm_barrett_fcn_tr",
+            "mp_vm_barrett_ftd_tr",
+            "mp_wm_barrett_ftd_tr",
+            "mp_vm_barrett_gle_tr",
+            "mp_wm_barrett_gle_tr",
+            "mp_vm_barrett_gsy_tr",
+            "mp_wm_barrett_gsy_tr",
+            "mp_vm_barrett_htm_tr",
+            "mp_wm_barrett_htm_tr",
+            "mp_vm_barrett_kls_tr",
+            "mp_wm_barrett_kls_tr",
+            "mp_vm_barrett_mkm_tr",
+            "mp_wm_barrett_mkm_tr",
+            "mp_vm_barrett_ndl_tr",
+            "mp_wm_barrett_ndl_tr",
+            "mp_vm_barrett_slt_tr",
+            "mp_wm_barrett_slt_tr"
+        ],
+        "name": "h1_barrett_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M9",
+        "fast_files": [
+            "mp_vm_beretta_base_tr",
+            "mp_wm_beretta_base_tr",
+            "mp_vm_beretta_bss_tr",
+            "mp_wm_beretta_bss_tr",
+            "mp_vm_beretta_btt_tr",
+            "mp_wm_beretta_btt_tr",
+            "mp_vm_beretta_cpr_tr",
+            "mp_wm_beretta_cpr_tr",
+            "mp_vm_beretta_eqr_tr",
+            "mp_wm_beretta_eqr_tr",
+            "mp_vm_beretta_gsr_tr",
+            "mp_wm_beretta_gsr_tr",
+            "mp_vm_beretta_rlc_tr",
+            "mp_wm_beretta_rlc_tr",
+            "mp_vm_beretta_spo_tr",
+            "mp_wm_beretta_spo_tr"
+        ],
+        "name": "h1_beretta_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "C4",
+        "fast_files": [],
+        "name": "h1_c4_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Claymore",
+        "fast_files": [],
+        "name": "h1_claymore_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M1911 .45",
+        "fast_files": [
+            "mp_vm_colt45_base_tr",
+            "mp_wm_colt45_base_tr",
+            "mp_vm_colt45_bss_tr",
+            "mp_wm_colt45_bss_tr",
+            "mp_vm_colt45_btt_tr",
+            "mp_wm_colt45_btt_tr",
+            "mp_vm_colt45_cpr_tr",
+            "mp_wm_colt45_cpr_tr",
+            "mp_vm_colt45_eqr_tr",
+            "mp_wm_colt45_eqr_tr",
+            "mp_vm_colt45_gsr_tr",
+            "mp_wm_colt45_gsr_tr",
+            "mp_vm_colt45_rlc_tr",
+            "mp_wm_colt45_rlc_tr",
+            "mp_vm_colt45_spo_tr",
+            "mp_wm_colt45_spo_tr"
+        ],
+        "name": "h1_colt45_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": ".44 Magnum",
+        "fast_files": [
+            "mp_vm_coltanaconda_base_tr",
+            "mp_wm_coltanaconda_base_tr"
+        ],
+        "name": "h1_coltanaconda_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Stun Grenade",
+        "fast_files": [],
+        "name": "h1_concussiongrenade_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Commander Desert Eagle",
+        "fast_files": [
+            "mp_vm_deserteagle55_base_tr",
+            "mp_wm_deserteagle55_base_tr"
+        ],
+        "name": "h1_deserteagle55_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Desert Eagle",
+        "fast_files": [
+            "mp_vm_deserteagle_base_tr",
+            "mp_wm_deserteagle_base_tr",
+            "mp_vm_deserteagle_bss_tr",
+            "mp_wm_deserteagle_bss_tr",
+            "mp_vm_deserteagle_btt_tr",
+            "mp_wm_deserteagle_btt_tr",
+            "mp_vm_deserteagle_cpr_tr",
+            "mp_wm_deserteagle_cpr_tr",
+            "mp_vm_deserteagle_eqr_tr",
+            "mp_wm_deserteagle_eqr_tr",
+            "mp_vm_deserteagle_gsr_tr",
+            "mp_wm_deserteagle_gsr_tr",
+            "mp_vm_deserteagle_rlc_tr",
+            "mp_wm_deserteagle_rlc_tr",
+            "mp_vm_deserteagle_spo_tr",
+            "mp_wm_deserteagle_spo_tr"
+        ],
+        "name": "h1_deserteagle_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Dragunov",
+        "fast_files": [
+            "mp_vm_dragunov_base_p_tr",
+            "mp_wm_dragunov_base_tr",
+            "mp_vm_dragunov_asn_p_tr",
+            "mp_wm_dragunov_asn_p_tr",
+            "mp_vm_dragunov_fcn_tr",
+            "mp_wm_dragunov_fcn_tr",
+            "mp_vm_dragunov_ftd_tr",
+            "mp_wm_dragunov_ftd_tr",
+            "mp_vm_dragunov_gle_tr",
+            "mp_wm_dragunov_gle_tr",
+            "mp_vm_dragunov_gsy_tr",
+            "mp_wm_dragunov_gsy_tr",
+            "mp_vm_dragunov_htm_tr",
+            "mp_wm_dragunov_htm_tr",
+            "mp_vm_dragunov_kls_tr",
+            "mp_wm_dragunov_kls_tr",
+            "mp_vm_dragunov_mkm_tr",
+            "mp_wm_dragunov_mkm_tr",
+            "mp_vm_dragunov_ndl_tr",
+            "mp_wm_dragunov_ndl_tr",
+            "mp_vm_dragunov_slt_tr",
+            "mp_wm_dragunov_slt_tr"
+        ],
+        "name": "h1_dragunov_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "XM-LAR",
+        "fast_files": [
+            "mp_vm_fal_base_tr",
+            "mp_wm_fal_base_tr"
+        ],
+        "name": "h1_fal_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "PKM",
+        "fast_files": [
+            "mp_vm_feblmg_base_tr",
+            "mp_wm_feblmg_base_tr",
+            "mp_vm_feblmg_clb_tr",
+            "mp_wm_feblmg_clb_tr",
+            "mp_vm_feblmg_edr_tr",
+            "mp_wm_feblmg_edr_tr",
+            "mp_vm_feblmg_gla_tr",
+            "mp_wm_feblmg_gla_tr",
+            "mp_vm_feblmg_kgp_tr",
+            "mp_wm_feblmg_kgp_tr",
+            "mp_vm_feblmg_mud_tr",
+            "mp_wm_feblmg_mud_tr",
+            "mp_vm_feblmg_nse_tr",
+            "mp_wm_feblmg_nse_tr",
+            "mp_vm_feblmg_phx_tr",
+            "mp_wm_feblmg_phx_tr",
+            "mp_vm_feblmg_ttm_tr",
+            "mp_wm_feblmg_ttm_tr",
+            "mp_vm_feblmg_utv_tr",
+            "mp_wm_feblmg_utv_tr",
+            "mp_vm_feblmg_war_tr",
+            "mp_wm_feblmg_war_tr",
+            "mp_vm_feblmg_wtn_tr",
+            "mp_wm_feblmg_wtn_tr"
+        ],
+        "name": "h1_feblmg_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Mac-10",
+        "fast_files": [
+            "mp_vm_febsmg_base_tr",
+            "mp_wm_febsmg_base_tr",
+            "mp_vm_febsmg_bts_tr",
+            "mp_wm_febsmg_bts_tr",
+            "mp_vm_febsmg_clh_tr",
+            "mp_wm_febsmg_clh_tr",
+            "mp_vm_febsmg_kin_tr",
+            "mp_wm_febsmg_kin_tr",
+            "mp_vm_febsmg_msp_tr",
+            "mp_wm_febsmg_msp_tr",
+            "mp_vm_febsmg_prm_tr",
+            "mp_wm_febsmg_prm_tr",
+            "mp_vm_febsmg_rpr_tr",
+            "mp_wm_febsmg_rpr_tr",
+            "mp_vm_febsmg_rwr_tr",
+            "mp_wm_febsmg_rwr_tr",
+            "mp_vm_febsmg_stg_tr",
+            "mp_wm_febsmg_stg_tr",
+            "mp_vm_febsmg_tki_tr",
+            "mp_wm_febsmg_tki_tr",
+            "mp_vm_febsmg_uop_tr",
+            "mp_wm_febsmg_uop_tr"
+        ],
+        "name": "h1_febsmg_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "D-25S",
+        "fast_files": [
+            "mp_vm_febsnp_base_tr",
+            "mp_wm_febsnp_base_tr",
+            "mp_vm_febsnp_asn_tr",
+            "mp_wm_febsnp_asn_tr",
+            "mp_vm_febsnp_fcn_tr",
+            "mp_wm_febsnp_fcn_tr",
+            "mp_vm_febsnp_ftd_tr",
+            "mp_wm_febsnp_ftd_tr",
+            "mp_vm_febsnp_gle_tr",
+            "mp_wm_febsnp_gle_tr",
+            "mp_vm_febsnp_gsy_tr",
+            "mp_wm_febsnp_gsy_tr",
+            "mp_vm_febsnp_htm_tr",
+            "mp_wm_febsnp_htm_tr",
+            "mp_vm_febsnp_kls_tr",
+            "mp_wm_febsnp_kls_tr",
+            "mp_vm_febsnp_mkm_tr",
+            "mp_wm_febsnp_mkm_tr",
+            "mp_vm_febsnp_ndl_tr",
+            "mp_wm_febsnp_ndl_tr",
+            "mp_vm_febsnp_slt_tr",
+            "mp_wm_febsnp_slt_tr"
+        ],
+        "name": "h1_febsnp_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Flash Grenade",
+        "fast_files": [],
+        "name": "h1_flashgrenade_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M2 Frag Grenade",
+        "fast_files": [],
+        "name": "h1_fraggrenadeshort_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M2 Frag Grenade",
+        "fast_files": [],
+        "name": "h1_fraggrenade_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "G36C",
+        "fast_files": [
+            "mp_vm_g36c_base_tr",
+            "mp_wm_g36c_base_tr",
+            "mp_vm_g36c_bko_tr",
+            "mp_wm_g36c_bko_tr",
+            "mp_vm_g36c_btw_tr",
+            "mp_wm_g36c_btw_tr",
+            "mp_vm_g36c_clr_tr",
+            "mp_wm_g36c_clr_tr",
+            "mp_vm_g36c_ctm_tr",
+            "mp_wm_g36c_ctm_tr",
+            "mp_vm_g36c_don_tr",
+            "mp_wm_g36c_don_tr",
+            "mp_vm_g36c_frd_tr",
+            "mp_wm_g36c_frd_tr",
+            "mp_vm_g36c_hnn_tr",
+            "mp_wm_g36c_hnn_tr",
+            "mp_vm_g36c_ish_tr",
+            "mp_wm_g36c_ish_tr",
+            "mp_vm_g36c_mtp_tr",
+            "mp_wm_g36c_mtp_tr",
+            "mp_vm_g36c_ntb_tr",
+            "mp_wm_g36c_ntb_tr",
+            "mp_vm_g36c_scn_tr",
+            "mp_wm_g36c_scn_tr",
+            "mp_vm_g36c_ttf_tr",
+            "mp_wm_g36c_ttf_tr",
+            "mp_vm_g36c_wlf_tr",
+            "mp_wm_g36c_wlf_tr"
+        ],
+        "name": "h1_g36c_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "G3",
+        "fast_files": [
+            "mp_vm_g3_base_tr",
+            "mp_wm_g3_base_tr",
+            "mp_vm_g3_bko_tr",
+            "mp_wm_g3_bko_tr",
+            "mp_vm_g3_btw_p_tr",
+            "mp_wm_g3_btw_p_tr",
+            "mp_vm_g3_clr_tr",
+            "mp_wm_g3_clr_tr",
+            "mp_vm_g3_ctm_tr",
+            "mp_wm_g3_ctm_tr",
+            "mp_vm_g3_don_tr",
+            "mp_wm_g3_don_tr",
+            "mp_vm_g3_frd_tr",
+            "mp_wm_g3_frd_tr",
+            "mp_vm_g3_hnn_tr",
+            "mp_wm_g3_hnn_tr",
+            "mp_vm_g3_ish_tr",
+            "mp_wm_g3_ish_tr",
+            "mp_vm_g3_mtp_tr",
+            "mp_wm_g3_mtp_tr",
+            "mp_vm_g3_ntb_tr",
+            "mp_wm_g3_ntb_tr",
+            "mp_vm_g3_scn_tr",
+            "mp_wm_g3_scn_tr",
+            "mp_vm_g3_ttf_tr",
+            "mp_wm_g3_ttf_tr",
+            "mp_vm_g3_wlf_tr",
+            "mp_wm_g3_wlf_tr"
+        ],
+        "name": "h1_g3_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Galil",
+        "fast_files": [
+            "mp_vm_galil_base_tr",
+            "mp_wm_galil_base_tr"
+        ],
+        "name": "h1_galil_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": ".44 Magnum",
+        "fast_files": [
+            "mp_vm_janpst_base_tr",
+            "mp_wm_janpst_base_tr",
+            "mp_vm_janpst_bss_tr",
+            "mp_wm_janpst_bss_tr",
+            "mp_vm_janpst_btt_tr",
+            "mp_wm_janpst_btt_tr",
+            "mp_vm_janpst_cpr_tr",
+            "mp_wm_janpst_cpr_tr",
+            "mp_vm_janpst_eqr_tr",
+            "mp_wm_janpst_eqr_tr",
+            "mp_vm_janpst_gsr_tr",
+            "mp_wm_janpst_gsr_tr",
+            "mp_vm_janpst_rlc_tr",
+            "mp_wm_janpst_rlc_tr",
+            "mp_vm_janpst_spo_tr",
+            "mp_wm_janpst_spo_tr"
+        ],
+        "name": "h1_janpst_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Bered MK8",
+        "fast_files": [
+            "mp_vm_junlmg_base_tr",
+            "mp_wm_junlmg_base_tr",
+            "mp_vm_junlmg_clb_tr",
+            "mp_wm_junlmg_clb_tr",
+            "mp_vm_junlmg_edr_tr",
+            "mp_wm_junlmg_edr_tr",
+            "mp_vm_junlmg_gla_tr",
+            "mp_wm_junlmg_gla_tr",
+            "mp_vm_junlmg_kgp_tr",
+            "mp_wm_junlmg_kgp_tr",
+            "mp_vm_junlmg_mud_tr",
+            "mp_wm_junlmg_mud_tr",
+            "mp_vm_junlmg_nse_tr",
+            "mp_wm_junlmg_nse_tr",
+            "mp_vm_junlmg_phx_tr",
+            "mp_wm_junlmg_phx_tr",
+            "mp_vm_junlmg_ttm_tr",
+            "mp_wm_junlmg_ttm_tr",
+            "mp_vm_junlmg_utv_tr",
+            "mp_wm_junlmg_utv_tr",
+            "mp_vm_junlmg_war_tr",
+            "mp_wm_junlmg_war_tr",
+            "mp_vm_junlmg_wtn_tr",
+            "mp_wm_junlmg_wtn_tr"
+        ],
+        "name": "h1_junlmg_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Rangers",
+        "fast_files": [
+            "mp_vm_junsho_base_tr",
+            "mp_wm_junsho_base_tr",
+            "mp_vm_junsho_cmp_tr",
+            "mp_wm_junsho_cmp_tr",
+            "mp_vm_junsho_frg_tr",
+            "mp_wm_junsho_frg_tr",
+            "mp_vm_junsho_frt_tr",
+            "mp_wm_junsho_frt_tr",
+            "mp_vm_junsho_gsl_tr",
+            "mp_wm_junsho_gsl_tr",
+            "mp_vm_junsho_gvd_tr",
+            "mp_wm_junsho_gvd_tr",
+            "mp_vm_junsho_kgf_tr",
+            "mp_wm_junsho_kgf_tr",
+            "mp_vm_junsho_liq_tr",
+            "mp_wm_junsho_liq_tr",
+            "mp_vm_junsho_osd_tr",
+            "mp_wm_junsho_osd_tr",
+            "mp_vm_junsho_pgn_tr",
+            "mp_wm_junsho_pgn_tr",
+            "mp_vm_junsho_pyr_tr",
+            "mp_wm_junsho_pyr_tr",
+            "mp_vm_junsho_urw_tr",
+            "mp_wm_junsho_urw_tr",
+            "mp_vm_junsho_wsr_tr",
+            "mp_wm_junsho_wsr_tr"
+        ],
+        "name": "h1_junsho_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "S-Tac Aggressor",
+        "fast_files": [
+            "mp_vm_m40a3_base_p_tr",
+            "mp_wm_m40a3_base_tr",
+            "mp_vm_junsnp_asn_tr",
+            "mp_wm_junsnp_asn_tr",
+            "mp_vm_junsnp_base_tr",
+            "mp_wm_junsnp_base_tr",
+            "mp_vm_junsnp_fcn_tr",
+            "mp_wm_junsnp_fcn_tr",
+            "mp_vm_junsnp_ftd_tr",
+            "mp_wm_junsnp_ftd_tr",
+            "mp_vm_junsnp_gle_tr",
+            "mp_wm_junsnp_gle_tr",
+            "mp_vm_junsnp_gsy_tr",
+            "mp_wm_junsnp_gsy_tr",
+            "mp_vm_junsnp_htm_tr",
+            "mp_wm_junsnp_htm_tr",
+            "mp_vm_junsnp_kls_tr",
+            "mp_wm_junsnp_kls_tr",
+            "mp_vm_junsnp_mkm_tr",
+            "mp_wm_junsnp_mkm_tr",
+            "mp_vm_junsnp_ndl_tr",
+            "mp_wm_junsnp_ndl_tr",
+            "mp_vm_junsnp_slt_tr",
+            "mp_wm_junsnp_slt_tr"
+        ],
+        "name": "h1_junsnp_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Kamchatka-12",
+        "fast_files": [
+            "mp_vm_kam12_base_p_tr",
+            "mp_wm_kam12_base_p_tr",
+            "mp_vm_kam12_cmp_tr",
+            "mp_wm_kam12_cmp_tr",
+            "mp_vm_kam12_frg_tr",
+            "mp_wm_kam12_frg_tr",
+            "mp_vm_kam12_frt_tr",
+            "mp_wm_kam12_frt_tr",
+            "mp_vm_kam12_gsl_tr",
+            "mp_wm_kam12_gsl_tr",
+            "mp_vm_kam12_gvd_tr",
+            "mp_wm_kam12_gvd_tr",
+            "mp_vm_kam12_kgf_tr",
+            "mp_wm_kam12_kgf_tr",
+            "mp_vm_kam12_liq_tr",
+            "mp_wm_kam12_liq_tr",
+            "mp_vm_kam12_osd_tr",
+            "mp_wm_kam12_osd_tr",
+            "mp_vm_kam12_pgn_tr",
+            "mp_wm_kam12_pgn_tr",
+            "mp_vm_kam12_pyr_tr",
+            "mp_wm_kam12_pyr_tr",
+            "mp_vm_kam12_urw_tr",
+            "mp_wm_kam12_urw_tr",
+            "mp_vm_kam12_wsr_tr",
+            "mp_wm_kam12_wsr_tr"
+        ],
+        "name": "h1_kam12_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M1014",
+        "fast_files": [
+            "mp_vm_m1014_base_tr",
+            "mp_wm_m1014_base_tr",
+            "mp_vm_m1014_cmp_p_tr",
+            "mp_wm_m1014_cmp_p_tr",
+            "mp_vm_m1014_frg_tr",
+            "mp_wm_m1014_frg_tr",
+            "mp_vm_m1014_frt_tr",
+            "mp_wm_m1014_frt_tr",
+            "mp_vm_m1014_gsl_tr",
+            "mp_wm_m1014_gsl_tr",
+            "mp_vm_m1014_gvd_tr",
+            "mp_wm_m1014_gvd_tr",
+            "mp_vm_m1014_kgf_tr",
+            "mp_wm_m1014_kgf_tr",
+            "mp_vm_m1014_liq_tr",
+            "mp_wm_m1014_liq_tr",
+            "mp_vm_m1014_osd_tr",
+            "mp_wm_m1014_osd_tr",
+            "mp_vm_m1014_pgn_tr",
+            "mp_wm_m1014_pgn_tr",
+            "mp_vm_m1014_pyr_tr",
+            "mp_wm_m1014_pyr_tr",
+            "mp_vm_m1014_urw_tr",
+            "mp_wm_m1014_urw_tr",
+            "mp_vm_m1014_wsr_tr",
+            "mp_wm_m1014_wsr_tr"
+        ],
+        "name": "h1_m1014_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M14",
+        "fast_files": [
+            "mp_vm_m14_base_tr",
+            "mp_wm_m14_base_tr",
+            "mp_vm_m14_bko_tr",
+            "mp_wm_m14_bko_tr",
+            "mp_vm_m14_btw_tr",
+            "mp_wm_m14_btw_tr",
+            "mp_vm_m14_clr_tr",
+            "mp_wm_m14_clr_tr",
+            "mp_vm_m14_ctm_tr",
+            "mp_wm_m14_ctm_tr",
+            "mp_vm_m14_don_tr",
+            "mp_wm_m14_don_tr",
+            "mp_vm_m14_frd_tr",
+            "mp_wm_m14_frd_tr",
+            "mp_vm_m14_hnn_tr",
+            "mp_wm_m14_hnn_tr",
+            "mp_vm_m14_ish_tr",
+            "mp_wm_m14_ish_tr",
+            "mp_vm_m14_mtp_tr",
+            "mp_wm_m14_mtp_tr",
+            "mp_vm_m14_ntb_tr",
+            "mp_wm_m14_ntb_tr",
+            "mp_vm_m14_scn_tr",
+            "mp_wm_m14_scn_tr",
+            "mp_vm_m14_ttf_tr",
+            "mp_wm_m14_ttf_tr",
+            "mp_vm_m14_wlf_tr",
+            "mp_wm_m14_wlf_tr"
+        ],
+        "name": "h1_m14_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M16A4",
+        "fast_files": [
+            "mp_vm_m16_base_p_tr",
+            "mp_wm_m16_base_p_tr",
+            "mp_vm_m16_bko_tr",
+            "mp_wm_m16_bko_tr",
+            "mp_vm_m16_btw_tr",
+            "mp_wm_m16_btw_tr",
+            "mp_vm_m16_clr_tr",
+            "mp_wm_m16_clr_tr",
+            "mp_vm_m16_ctm_tr",
+            "mp_wm_m16_ctm_tr",
+            "mp_vm_m16_don_tr",
+            "mp_wm_m16_don_tr",
+            "mp_vm_m16_frd_tr",
+            "mp_wm_m16_frd_tr",
+            "mp_vm_m16_hnn_tr",
+            "mp_wm_m16_hnn_tr",
+            "mp_vm_m16_ish_tr",
+            "mp_wm_m16_ish_tr",
+            "mp_vm_m16_mtp_tr",
+            "mp_wm_m16_mtp_tr",
+            "mp_vm_m16_ntb_tr",
+            "mp_wm_m16_ntb_tr",
+            "mp_vm_m16_scn_tr",
+            "mp_wm_m16_scn_tr",
+            "mp_vm_m16_ttf_tr",
+            "mp_wm_m16_ttf_tr",
+            "mp_vm_m16_wlf_tr",
+            "mp_wm_m16_wlf_tr"
+        ],
+        "name": "h1_m16_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M21",
+        "fast_files": [
+            "mp_vm_m21_base_p_tr",
+            "mp_wm_m21_base_tr",
+            "mp_vm_m21_asn_tr",
+            "mp_wm_m21_asn_tr",
+            "mp_vm_m21_fcn_tr",
+            "mp_wm_m21_fcn_tr",
+            "mp_vm_m21_ftd_tr",
+            "mp_wm_m21_ftd_tr",
+            "mp_vm_m21_gle_tr",
+            "mp_wm_m21_gle_tr",
+            "mp_vm_m21_gsy_tr",
+            "mp_wm_m21_gsy_tr",
+            "mp_vm_m21_htm_tr",
+            "mp_wm_m21_htm_tr",
+            "mp_vm_m21_kls_tr",
+            "mp_wm_m21_kls_tr",
+            "mp_vm_m21_mkm_tr",
+            "mp_wm_m21_mkm_tr",
+            "mp_vm_m21_ndl_tr",
+            "mp_wm_m21_ndl_tr",
+            "mp_vm_m21_slt_tr",
+            "mp_wm_m21_slt_tr"
+        ],
+        "name": "h1_m21_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M240",
+        "fast_files": [
+            "mp_vm_m240_base_tr",
+            "mp_wm_m240_base_tr"
+        ],
+        "name": "h1_m240_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M40A3",
+        "fast_files": [
+            "mp_vm_m40a3_base_p_tr",
+            "mp_wm_m40a3_base_tr",
+            "mp_vm_m40a3_asn_p_tr",
+            "mp_wm_m40a3_asn_p_tr",
+            "mp_vm_m40a3_fcn_tr",
+            "mp_wm_m40a3_fcn_tr",
+            "mp_vm_m40a3_ftd_tr",
+            "mp_wm_m40a3_ftd_tr",
+            "mp_vm_m40a3_gle_tr",
+            "mp_wm_m40a3_gle_tr",
+            "mp_vm_m40a3_gsy_tr",
+            "mp_wm_m40a3_gsy_tr",
+            "mp_vm_m40a3_htm_tr",
+            "mp_wm_m40a3_htm_tr",
+            "mp_vm_m40a3_kls_tr",
+            "mp_wm_m40a3_kls_tr",
+            "mp_vm_m40a3_mkm_tr",
+            "mp_wm_m40a3_mkm_tr",
+            "mp_vm_m40a3_ndl_tr",
+            "mp_wm_m40a3_ndl_tr",
+            "mp_vm_m40a3_slt_tr",
+            "mp_wm_m40a3_slt_tr"
+        ],
+        "name": "h1_m40a3_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M4 Carbine",
+        "fast_files": [
+            "mp_vm_m4_base_tr",
+            "mp_wm_m4_base_tr",
+            "mp_vm_m4_bko_tr",
+            "mp_wm_m4_bko_tr",
+            "mp_vm_m4_btw_p_tr",
+            "mp_wm_m4_btw_p_tr",
+            "mp_vm_m4_clr_tr",
+            "mp_wm_m4_clr_tr",
+            "mp_vm_m4_ctm_tr",
+            "mp_wm_m4_ctm_tr",
+            "mp_vm_m4_don_tr",
+            "mp_wm_m4_don_tr",
+            "mp_vm_m4_frd_tr",
+            "mp_wm_m4_frd_tr",
+            "mp_vm_m4_hnn_tr",
+            "mp_wm_m4_hnn_tr",
+            "mp_vm_m4_ish_tr",
+            "mp_wm_m4_ish_tr",
+            "mp_vm_m4_mtp_tr",
+            "mp_wm_m4_mtp_tr",
+            "mp_vm_m4_ntb_tr",
+            "mp_wm_m4_ntb_tr",
+            "mp_vm_m4_scn_tr",
+            "mp_wm_m4_scn_tr",
+            "mp_vm_m4_ttf_tr",
+            "mp_wm_m4_ttf_tr",
+            "mp_vm_m4_wlf_tr",
+            "mp_wm_m4_wlf_tr"
+        ],
+        "name": "h1_m4_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M60E4",
+        "fast_files": [
+            "mp_vm_m60e4_base_tr",
+            "mp_wm_m60e4_base_tr",
+            "mp_vm_m60e4_clb_tr",
+            "mp_wm_m60e4_clb_tr",
+            "mp_vm_m60e4_edr_tr",
+            "mp_wm_m60e4_edr_tr",
+            "mp_vm_m60e4_gla_tr",
+            "mp_wm_m60e4_gla_tr",
+            "mp_vm_m60e4_kgp_tr",
+            "mp_wm_m60e4_kgp_tr",
+            "mp_vm_m60e4_mud_tr",
+            "mp_wm_m60e4_mud_tr",
+            "mp_vm_m60e4_nse_tr",
+            "mp_wm_m60e4_nse_tr",
+            "mp_vm_m60e4_phx_tr",
+            "mp_wm_m60e4_phx_tr",
+            "mp_vm_m60e4_ttm_tr",
+            "mp_wm_m60e4_ttm_tr",
+            "mp_vm_m60e4_utv_tr",
+            "mp_wm_m60e4_utv_tr",
+            "mp_vm_m60e4_war_p_tr",
+            "mp_wm_m60e4_war_p_tr",
+            "mp_vm_m60e4_wtn_tr",
+            "mp_wm_m60e4_wtn_tr"
+        ],
+        "name": "h1_m60e4_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Mini-Uzi",
+        "fast_files": [
+            "mp_vm_mac10_base_tr",
+            "mp_wm_mac10_base_tr"
+        ],
+        "name": "h1_mac10_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Caveman",
+        "fast_files": [
+            "mp_vm_meleeapr1_base_tr",
+            "mp_wm_meleeapr1_base_tr"
+        ],
+        "name": "h1_meleeapr1_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Machete",
+        "fast_files": [
+            "mp_vm_meleeapr2_base_tr",
+            "mp_wm_meleeapr2_base_tr"
+        ],
+        "name": "h1_meleeapr2_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Diabolical",
+        "fast_files": [
+            "mp_vm_meleeapr3_base_tr",
+            "mp_wm_meleeapr3_base_tr"
+        ],
+        "name": "h1_meleeapr3_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Sawtooth",
+        "fast_files": [
+            "mp_vm_meleeapr4_base_tr",
+            "mp_wm_meleeapr4_base_tr"
+        ],
+        "name": "h1_meleeapr4_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Danger Close",
+        "fast_files": [
+            "mp_vm_meleeaug1_base_tr",
+            "mp_wm_meleeaug1_base_tr"
+        ],
+        "name": "h1_meleeaug1_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Barber",
+        "fast_files": [
+            "mp_vm_meleeaug2_base_tr",
+            "mp_wm_meleeaug2_base_tr"
+        ],
+        "name": "h1_meleeaug2_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Point Knife",
+        "fast_files": [
+            "mp_vm_meleeaug3_base_tr",
+            "mp_wm_meleeaug3_base_tr"
+        ],
+        "name": "h1_meleeaug3_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Enforce",
+        "fast_files": [
+            "mp_vm_meleeaug4_base_tr",
+            "mp_wm_meleeaug4_base_tr"
+        ],
+        "name": "h1_meleeaug4_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "CQB Bayonet",
+        "fast_files": [
+            "mp_vm_meleebayonet_base_tr",
+            "mp_wm_meleebayonet_base_tr"
+        ],
+        "name": "h1_meleebayonet_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Scorpion",
+        "fast_files": [
+            "mp_vm_meleeblade_base_tr",
+            "mp_wm_meleeblade_base_tr"
+        ],
+        "name": "h1_meleeblade_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Brawler's Brew",
+        "fast_files": [
+            "mp_vm_meleebottle_base_tr",
+            "mp_wm_meleebottle_base_tr",
+            "mp_vm_meleebottle_lby_tr"
+        ],
+        "name": "h1_meleebottle_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Mechanic",
+        "fast_files": [
+            "mp_vm_meleefeb1_base_tr",
+            "mp_wm_meleefeb1_base_tr"
+        ],
+        "name": "h1_meleefeb1_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Shamrock Blade",
+        "fast_files": [
+            "mp_vm_meleefeb2_base_tr",
+            "mp_wm_meleefeb2_base_tr"
+        ],
+        "name": "h1_meleefeb2_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Samurai",
+        "fast_files": [
+            "mp_vm_meleefeb3_base_tr",
+            "mp_wm_meleefeb3_base_tr"
+        ],
+        "name": "h1_meleefeb3_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Thug",
+        "fast_files": [
+            "mp_vm_meleefeb4_base_tr",
+            "mp_wm_meleefeb4_base_tr"
+        ],
+        "name": "h1_meleefeb4_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Leprechaun",
+        "fast_files": [
+            "mp_vm_meleefeb5_base_tr",
+            "mp_wm_meleefeb5_base_tr"
+        ],
+        "name": "h1_meleefeb5_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "CQB Bayonet",
+        "fast_files": [
+            "mp_vm_meleebayonet_base_tr",
+            "mp_wm_meleebayonet_base_tr"
+        ],
+        "name": "h1_meleefuture1_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "CQB Bayonet",
+        "fast_files": [
+            "mp_vm_meleebayonet_base_tr",
+            "mp_wm_meleebayonet_base_tr"
+        ],
+        "name": "h1_meleefuture2_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Gladiator",
+        "fast_files": [
+            "mp_vm_meleegladius_base_tr",
+            "mp_wm_meleegladius_base_tr"
+        ],
+        "name": "h1_meleegladius_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Hatchetman",
+        "fast_files": [
+            "mp_vm_meleehatchet_base_tr",
+            "mp_wm_meleehatchet_base_tr"
+        ],
+        "name": "h1_meleehatchet_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Cliffhanger",
+        "fast_files": [
+            "mp_vm_meleeicepick_base_tr",
+            "mp_wm_meleeicepick_base_tr"
+        ],
+        "name": "h1_meleeicepick_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Bludgeon",
+        "fast_files": [
+            "mp_vm_meleejun1_base_tr",
+            "mp_wm_meleejun1_base_tr"
+        ],
+        "name": "h1_meleejun1_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Cleaver",
+        "fast_files": [
+            "mp_vm_meleejun2_base_tr",
+            "mp_wm_meleejun2_base_tr"
+        ],
+        "name": "h1_meleejun2_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Nauticus",
+        "fast_files": [
+            "mp_vm_meleejun3_base_tr",
+            "mp_wm_meleejun3_base_tr"
+        ],
+        "name": "h1_meleejun3_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Tidal",
+        "fast_files": [
+            "mp_vm_meleejun4_base_tr",
+            "mp_wm_meleejun4_base_tr"
+        ],
+        "name": "h1_meleejun4_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Tribal",
+        "fast_files": [
+            "mp_vm_meleejun5_base_tr",
+            "mp_wm_meleejun5_base_tr",
+            "mp_vm_meleejun5_lby_tr"
+        ],
+        "name": "h1_meleejun5_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Sarsaparilla",
+        "fast_files": [
+            "mp_vm_meleebottle_base_tr",
+            "mp_wm_meleebottle_base_tr",
+            "mp_vm_meleejun6_base_tr",
+            "mp_wm_meleejun6_base_tr",
+            "mp_vm_meleejun6_lby_tr"
+        ],
+        "name": "h1_meleejun6_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Omsk Hammer",
+        "fast_files": [
+            "mp_vm_meleepaddle_base_tr",
+            "mp_wm_meleepaddle_base_tr"
+        ],
+        "name": "h1_meleepaddle_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Gravedigger",
+        "fast_files": [
+            "mp_vm_meleeshovel_base_p_tr",
+            "mp_wm_meleeshovel_base_p_tr"
+        ],
+        "name": "h1_meleeshovel_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Sickle",
+        "fast_files": [
+            "mp_vm_meleesickle_base_tr",
+            "mp_wm_meleesickle_base_tr"
+        ],
+        "name": "h1_meleesickle_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "MP44",
+        "fast_files": [
+            "mp_vm_mp44_base_tr",
+            "mp_wm_mp44_base_tr",
+            "mp_vm_mp44_bko_tr",
+            "mp_wm_mp44_bko_tr",
+            "mp_vm_mp44_btw_tr",
+            "mp_wm_mp44_btw_tr",
+            "mp_vm_mp44_clr_tr",
+            "mp_wm_mp44_clr_tr",
+            "mp_vm_mp44_ctm_tr",
+            "mp_wm_mp44_ctm_tr",
+            "mp_vm_mp44_don_tr",
+            "mp_wm_mp44_don_tr",
+            "mp_vm_mp44_frd_tr",
+            "mp_wm_mp44_frd_tr",
+            "mp_vm_mp44_hnn_tr",
+            "mp_wm_mp44_hnn_tr",
+            "mp_vm_mp44_ish_tr",
+            "mp_wm_mp44_ish_tr",
+            "mp_vm_mp44_mtp_tr",
+            "mp_wm_mp44_mtp_tr",
+            "mp_vm_mp44_ntb_tr",
+            "mp_wm_mp44_ntb_tr",
+            "mp_vm_mp44_scn_tr",
+            "mp_wm_mp44_scn_tr",
+            "mp_vm_mp44_ttf_tr",
+            "mp_wm_mp44_ttf_tr",
+            "mp_vm_mp44_wlf_tr",
+            "mp_wm_mp44_wlf_tr"
+        ],
+        "name": "h1_mp44_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "MP5",
+        "fast_files": [
+            "mp_vm_mp5_base_tr",
+            "mp_wm_mp5_base_tr",
+            "mp_vm_mp5_bts_tr",
+            "mp_wm_mp5_bts_tr",
+            "mp_vm_mp5_clh_tr",
+            "mp_wm_mp5_clh_tr",
+            "mp_vm_mp5_kin_tr",
+            "mp_wm_mp5_kin_tr",
+            "mp_vm_mp5_msp_tr",
+            "mp_wm_mp5_msp_tr",
+            "mp_vm_mp5_prm_tr",
+            "mp_wm_mp5_prm_tr",
+            "mp_vm_mp5_rpr_tr",
+            "mp_wm_mp5_rpr_tr",
+            "mp_vm_mp5_rwr_tr",
+            "mp_wm_mp5_rwr_tr",
+            "mp_vm_mp5_stg_tr",
+            "mp_wm_mp5_stg_tr",
+            "mp_vm_mp5_tki_tr",
+            "mp_wm_mp5_tki_tr",
+            "mp_vm_mp5_uop_tr",
+            "mp_wm_mp5_uop_tr"
+        ],
+        "name": "h1_mp5_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "P90",
+        "fast_files": [
+            "mp_vm_p90_base_tr",
+            "mp_wm_p90_base_tr",
+            "mp_vm_p90_bts_tr",
+            "mp_wm_p90_bts_tr",
+            "mp_vm_p90_clh_tr",
+            "mp_wm_p90_clh_tr",
+            "mp_vm_p90_kin_tr",
+            "mp_wm_p90_kin_tr",
+            "mp_vm_p90_msp_tr",
+            "mp_wm_p90_msp_tr",
+            "mp_vm_p90_prm_tr",
+            "mp_wm_p90_prm_tr",
+            "mp_vm_p90_rpr_tr",
+            "mp_wm_p90_rpr_tr",
+            "mp_vm_p90_rwr_tr",
+            "mp_wm_p90_rwr_tr",
+            "mp_vm_p90_stg_tr",
+            "mp_wm_p90_stg_tr",
+            "mp_vm_p90_tki_tr",
+            "mp_wm_p90_tki_tr",
+            "mp_vm_p90_uop_tr",
+            "mp_wm_p90_uop_tr"
+        ],
+        "name": "h1_p90_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "PP2000",
+        "fast_files": [
+            "mp_vm_pp2000_base_tr",
+            "mp_wm_pp2000_base_tr"
+        ],
+        "name": "h1_pp2000_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "R700",
+        "fast_files": [
+            "mp_vm_remington700_base_p_tr",
+            "mp_wm_remington700_base_tr",
+            "mp_vm_remington700_asn_p_tr",
+            "mp_wm_remington700_asn_p_tr",
+            "mp_vm_remington700_fcn_tr",
+            "mp_wm_remington700_fcn_tr",
+            "mp_vm_remington700_ftd_tr",
+            "mp_wm_remington700_ftd_tr",
+            "mp_vm_remington700_gle_tr",
+            "mp_wm_remington700_gle_tr",
+            "mp_vm_remington700_gsy_tr",
+            "mp_wm_remington700_gsy_tr",
+            "mp_vm_remington700_htm_tr",
+            "mp_wm_remington700_htm_tr",
+            "mp_vm_remington700_kls_tr",
+            "mp_wm_remington700_kls_tr",
+            "mp_vm_remington700_mkm_tr",
+            "mp_wm_remington700_mkm_tr",
+            "mp_vm_remington700_ndl_tr",
+            "mp_wm_remington700_ndl_tr",
+            "mp_vm_remington700_slt_tr",
+            "mp_wm_remington700_slt_tr"
+        ],
+        "name": "h1_remington700_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "RPD",
+        "fast_files": [
+            "mp_vm_rpd_base_tr",
+            "mp_wm_rpd_base_tr",
+            "mp_vm_rpd_clb_tr",
+            "mp_wm_rpd_clb_tr",
+            "mp_vm_rpd_edr_tr",
+            "mp_wm_rpd_edr_tr",
+            "mp_vm_rpd_gla_tr",
+            "mp_wm_rpd_gla_tr",
+            "mp_vm_rpd_kgp_tr",
+            "mp_wm_rpd_kgp_tr",
+            "mp_vm_rpd_mud_tr",
+            "mp_wm_rpd_mud_tr",
+            "mp_vm_rpd_nse_tr",
+            "mp_wm_rpd_nse_tr",
+            "mp_vm_rpd_phx_tr",
+            "mp_wm_rpd_phx_tr",
+            "mp_vm_rpd_ttm_tr",
+            "mp_wm_rpd_ttm_tr",
+            "mp_vm_rpd_utv_tr",
+            "mp_wm_rpd_utv_tr",
+            "mp_vm_rpd_war_p_tr",
+            "mp_wm_rpd_war_p_tr",
+            "mp_vm_rpd_wtn_tr",
+            "mp_wm_rpd_wtn_tr"
+        ],
+        "name": "h1_rpd_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "RPG-7",
+        "fast_files": [
+            "mp_vm_rpg_base_tr",
+            "mp_wm_rpg_base_tr"
+        ],
+        "name": "h1_rpg_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "M249 SAW",
+        "fast_files": [
+            "mp_vm_saw_base_tr",
+            "mp_wm_saw_base_tr",
+            "mp_vm_saw_clb_tr",
+            "mp_wm_saw_clb_tr",
+            "mp_vm_saw_edr_tr",
+            "mp_wm_saw_edr_tr",
+            "mp_vm_saw_gla_tr",
+            "mp_wm_saw_gla_tr",
+            "mp_vm_saw_kgp_tr",
+            "mp_wm_saw_kgp_tr",
+            "mp_vm_saw_mud_tr",
+            "mp_wm_saw_mud_tr",
+            "mp_vm_saw_nse_tr",
+            "mp_wm_saw_nse_tr",
+            "mp_vm_saw_phx_tr",
+            "mp_wm_saw_phx_tr",
+            "mp_vm_saw_ttm_tr",
+            "mp_wm_saw_ttm_tr",
+            "mp_vm_saw_utv_tr",
+            "mp_wm_saw_utv_tr",
+            "mp_vm_saw_war_p_tr",
+            "mp_wm_saw_war_tr",
+            "mp_vm_saw_wtn_tr",
+            "mp_wm_saw_wtn_tr"
+        ],
+        "name": "h1_saw_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Skorpion",
+        "fast_files": [
+            "mp_vm_skorpion_base_tr",
+            "mp_wm_skorpion_base_tr",
+            "mp_vm_skorpion_bts_tr",
+            "mp_wm_skorpion_bts_tr",
+            "mp_vm_skorpion_clh_tr",
+            "mp_wm_skorpion_clh_tr",
+            "mp_vm_skorpion_kin_tr",
+            "mp_wm_skorpion_kin_tr",
+            "mp_vm_skorpion_msp_tr",
+            "mp_wm_skorpion_msp_tr",
+            "mp_vm_skorpion_prm_tr",
+            "mp_wm_skorpion_prm_tr",
+            "mp_vm_skorpion_rpr_tr",
+            "mp_wm_skorpion_rpr_tr",
+            "mp_vm_skorpion_rwr_tr",
+            "mp_wm_skorpion_rwr_tr",
+            "mp_vm_skorpion_stg_tr",
+            "mp_wm_skorpion_stg_tr",
+            "mp_vm_skorpion_tki_tr",
+            "mp_wm_skorpion_tki_tr",
+            "mp_vm_skorpion_uop_tr",
+            "mp_wm_skorpion_uop_tr"
+        ],
+        "name": "h1_skorpion_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Smoke Grenade",
+        "fast_files": [],
+        "name": "h1_smokegrenade_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Striker",
+        "fast_files": [
+            "mp_vm_striker_base_tr",
+            "mp_wm_striker_base_tr"
+        ],
+        "name": "h1_striker_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "USP .45",
+        "fast_files": [
+            "mp_vm_usp_base_tr",
+            "mp_wm_usp_base_tr",
+            "mp_vm_usp_bss_tr",
+            "mp_wm_usp_bss_tr",
+            "mp_vm_usp_btt_tr",
+            "mp_wm_usp_btt_tr",
+            "mp_vm_usp_cpr_tr",
+            "mp_wm_usp_cpr_tr",
+            "mp_vm_usp_eqr_tr",
+            "mp_wm_usp_eqr_tr",
+            "mp_vm_usp_gsr_tr",
+            "mp_wm_usp_gsr_tr",
+            "mp_vm_usp_rlc_tr",
+            "mp_wm_usp_rlc_tr",
+            "mp_vm_usp_spo_tr",
+            "mp_wm_usp_spo_tr"
+        ],
+        "name": "h1_usp_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Mini-Uzi",
+        "fast_files": [
+            "mp_vm_uzi_base_tr",
+            "mp_wm_uzi_base_tr",
+            "mp_vm_uzi_base_p_tr",
+            "mp_wm_uzi_base_p_tr",
+            "mp_vm_uzi_bts_tr",
+            "mp_wm_uzi_bts_tr",
+            "mp_vm_uzi_clh_tr",
+            "mp_wm_uzi_clh_tr",
+            "mp_vm_uzi_kin_tr",
+            "mp_wm_uzi_kin_tr",
+            "mp_vm_uzi_msp_tr",
+            "mp_wm_uzi_msp_tr",
+            "mp_vm_uzi_prm_tr",
+            "mp_wm_uzi_prm_tr",
+            "mp_vm_uzi_rpr_tr",
+            "mp_wm_uzi_rpr_tr",
+            "mp_vm_uzi_rwr_tr",
+            "mp_wm_uzi_rwr_tr",
+            "mp_vm_uzi_stg_tr",
+            "mp_wm_uzi_stg_tr",
+            "mp_vm_uzi_tki_tr",
+            "mp_wm_uzi_tki_tr",
+            "mp_vm_uzi_uop_tr",
+            "mp_wm_uzi_uop_tr"
+        ],
+        "name": "h1_uzi_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "Dragunov",
+        "fast_files": [
+            "mp_vm_vssvintorez_base_tr",
+            "mp_wm_vssvintorez_base_tr"
+        ],
+        "name": "h1_vssvintorez_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "W1200",
+        "fast_files": [
+            "mp_vm_winchester1200_base_tr",
+            "mp_wm_winchester1200_base_tr",
+            "mp_vm_winchester1200_cmp_p_tr",
+            "mp_wm_winchester1200_cmp_p_tr",
+            "mp_vm_winchester1200_frg_tr",
+            "mp_wm_winchester1200_frg_tr",
+            "mp_vm_winchester1200_frt_tr",
+            "mp_wm_winchester1200_frt_tr",
+            "mp_vm_winchester1200_gsl_tr",
+            "mp_wm_winchester1200_gsl_tr",
+            "mp_vm_winchester1200_gvd_tr",
+            "mp_wm_winchester1200_gvd_tr",
+            "mp_vm_winchester1200_kgf_tr",
+            "mp_wm_winchester1200_kgf_tr",
+            "mp_vm_winchester1200_liq_tr",
+            "mp_wm_winchester1200_liq_tr",
+            "mp_vm_winchester1200_osd_tr",
+            "mp_wm_winchester1200_osd_tr",
+            "mp_vm_winchester1200_pgn_tr",
+            "mp_wm_winchester1200_pgn_tr",
+            "mp_vm_winchester1200_pyr_tr",
+            "mp_wm_winchester1200_pyr_tr",
+            "mp_vm_winchester1200_urw_tr",
+            "mp_wm_winchester1200_urw_tr",
+            "mp_vm_winchester1200_wsr_tr",
+            "mp_wm_winchester1200_wsr_tr"
+        ],
+        "name": "h1_winchester1200_mp",
+        "py/object": "__main__.AliasEntry"
+    },
+    {
+        "alias": "XM-LAR",
+        "fast_files": [
+            "mp_vm_xmlar_base_tr",
+            "mp_wm_xmlar_base_tr",
+            "mp_vm_xmlar_bko_tr",
+            "mp_wm_xmlar_bko_tr",
+            "mp_vm_xmlar_btw_tr",
+            "mp_wm_xmlar_btw_tr",
+            "mp_vm_xmlar_clr_tr",
+            "mp_wm_xmlar_clr_tr",
+            "mp_vm_xmlar_ctm_tr",
+            "mp_wm_xmlar_ctm_tr",
+            "mp_vm_xmlar_don_tr",
+            "mp_wm_xmlar_don_tr",
+            "mp_vm_xmlar_frd_tr",
+            "mp_wm_xmlar_frd_tr",
+            "mp_vm_xmlar_hnn_tr",
+            "mp_wm_xmlar_hnn_tr",
+            "mp_vm_xmlar_ish_tr",
+            "mp_wm_xmlar_ish_tr",
+            "mp_vm_xmlar_mtp_tr",
+            "mp_wm_xmlar_mtp_tr",
+            "mp_vm_xmlar_ntb_tr",
+            "mp_wm_xmlar_ntb_tr",
+            "mp_vm_xmlar_scn_tr",
+            "mp_wm_xmlar_scn_tr",
+            "mp_vm_xmlar_ttf_tr",
+            "mp_wm_xmlar_ttf_tr",
+            "mp_vm_xmlar_wlf_tr",
+            "mp_wm_xmlar_wlf_tr"
+        ],
+        "name": "h1_xmlar_mp",
+        "py/object": "__main__.AliasEntry"
+    }
+]
