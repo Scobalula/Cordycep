@@ -1034,6 +1034,7 @@ bool ps::CoDMWRHandler::Initialize(const std::string& gameDirectory)
 // 	LoadAliases("Data\\Dumps\\ModernWarfareRemasteredAliases.json");
 // #endif
 	// LoadAliases(CurrentConfig->AliasesName);
+	LoadAliases("Data\\Aliases\\ModernWarfareRemasteredAliases.json");
 
 	return true;
 }
