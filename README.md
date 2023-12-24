@@ -12,7 +12,7 @@ Cordycep should in theory be 90% identical to reading from a game directly, and 
 
 Building Cordycep is simple.
 
-You should to install [vcpkg](https://github.com/microsoft/vcpkg) and run `vcpkg.bat` in the source code.
+You should install [vcpkg](https://github.com/microsoft/vcpkg) and run `vcpkg.bat` in `src`.
 
 After all required libraries are properly installed then you can compile it directly with x64 configuration.
 
