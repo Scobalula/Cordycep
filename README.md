@@ -1,6 +1,6 @@
 ![Example](src/Parasyte.CLI/Banner.png)
 
-[![Releases](https://img.shields.io/github/downloads/Scobalula/Cordycep/total.svg)](https://github.com/Scobalula/Cordycep/releases) [![License](https://img.shields.io/github/license/Scobalula/Cordycep.svg)](https://github.com/Scobalula/Cordycep/blob/main/LICENSE.md)
+[![Releases](https://img.shields.io/github/downloads/Scobalula/Cordycep/total.svg)](https://github.com/Scobalula/Cordycep/releases) [![License](https://img.shields.io/github/license/Scobalula/Cordycep.svg)](https://github.com/Scobalula/Cordycep/blob/main/LICENSE.md) [![Discord](https://img.shields.io/badge/chat-Discord-blue.svg)](https://discord.gg/eY2Y5p2PEp)
 
 Cordycep is a tool that utilizes game data to handle loading game files. Cordycep was made to work around more strict anti-cheats used in modern titles without comprimising them.
 
@@ -31,4 +31,3 @@ For a lot of the handlers there is a toml file that dictates game patterns, file
 Cordycep was originally developed by [Scobalula](https://github.com/Scobalula).
 
 Now it's mainly maintained by [dest1yo](https://github.com/dest1yo).
-
