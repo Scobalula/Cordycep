@@ -313,8 +313,11 @@ bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	// LoadConfigs("Data\\Configs\\CoDMW4Handler.json");
-	LoadConfigs("CoDMW4Handler.toml");
+	if (!LoadConfigs("CoDMW4Handler"))
+	{
+		return false;
+	}
+
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);

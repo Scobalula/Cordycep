@@ -355,34 +355,43 @@ std::string ps::GameHandler::GetFileName(const std::string& name)
 	return name;
 }
 
-bool ps::GameHandler::LoadConfigs(const std::string& fileName)
+bool ps::GameHandler::LoadConfigs(const std::string& prefix)
 {
-	const auto configPath = std::filesystem::path("Data/Configs/" + fileName);
-	auto ext = configPath.extension().string();
+	const std::string relativePath = "Data/Configs/";
+	const std::string extension = ".toml";
+	const auto configFolder = std::filesystem::current_path() / relativePath;
+	auto _prefix = prefix;
+	std::ranges::transform(_prefix, _prefix.begin(), tolower);
+	bool canFoundConfig = false;
 
-	// Failed to find the file or it has no extension
-	if (!exists(configPath) || ext.empty())
+	for (const auto& entry : std::filesystem::directory_iterator(configFolder))
 	{
-		// TODO: Log 
-		return false;
+		auto entry_filename = entry.path().filename().string();
+		auto entry_ext = entry.path().extension().string();
+
+		// Transform to lower
+		std::ranges::transform(entry_filename, entry_filename.begin(), tolower);
+		std::ranges::transform(entry_ext, entry_ext.begin(), tolower);
+
+		// Load the config file if we found
+		if (entry.is_regular_file() &&
+			entry_filename.find(_prefix) == 0 &&
+			entry_ext == extension)
+		{
+			GameConfig::LoadConfigsToml(entry.path().string(), Configs);
+			ps::log::Log(ps::LogType::Normal, "Loaded config: %s", entry.path().filename().string().c_str());
+			// ps::log::Print("MAIN", "Loaded config: %s", entry.path().filename().string().c_str());
+
+			if (!canFoundConfig)
+				canFoundConfig = true;
+		}
 	}
 
-	// Clear the configs of handler
-	// Configs.clear();
+	// Failed to find any config;
+	if (!canFoundConfig)
+	{
+		ps::log::Print("ERROR", "Failed to find any current game handler config in \"Data/Configs\".");
 
-	// Check if the extension is supported
-	std::ranges::transform(ext, ext.begin(), tolower);
-	if (ext == ".toml")
-	{
-		GameConfig::LoadConfigsToml(configPath.string(), Configs);
-	}
-	else if (ext == ".json")
-	{
-		GameConfig::LoadConfigsJson(configPath.string(), Configs);
-	}
-	else
-	{
-		// TODO: Log if the file is unsupported
 		return false;
 	}
 

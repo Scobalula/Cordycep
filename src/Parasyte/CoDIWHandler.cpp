@@ -425,7 +425,11 @@ bool ps::CoDIWHandler::Initialize(const std::string& gameDirectory)
 	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	LoadConfigs("CoDIWHandler.toml");
+	if (!LoadConfigs("CoDIWHandler"))
+	{
+		return false;
+	}
+
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);

@@ -51,8 +51,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,4,0,0
- PRODUCTVERSION 2,4,0,0
+ FILEVERSION 2,4,0,1
+ PRODUCTVERSION 2,4,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -69,12 +69,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Scob Crew"
             VALUE "FileDescription", "Cordycep - Call of Duty Fast File Loader"
-            VALUE "FileVersion", "2.4.0.0"
+            VALUE "FileVersion", "2.4.0.1"
             VALUE "InternalName", "Cordycep.CLI"
-            VALUE "LegalCopyright", "Copyright (C) Scobalula 2023"
+            VALUE "LegalCopyright", "Copyright (C) Scobalula & dest1yo 2024"
             VALUE "OriginalFilename", "Cordycep.CLI"
             VALUE "ProductName", "Cordycep - Call of Duty Fast File Loader"
-            VALUE "ProductVersion", "2.4.0.0"
+            VALUE "ProductVersion", "2.4.0.1"
         END
     END
     BLOCK "VarFileInfo"

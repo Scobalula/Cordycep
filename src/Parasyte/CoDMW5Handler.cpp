@@ -405,9 +405,11 @@ bool ps::CoDMW5Handler::Initialize(const std::string& gameDirectory)
 	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	// LoadConfigs("Data\\Configs\\CoDMW5Handler.json");
-	LoadConfigs("CoDMW5Handler.toml");
-	LoadConfigs("CoDMW5HandlerSP.toml");
+	if (!LoadConfigs("CoDMW5Handler"))
+	{
+		return false;
+	}
+
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);

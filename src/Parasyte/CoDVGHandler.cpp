@@ -339,8 +339,11 @@ bool ps::CoDVGHandler::Initialize(const std::string& gameDirectory)
 	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	// LoadConfigs("Data\\Configs\\CoDVGHandler.json");
-	LoadConfigs("CoDVGHandler.toml");
+	if (!LoadConfigs("CoDVGHandler"))
+	{
+		return false;
+	}
+
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);

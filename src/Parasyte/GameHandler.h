@@ -119,7 +119,7 @@ namespace ps
 		// Gets a file path for the provided fast file name with the current flags and directory.
 		virtual std::string GetFileName(const std::string& name);
 		// Loads a game configs file.
-		virtual bool LoadConfigs(const std::string& fileName);
+		virtual bool LoadConfigs(const std::string& prefix);
 		// Calculates the config if the required flag is set. If no flag is set, the first config is used.
 		virtual bool SetConfig();
 		// Resolves patterns within the game module.

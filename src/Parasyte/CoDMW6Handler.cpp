@@ -400,9 +400,11 @@ bool ps::CoDMW6Handler::Initialize(const std::string& gameDirectory)
 	Configs.clear();
 	GameDirectory = gameDirectory;
 
-	// LoadConfigs("Data\\Configs\\CoDMW6Handler.json");
-	LoadConfigs("CoDMW6Handler.toml");
-	LoadConfigs("CoDMW6HandlerSP.toml");
+	if (!LoadConfigs("CoDMW6Handler"))
+	{
+		return false;
+	}
+
 	SetConfig();
 	CopyDependencies();
 	OpenGameDirectory(GameDirectory);
