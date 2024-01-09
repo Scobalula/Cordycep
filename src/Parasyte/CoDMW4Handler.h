@@ -24,12 +24,10 @@ namespace ps
 
 		// Checks if this handler is valid for the provided directory.
 		bool IsValid(const std::string& param) override;
-		// Lists all supported files within the game.
-		// bool ListFiles();
-		// Checks if the file exists.
-		bool Exists(const std::string& ffName);
+
 		// Loads the fast file with the given name, along with any children such as localized files.
 		bool LoadFastFile(const std::string& ffName, FastFile* parent, BitFlags<FastFileFlags> flags) override;
+
 		// Cleans up any left over data after calling load.
 		bool CleanUp() override;
 	};

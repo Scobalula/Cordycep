@@ -1,10 +1,10 @@
 #include "pch.h"
 #if _WIN64
-#include "..\..\ext\CascLib\src\CascLib.h"
+#include "../../ext/CascLib/src/CascLib.h"
 #include "../../ext/CascLib/src/CascCommon.h"
 #include "Parasyte.h"
 #include "CoDMW2RHandler.h"
-#include "XAssetPackageRef.h"
+// #include "XAssetPackageRef.h"
 #include "lz4.h"
 #include <intrin.h>
 #include <array>

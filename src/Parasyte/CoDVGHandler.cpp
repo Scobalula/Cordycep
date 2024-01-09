@@ -25,7 +25,7 @@ namespace ps::CoDVGInternal
 	// Function that handles requesting and resolving patch data
 	uint64_t(__cdecl* RequestPatchedData)(void* a, void* b, void* c, void* d, void* e);
 	// Decrypts a string.
-	char* (__cdecl* DecrpytString)(char* a, size_t b, char* c);
+	char* (__cdecl* DecryptString)(char* a, size_t b, char* c);
 	// Parses a fast file and all data within it.
 	void* (__cdecl* ParseFastFile)(const void* a, const char* b, const char* c, bool d);
 	// Assigns fast file memory pointers.
@@ -203,7 +203,7 @@ namespace ps::CoDVGInternal
 		// Check if the string is actually encrypted.
 		if ((*str & 0xC0) == 0x80)
 		{
-			decrypted = DecrpytString(StrDecryptBuffer.get(), StrDecryptBufferSize, str);
+			decrypted = DecryptString(StrDecryptBuffer.get(), StrDecryptBufferSize, str);
 		}
 
 		auto strLen = strlen(decrypted) + 1;
@@ -291,7 +291,7 @@ namespace ps::CoDVGInternal
 		//		result->ExtendedDataPtrOffset = offsetof(MW4GfxImage, LoadedImagePointer);
 		//		std::memcpy(result->ExtendedData.get(), gfxImage->LoadedImagePointer, result->ExtendedDataSize);
 		//		gfxImage->LoadedImagePointer = result->ExtendedData.get();
-		//		ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for %s.", *asset, assetType);
+		//		ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for %s, Type: 0x%llx.", **asset, assetType);
 		//	}
 		//}
 // #if PRIVATE_GRAM_GRAM
@@ -309,7 +309,6 @@ namespace ps::CoDVGInternal
 // 		}
 // #endif
 		size_t toPop[2]{ assetType, (size_t)*asset };
-
 		AddAssetOffset(toPop);
 
 		// Loggary for Stiggary
@@ -370,7 +369,7 @@ bool ps::CoDVGHandler::Initialize(const std::string& gameDirectory)
 	PS_SETGAMEVAR(ps::CoDVGInternal::XAssetOffsetList);
 	PS_SETGAMEVAR(ps::CoDVGInternal::ZoneLoaderFlag);
 	PS_SETGAMEVAR(ps::CoDVGInternal::ParseFastFile);
-	PS_SETGAMEVAR(ps::CoDVGInternal::DecrpytString);
+	PS_SETGAMEVAR(ps::CoDVGInternal::DecryptString);
 	PS_DETGAMEVAR(ps::CoDVGInternal::ReadXFile);
 	PS_DETGAMEVAR(ps::CoDVGInternal::AllocateUniqueString);
 	PS_DETGAMEVAR(ps::CoDVGInternal::LinkGenericXAsset);
@@ -384,12 +383,12 @@ bool ps::CoDVGHandler::Initialize(const std::string& gameDirectory)
 	Initialized       = true;
 	StringLookupTable = std::make_unique<std::map<uint64_t, size_t>>();
 
-	Module.SaveCache(CurrentConfig->CacheName);
-	LoadAliases(CurrentConfig->AliasesName);
-
 	// Game specific buffers.
 	ps::CoDVGInternal::XAssetAlignmentBuffer = std::make_unique<uint8_t[]>(ps::CoDVGInternal::XAssetAlignmentBufferSize);
 	ps::CoDVGInternal::StrDecryptBuffer = std::make_unique<char[]>(ps::CoDVGInternal::StrDecryptBufferSize);
+
+	Module.SaveCache(CurrentConfig->CacheName);
+	LoadAliases(CurrentConfig->AliasesName);
 
 	return true;
 }
@@ -406,6 +405,14 @@ bool ps::CoDVGHandler::Deinitialize()
 	StringLookupTable = nullptr;
 	FileSystem        = nullptr;
 	GameDirectory.clear();
+
+	// Clear game specific buffers
+	ps::CoDVGInternal::ResetPatchState(0, 0, 0, 0);
+	ps::CoDVGInternal::PatchFileState = nullptr;
+	ps::CoDVGInternal::XAssetAlignmentBuffer = nullptr;
+	ps::CoDVGInternal::StrDecryptBuffer = nullptr;
+
+	ps::oodle::Clear();
 
 	return true;
 }

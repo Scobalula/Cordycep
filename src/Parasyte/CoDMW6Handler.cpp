@@ -3,9 +3,6 @@
 #include "Parasyte.h"
 #include "CoDMW6Handler.h"
 #include "OodleDecompressorV3.h"
-// Casc
-#include "CascFileSystem.h"
-#include "WinFileSystem.h"
 
 namespace ps::CoDMW6Internal
 {
@@ -27,7 +24,7 @@ namespace ps::CoDMW6Internal
 	// Function that handles requesting and resolving patch data
 	uint64_t(__cdecl* RequestPatchedData)(void* a, void* b, void* c, void* d, void* e);
 	// Decrypts a string.
-	char* (__cdecl* DecrpytString)(void* a, size_t b, char* c, char* result);
+	char* (__cdecl* DecryptString)(void* a, size_t b, char* c, char* result);
 	// Parses a fast file and all data within it.
 	void* (__cdecl* ParseFastFile)(const void* a, const char* b, const char* c, bool d);
 	// Assigns fast file memory pointers.
@@ -186,7 +183,7 @@ namespace ps::CoDMW6Internal
 
 		// Check if the string is actually encrypted.
 		if ((*str & 0xC0) == 0x80)
-			decrypted = DecrpytString(StrDecryptBuffer.get(), StrDecryptBufferSize, str, nullptr);
+			decrypted = DecryptString(StrDecryptBuffer.get(), StrDecryptBufferSize, str, nullptr);
 
 		auto strLen = strlen(decrypted) + 1;
 		auto id = XXHash64::hash(decrypted, strLen, 0);
@@ -298,12 +295,12 @@ namespace ps::CoDMW6Internal
 		}
 
 // #if PRIVATE_GRAM_GRAM
-		if (assetType == 0x3b && DecrpytString != nullptr)
+		if (assetType == 0x3b && DecryptString != nullptr)
 		{
 			char* str = *(char**)(result->Header + 8);
 			if ((*str & 0xC0) == 0x80)
 			{
-				str = DecrpytString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
+				str = DecryptString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
 			}
 			memcpy(*(char**)(result->Header + 8), str, strlen(str) + 1);
 		}
@@ -440,7 +437,7 @@ bool ps::CoDMW6Handler::Initialize(const std::string& gameDirectory)
 	PS_SETGAMEVAR(ps::CoDMW6Internal::XAssetTypeHasName);
 	PS_SETGAMEVAR(ps::CoDMW6Internal::GetXAssetHeaderSize);
 	PS_SETGAMEVAR(ps::CoDMW6Internal::GetXAssetTypeName);
-	PS_SETGAMEVAR(ps::CoDMW6Internal::DecrpytString);
+	PS_SETGAMEVAR(ps::CoDMW6Internal::DecryptString);
 	PS_SETGAMEVAR(ps::CoDMW6Internal::LoadStream);
 	PS_SETGAMEVAR(ps::CoDMW6Internal::LoadStreamFuncPointers);
 

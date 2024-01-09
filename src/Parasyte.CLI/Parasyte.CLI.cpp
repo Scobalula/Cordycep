@@ -19,7 +19,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 // File Version
-const char* FileVersion = "2.4.0.0";
+const char* FileVersion = "2.4.0.1";
 
 // Our exception handler for when a fatal error occurs.
 LONG WINAPI MyUnhandledExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
@@ -170,11 +170,10 @@ int main_ex(int argc, const char** argv)
     ps::log::Print("INIT", "-----------------------");
     ps::log::Print("INIT", "Cordycep - Version: %s", FileVersion);
     ps::log::Print("INIT", "Fast File Loader");
-    ps::log::Print("INIT", "Discord: https://discord.gg/RyqyThu");
-    ps::log::Print("INIT", "Donate: https://ko-fi.com/scobalula"); 
+    ps::log::Print("INIT", "Discord: https://discord.gg/eY2Y5p2PEp");
     ps::log::Print("INIT", "Support: https://github.com/Scobalula/Cordycep");
     ps::log::Print("INIT", "Developed by Scobalula");
-    ps::log::Print("INIT", "Updated by dest1yo");
+    ps::log::Print("INIT", "Maintained by dest1yo");
     ps::log::Print("INIT", "-----------------------");
     ps::log::Print("INIT", "Cordycep is initializing, please wait...");
 

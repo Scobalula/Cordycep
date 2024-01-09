@@ -249,7 +249,7 @@ Offset = 11
 
 [[Patterns]]
 PatternSignature = "4D 8B C6 BA 00 10 00 00 E8 ?? ?? ?? ?? 4C 8B F0"
-PatternName = "ps::CoDMW6Internal::DecrpytString"
+PatternName = "ps::CoDMW6Internal::DecryptString"
 PatternType = "Variable"
 PatternFlags = [ "ResolveFromEndOfData" ]
 Offset = 9

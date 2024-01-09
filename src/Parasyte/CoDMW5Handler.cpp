@@ -3,9 +3,6 @@
 #include "Parasyte.h"
 #include "CoDMW5Handler.h"
 #include "OodleDecompressorV2.h"
-// Casc
-#include "CascFileSystem.h"
-#include "WinFileSystem.h"
 
 namespace ps::CoDMW5Internal
 {
@@ -25,7 +22,7 @@ namespace ps::CoDMW5Internal
 	// Function that handles requesting and resolving patch data
 	uint64_t(__cdecl* RequestPatchedData)(void* a, void* b, void* c, void* d, void* e);
 	// Decrypts a string.
-	char* (__cdecl* DecrpytString)(void* a, size_t b, char* c, char* result);
+	char* (__cdecl* DecryptString)(void* a, size_t b, char* c, char* result);
 	// Parses a fast file and all data within it.
 	void* (__cdecl* ParseFastFile)(const void* a, const char* b, const char* c, bool d);
 	// Assigns fast file memory pointers.
@@ -64,7 +61,7 @@ namespace ps::CoDMW5Internal
 	// Current string offset being allocated.
 	uint32_t StrBufferOffset = 0;
 	// XFile Versions
-	int* XFileVersions = nullptr;
+	// int* XFileVersions = nullptr;
 
 	// Reads patch data from the patch file.
 	void ReadPatchFile(void* state, void* ptr, size_t size)
@@ -177,7 +174,7 @@ namespace ps::CoDMW5Internal
 
 		// Check if the string is actually encrypted.
 		if ((*str & 0xC0) == 0x80)
-			decrypted = DecrpytString(StrDecryptBuffer.get(), StrDecryptBufferSize, str, nullptr);
+			decrypted = DecryptString(StrDecryptBuffer.get(), StrDecryptBufferSize, str, nullptr);
 
 		auto strLen = strlen(decrypted) + 1;
 		auto id = XXHash64::hash(decrypted, strLen, 0);
@@ -296,12 +293,12 @@ namespace ps::CoDMW5Internal
 			*(uint64_t*)(result->Header + 0x40) = (uint64_t)result->ExtendedData.get();
 		}
 // #if PRIVATE_GRAM_GRAM
-		if (assetType == 60 && DecrpytString != nullptr)
+		if (assetType == 60 && DecryptString != nullptr)
 		{
 			char* str = *(char**)(result->Header + 8);
 			if ((*str & 0xC0) == 0x80)
 			{
-				str = DecrpytString(ps::CoDMW5Internal::StrDecryptBuffer.get(), ps::CoDMW5Internal::StrDecryptBufferSize, str, nullptr);
+				str = DecryptString(ps::CoDMW5Internal::StrDecryptBuffer.get(), ps::CoDMW5Internal::StrDecryptBufferSize, str, nullptr);
 			}
 			memcpy(*(char**)(result->Header + 8), str, strlen(str) + 1);
 		}
@@ -343,7 +340,7 @@ namespace ps::CoDMW5Internal
 		AddAssetOffset(toPop);
 
 		// Loggary for Stiggary
-		ps::log::Log(ps::LogType::Verbose, "Linked: 0x%llx (Name: %s) Type: 0x%llx @ 0x%llx", hash, name, (uint64_t)assetType, (uint64_t)result->Header);
+		ps::log::Log(ps::LogType::Verbose, "Linked: 0x%llx (Name: %s) Type: 0x%llx (%s) @ 0x%llx", hash, name, (uint64_t)assetType, GetXAssetTypeName(assetType), (uint64_t)result->Header);
 
 		return result->Header;
 	}
@@ -358,44 +355,44 @@ namespace ps::CoDMW5Internal
 		return LinkGenericXAsset(115, &a1);
 	}
 	// yer boio
-	void __fastcall sub_7FF6E22E53A0(__int64 a1)
-	{
-		int v2; // eax
-		int v3; // ebp
-		int v4; // edi
-		__int64 v5; // rsi
-		__int64* v6; // rcx
-		__int64 v7; // rax
-		__int64 v8; // rdx
-
-		*(uint32_t*)(a1 + 36) &= 0xFFFCFFFF;
-		v2 = *(uint8_t*)(a1 + 18);
-		v3 = 0;
-		v4 = 0;
-		if ((uint8_t)v2)
-		{
-			v5 = 0i64;
-			do
-			{
-				v6 = (__int64*)(v5 + *(uint64_t*)(a1 + 256));
-				v7 = *v6;
-				if (*v6)
-				{
-					v8 = *(uint64_t*)(v7 + 8);
-					v6[1] = v8;
-				}
-				else
-				{
-					v6[1] = 0i64;
-				}
-				v2 = *(unsigned __int8*)(a1 + 18);
-				++v4;
-				v5 += 72i64;
-			} while (v4 < v2);
-		}
-		if (v3 == (unsigned __int8)v2)
-			*(uint32_t*)(a1 + 36) |= 0x20000u;
-	}
+	// void __fastcall sub_7FF6E22E53A0(__int64 a1)
+	// {
+	// 	int v2; // eax
+	// 	int v3; // ebp
+	// 	int v4; // edi
+	// 	__int64 v5; // rsi
+	// 	__int64* v6; // rcx
+	// 	__int64 v7; // rax
+	// 	__int64 v8; // rdx
+	//
+	// 	*(uint32_t*)(a1 + 36) &= 0xFFFCFFFF;
+	// 	v2 = *(uint8_t*)(a1 + 18);
+	// 	v3 = 0;
+	// 	v4 = 0;
+	// 	if ((uint8_t)v2)
+	// 	{
+	// 		v5 = 0i64;
+	// 		do
+	// 		{
+	// 			v6 = (__int64*)(v5 + *(uint64_t*)(a1 + 256));
+	// 			v7 = *v6;
+	// 			if (*v6)
+	// 			{
+	// 				v8 = *(uint64_t*)(v7 + 8);
+	// 				v6[1] = v8;
+	// 			}
+	// 			else
+	// 			{
+	// 				v6[1] = 0i64;
+	// 			}
+	// 			v2 = *(unsigned __int8*)(a1 + 18);
+	// 			++v4;
+	// 			v5 += 72i64;
+	// 		} while (v4 < v2);
+	// 	}
+	// 	if (v3 == (unsigned __int8)v2)
+	// 		*(uint32_t*)(a1 + 36) |= 0x20000u;
+	// }
 }
 
 const std::string ps::CoDMW5Handler::GetName()
@@ -426,7 +423,7 @@ bool ps::CoDMW5Handler::Initialize(const std::string& gameDirectory)
 
 	ResolvePatterns();
 
-	PS_SETGAMEVAR(ps::CoDMW5Internal::XFileVersions);
+	// PS_SETGAMEVAR(ps::CoDMW5Internal::XFileVersions);
 	PS_SETGAMEVAR(ps::CoDMW5Internal::GetXAssetHeaderSize);
 	PS_SETGAMEVAR(ps::CoDMW5Internal::GetXAssetPoolSize);
 	PS_SETGAMEVAR(ps::CoDMW5Internal::RequestPatchedData);
@@ -446,7 +443,7 @@ bool ps::CoDMW5Handler::Initialize(const std::string& gameDirectory)
 	PS_SETGAMEVAR(ps::CoDMW5Internal::XAssetTypeHasName);
 	PS_SETGAMEVAR(ps::CoDMW5Internal::GetXAssetHeaderSize);
 	PS_SETGAMEVAR(ps::CoDMW5Internal::GetXAssetTypeName);
-	PS_SETGAMEVAR(ps::CoDMW5Internal::DecrpytString);
+	PS_SETGAMEVAR(ps::CoDMW5Internal::DecryptString);
 
 	PS_DETGAMEVAR(ps::CoDMW5Internal::ReadXFile);
 	PS_DETGAMEVAR(ps::CoDMW5Internal::AllocateUniqueString);
@@ -607,7 +604,7 @@ bool ps::CoDMW5Handler::LoadFastFile(const std::string& ffName, FastFile* parent
 			LoadFastFile(wwName, newFastFile, flags);
 
 		// Check for locale prefix
-		if (RegionPrefix.size() > 0)
+		if (!RegionPrefix.empty())
 		{
 			auto localeName = RegionPrefix + ffName;
 

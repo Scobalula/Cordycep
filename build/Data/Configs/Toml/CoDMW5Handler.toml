@@ -233,12 +233,12 @@ PatternType = "Null"
 PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
 Offset = 22
 
-[[Patterns]]
-PatternSignature = "0F B6 41 13 48 8D 0D ?? ?? ?? ?? 8B 04 81 C3"
-PatternName = "ps::CoDMW5Internal::XFileVersions"
-PatternType = "Variable"
-PatternFlags = [ "ResolveFromEndOfData" ]
-Offset = 7
+# [[Patterns]]
+# PatternSignature = "0F B6 41 13 48 8D 0D ?? ?? ?? ?? 8B 04 81 C3"
+# PatternName = "ps::CoDMW5Internal::XFileVersions"
+# PatternType = "Variable"
+# PatternFlags = [ "ResolveFromEndOfData" ]
+# Offset = 7
 
 [[Patterns]]
 PatternSignature = "8B CD 48 8B F0 E8 ?? ?? ?? ?? 49 8B ?? 48"
@@ -361,7 +361,7 @@ Offset = 11
 
 [[Patterns]]
 PatternSignature = "4D 8B C6 BA 00 10 00 00 E8 ?? ?? ?? ?? 4C 8B F0"
-PatternName = "ps::CoDMW5Internal::DecrpytString"
+PatternName = "ps::CoDMW5Internal::DecryptString"
 PatternType = "Variable"
 PatternFlags = [ "ResolveFromEndOfData" ]
 Offset = 9
@@ -414,3 +414,10 @@ PatternName = "ps::CoDMW5Internal::Memset"
 PatternType = "Variable"
 PatternFlags = [ "ResolveFromEndOfData" ]
 Offset = 15
+
+[[Patterns]]
+PatternSignature = "48 8B C8 E8 ?? ?? ?? ?? 8B CD 48 89 44 24 30 E8 ?? ?? ?? ?? 4C 8D 4C 24"
+PatternName = "ps::CoDMW5Internal::GetXAssetTypeName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 16

@@ -25,7 +25,7 @@ namespace ps::CoDMW4Internal
 	// Function that handles requesting and resolving patch data
 	uint64_t(__cdecl* RequestPatchedData)(void* a, void* b, void* c, void* d, void* e);
 	// Decrypts a string.
-	char* (__cdecl* DecrpytString)(char* input);
+	char* (__cdecl* DecryptString)(char* input);
 	// Parses a fast file and all data within it.
 	void* (__cdecl* ParseFastFile)(const void* a, const char* b, const char* c, bool d);
 	// Assigns fast file memory pointers.
@@ -37,6 +37,19 @@ namespace ps::CoDMW4Internal
 
 	// Gets the xasset type name.
 	// const char* (__fastcall* GetXAssetTypeName)(uint32_t xassetType);
+	const char* __fastcall GetXAssetTypeName(uint32_t xassetType)
+	{
+		// TODO: Unsafe
+		const auto handle = ps::Parasyte::GetCurrentHandler()->Module.Handle;
+		const auto typeName = *(char**)((uint64_t)handle + 0x74206B0 + (uint64_t)xassetType * 8);
+
+		if (typeName)
+		{
+			return typeName;
+		}
+
+		return nullptr;
+	}
 
 	// Zone Loader Flag (must be 1)
 	uint8_t* ZoneLoaderFlag = nullptr;
@@ -197,7 +210,15 @@ namespace ps::CoDMW4Internal
 	// Allocates a unique string entry.
 	size_t AllocateUniqueString(char* str, int type)
 	{
-		auto strLen = strlen(str) + 1;
+		char* decrypted = str;
+
+		// Check if the string is actually encrypted.
+		if ((*str & 0xC0) == 0x80)
+		{
+			decrypted = DecryptString(str);
+		}
+		
+		auto strLen = strlen(decrypted) + 1;
 		auto id = XXHash64::hash(str, strLen, 0);
 		auto potentialEntry = ps::Parasyte::GetCurrentHandler()->StringLookupTable->find(id);
 
@@ -208,6 +229,7 @@ namespace ps::CoDMW4Internal
 
 		auto offset = ps::Parasyte::GetCurrentHandler()->StringPoolSize;
 		std::memcpy(&ps::Parasyte::GetCurrentHandler()->Strings[offset], str, strLen);
+
 		ps::Parasyte::GetCurrentHandler()->StringPoolSize += strLen;
 		ps::Parasyte::GetCurrentHandler()->StringLookupTable->operator[](id) = offset;
 
@@ -228,7 +250,7 @@ namespace ps::CoDMW4Internal
 		if (temp)
 			std::memmove((void*)&name[0], &name[1], strlen(name));
 
-		auto nameLen = strlen(**asset);
+		// auto nameLen = strlen(**asset);
 		auto result = pool->LinkXAssetEntry(name, assetType, size, temp, (uint8_t*)*asset, ps::Parasyte::GetCurrentFastFile());
 
 		// If we're an image, we need to check if we want to allocate an image slot
@@ -245,17 +267,27 @@ namespace ps::CoDMW4Internal
 				result->ExtendedDataPtrOffset = 224;
 				std::memcpy(result->ExtendedData.get(), imageData, result->ExtendedDataSize);
 				*(uint8_t**)(gfxImage + 224) = result->ExtendedData.get();
-				ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for %s.", *asset, assetType);
+				// ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for %s, Type: 0x%llx.", **asset, assetType);
+			}
+		}
+
+		if (assetType == 0x29 && DecryptString != nullptr)
+		{
+			// Get the source string
+			char* str = *(char**)(result->Header + 8);
+			// Check if the string is actually encrypted.
+			if ((*str & 0xC0) == 0x80)
+			{
+				const char* decrypted = DecryptString(str);
+				memcpy(str, decrypted, strlen(decrypted) + 1);
 			}
 		}
 
 		size_t toPop[2]{ assetType, (size_t)*asset };
-
 		AddAssetOffset(toPop);
 
 		// Loggary for Stiggary
-		ps::log::Log(ps::LogType::Verbose, "%s Type: %i @ %llu.", name, assetType, (uint64_t)result->Header);
-		// ps::log::Log(ps::LogType::Verbose, "Linked: (Name: %s) Type: 0x%llx (%s) @ 0x%llx", name, (uint64_t)assetType, GetXAssetTypeName(assetType), (uint64_t)result->Header);
+		ps::log::Log(ps::LogType::Verbose, "Linked: (Name: %s) Type: 0x%llx (%s) @ 0x%llx", name, (uint64_t)assetType, GetXAssetTypeName(assetType), (uint64_t)result->Header);
 
 		return result->Header;
 	}
@@ -314,7 +346,7 @@ bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 
 	// PS_SETGAMEVAR(ps::CoDMW4Internal::GetXAssetTypeName);
 
-	PS_SETGAMEVAR(ps::CoDMW4Internal::DecrpytString);
+	PS_SETGAMEVAR(ps::CoDMW4Internal::DecryptString);
 	PS_DETGAMEVAR(ps::CoDMW4Internal::ReadXFile);
 	PS_DETGAMEVAR(ps::CoDMW4Internal::AllocateUniqueString);
 	PS_DETGAMEVAR(ps::CoDMW4Internal::LinkGenericXAsset);
@@ -323,8 +355,6 @@ bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 	PS_DETGAMEVAR(ps::CoDMW4Internal::Memset);
 	PS_INTGAMEVAR(ps::CoDMW4Internal::ResolveStreamPosition, ps::CoDMW4Internal::ResolveStreamPositionOriginal);
 
-	ps::CoDMW4Internal::XAssetAlignmentBuffer = std::make_unique<uint8_t[]>(ps::CoDMW4Internal::XAssetAlignmentBufferSize);
-
 	XAssetPoolCount   = 256;
 	XAssetPools       = std::make_unique<XAssetPool[]>(XAssetPoolCount);
 	Strings           = std::make_unique<char[]>(0x2000000);
@@ -332,12 +362,15 @@ bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 	Initialized       = true;
 	StringLookupTable = std::make_unique<std::map<uint64_t, size_t>>();
 
-	Module.SaveCache(CurrentConfig->CacheName);
+	// Game specific buffers.
+	ps::CoDMW4Internal::XAssetAlignmentBuffer = std::make_unique<uint8_t[]>(ps::CoDMW4Internal::XAssetAlignmentBufferSize);
+
 // #if _DEBUG
 // 	LoadAliases("F:\\Data\\VisualStudio\\Projects\\HydraX\\src\\HydraX\\bin\\x64\\Debug\\exported_files\\ModernWarfareAliases.json");
 // #else
 // 	LoadAliases("Data\\Aliases\\ModernWarfareAliases.json");
 // #endif
+	Module.SaveCache(CurrentConfig->CacheName);
 	LoadAliases(CurrentConfig->AliasesName);
 
 	// ps::XAsset::XAssetMemory = std::make_unique<ps::Memory>();
@@ -358,6 +391,13 @@ bool ps::CoDMW4Handler::Deinitialize()
 	FileSystem			  = nullptr;
 	GameDirectory.clear();
 
+	// Clear game specific buffers
+	ps::CoDMW4Internal::ResetPatchState(0, 0, 0, 0);
+	ps::CoDMW4Internal::PatchFileState = nullptr;
+	ps::CoDMW4Internal::XAssetAlignmentBuffer = nullptr;
+
+	ps::oodle::Clear();
+
 	return true;
 }
 
@@ -366,25 +406,9 @@ bool ps::CoDMW4Handler::IsValid(const std::string& param)
 	return strcmp(param.c_str(), "mw4") == 0;
 }
 
-// TODO:
-// bool ps::CoDMW4Handler::ListFiles()
-// {
-// 	FileSystem->EnumerateFiles(CurrentConfig->FilesDirectory, "*.ff", false, [](const std::string& name, const size_t size)
-// 	{
-// 		ps::log::Log(ps::LogType::Normal, "File: %s Available: 1", name.c_str());
-// 	});
-//
-// 	return true;
-// }
-
-bool ps::CoDMW4Handler::Exists(const std::string& ffName)
-{
-	return FileSystem->Exists(GetFileName(ffName));
-}
-
 bool ps::CoDMW4Handler::LoadFastFile(const std::string& ffName, FastFile* parent, BitFlags<FastFileFlags> flags)
 {
-	auto newFastFile = CreateUniqueFastFile(ffName);
+	const auto newFastFile = CreateUniqueFastFile(ffName);
 
 	if (newFastFile == nullptr)
 	{
@@ -478,21 +502,21 @@ bool ps::CoDMW4Handler::LoadFastFile(const std::string& ffName, FastFile* parent
 
 		// Attempt to load the techsets file, this usually contains
 		// materials, shaders, technique sets, etc.
-		if (Exists(techsetsName) && !IsFastFileLoaded(techsetsName))
+		if (DoesFastFileExists(techsetsName) && !IsFastFileLoaded(techsetsName))
 			LoadFastFile(techsetsName, newFastFile, flags);
 		// Attempt to load the ww file, same as locale, not as important
 		// but we'll still load it, as it can contain data we need.
-		if (Exists(wwName) && !IsFastFileLoaded(wwName))
+		if (DoesFastFileExists(wwName) && !IsFastFileLoaded(wwName))
 			LoadFastFile(wwName, newFastFile, flags);
 
 		// Check for locale prefix
-		if (RegionPrefix.size() > 0)
+		if (!RegionPrefix.empty())
 		{
 			auto localeName = RegionPrefix + ffName;
 
 			// Now load the locale, not as important, as usually
 			// only contains localized data.
-			if (Exists(localeName) && !IsFastFileLoaded(localeName))
+			if (DoesFastFileExists(localeName) && !IsFastFileLoaded(localeName))
 				LoadFastFile(localeName, newFastFile, flags);
 		}
 	}
