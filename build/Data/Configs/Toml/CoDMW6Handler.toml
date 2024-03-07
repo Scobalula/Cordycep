@@ -1,3 +1,4 @@
+# Updated 2024/03/07 MW2023 S2 Mid V1
 Flag = "default"
 ModuleName = "Data/Dumps/cod_dump.exe"
 CacheName = "Data/Dumps/cod_dump.cache"
@@ -129,11 +130,11 @@ PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
 Offset = 29
 
 [[Patterns]]
-PatternSignature = "8B CD 48 8B F0 E8 ?? ?? ?? ?? 49 8B ?? 48"
+PatternSignature = "48 8B ?? E8 ?? ?? ?? ?? 49 8B ?? 48 8B ?? 44 8B"
 PatternName = "ps::CoDMW6Internal::GetXAssetHeaderSize"
 PatternType = "Variable"
 PatternFlags = [ "ResolveFromEndOfData" ]
-Offset = 6
+Offset = 4
 
 [[Patterns]]
 PatternSignature = "4C 8D 05 4F 02 00 00 48 8B CB E8 ?? ?? ?? ?? 84 C0"
@@ -192,7 +193,7 @@ PatternFlags = [ "ResolveFromEndOfData" ]
 Offset = 9
 
 [[Patterns]]
-PatternSignature = "48 89 5C 24 28 E8 ?? ?? ?? ?? 48 8B C7 49"
+PatternSignature = "48 89 5C 24 28 E8 ?? ?? ?? ?? 45 33 E4 4D"
 PatternName = "ps::CoDMW6Internal::AddAssetOffset"
 PatternType = "Variable"
 PatternFlags = [ "ResolveFromEndOfData" ]
@@ -240,12 +241,13 @@ PatternType = "Variable"
 PatternFlags = [ "ResolveFromEndOfData" ]
 Offset = 5
 
-[[Patterns]]
-PatternSignature = "E8 ?? ?? ?? ?? B9 95 00 00 00 E8 ?? ?? ?? ?? 44"
-PatternName = "ps::CoDMW6Internal::GetXAssetHeaderSize"
-PatternType = "Variable"
-PatternFlags = [ "ResolveFromEndOfData" ]
-Offset = 11
+# Duplicate pattern so I haven't updated it yet.
+# [[Patterns]]
+# PatternSignature = "E8 ?? ?? ?? ?? B9 95 00 00 00 E8 ?? ?? ?? ?? 44"
+# PatternName = "ps::CoDMW6Internal::GetXAssetHeaderSize"
+# PatternType = "Variable"
+# PatternFlags = [ "ResolveFromEndOfData" ]
+# Offset = 11
 
 [[Patterns]]
 PatternSignature = "4D 8B C6 BA 00 10 00 00 E8 ?? ?? ?? ?? 4C 8B F0"
