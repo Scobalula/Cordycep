@@ -482,12 +482,12 @@ bool ps::CoDIWHandler::Initialize(const std::string& gameDirectory)
 
 bool ps::CoDIWHandler::Deinitialize()
 {
-	Module.Free();                    
-	XAssetPoolCount        = 256;     
+	Module.Free();
+	XAssetPoolCount        = 256;
 	XAssetPools            = nullptr;
 	Strings                = nullptr;
-	StringPoolSize         = 0;       
-	Initialized            = false;   
+	StringPoolSize         = 0;
+	Initialized            = false;
 	StringLookupTable      = nullptr;
 	FileSystem             = nullptr;
 	GameDirectory.clear();

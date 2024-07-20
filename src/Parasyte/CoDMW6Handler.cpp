@@ -536,12 +536,12 @@ bool ps::CoDMW6Handler::Initialize(const std::string& gameDirectory)
 
 bool ps::CoDMW6Handler::Deinitialize()
 {
-	Module.Free();                    
-	XAssetPoolCount        = 256;     
+	Module.Free();
+	XAssetPoolCount        = 256;
 	XAssetPools            = nullptr;
 	Strings                = nullptr;
-	StringPoolSize         = 0;       
-	Initialized            = false;   
+	StringPoolSize         = 0;
+	Initialized            = false;
 	StringLookupTable      = nullptr;
 	FileSystem             = nullptr;
 	GameDirectory.clear();

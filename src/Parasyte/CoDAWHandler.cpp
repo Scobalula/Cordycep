@@ -1042,13 +1042,13 @@ bool ps::CoDAWHandler::Initialize(const std::string& gameDirectory)
 
 		GameDirectory = gameDirectory;
 
-		XAssetPoolCount   = 256;                                                         
+		XAssetPoolCount   = 256;
 		XAssetPools       = std::make_unique<XAssetPool[]>(XAssetPoolCount);
-		Strings           = std::make_unique<char[]>(0x2000000);                         
-		StringPoolSize    = 0;                                                           
-		Initialized       = true;                                                        
+		Strings           = std::make_unique<char[]>(0x2000000);
+		StringPoolSize    = 0;
+		Initialized       = true;
 		StringLookupTable = std::make_unique<std::map<uint64_t, size_t>>();
-		AW_FastFileHandle = INVALID_HANDLE_VALUE;                                        
+		AW_FastFileHandle = INVALID_HANDLE_VALUE;
 
 		Module.SaveCache("Data\\Dumps\\s1_mp64_ship_dump.cache");
 

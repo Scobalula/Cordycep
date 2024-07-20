@@ -1053,13 +1053,13 @@ bool ps::CoDMW2RHandler::Initialize(const std::string& gameDirectory)
 
 	GameDirectory = gameDirectory;
 
-	XAssetPoolCount      = 256;                                                         
+	XAssetPoolCount      = 256;
 	XAssetPools          = std::make_unique<XAssetPool[]>(XAssetPoolCount);
-	Strings              = std::make_unique<char[]>(0x2000000);                         
-	StringPoolSize       = 0;                                                           
-	Initialized          = true;                                                        
+	Strings              = std::make_unique<char[]>(0x2000000);
+	StringPoolSize       = 0;
+	Initialized          = true;
 	StringLookupTable    = std::make_unique<std::map<uint64_t, size_t>>();
-	MW2CR_FastFileHandle = INVALID_HANDLE_VALUE;                                        
+	MW2CR_FastFileHandle = INVALID_HANDLE_VALUE;
 
 	Module.SaveCache("Data\\Dumps\\MW2CR_dump.cache");
 
@@ -1078,12 +1078,12 @@ bool ps::CoDMW2RHandler::Deinitialize()
 {
 	MW2CR_DB_Reset();
 
-	Module.Free();                    
-	XAssetPoolCount        = 256;     
+	Module.Free();
+	XAssetPoolCount        = 256;
 	XAssetPools            = nullptr;
 	Strings                = nullptr;
-	StringPoolSize         = 0;       
-	Initialized            = false;   
+	StringPoolSize         = 0;
+	Initialized            = false;
 	StringLookupTable      = nullptr;
 	FileSystem             = nullptr;
 	GameDirectory.clear();

@@ -565,12 +565,12 @@ bool ps::CoDGhostsHandler::Deinitialize()
 {
 	CoDGhostsInternal::G_DB_Reset();
 
-	Module.Free();                    
-	XAssetPoolCount        = 256;     
+	Module.Free();
+	XAssetPoolCount        = 256;
 	XAssetPools            = nullptr;
 	Strings                = nullptr;
-	StringPoolSize         = 0;       
-	Initialized            = false;   
+	StringPoolSize         = 0;
+	Initialized            = false;
 	StringLookupTable      = nullptr;
 	FileSystem             = nullptr;
 	GameDirectory.clear();
