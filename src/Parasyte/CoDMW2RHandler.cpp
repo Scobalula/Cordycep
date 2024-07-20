@@ -1,7 +1,6 @@
 #include "pch.h"
 #if _WIN64
-#include "../../ext/CascLib/src/CascLib.h"
-#include "../../ext/CascLib/src/CascCommon.h"
+#include "CascLib.h"
 #include "Parasyte.h"
 #include "CoDMW2RHandler.h"
 // #include "XAssetPackageRef.h"
@@ -81,9 +80,9 @@ void MW2CR_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset,
 
 		if (isLocalized)
 		{
-			if (!ps::Parasyte::Instance().CurrentHandler->RegionPrefix.empty())
+			if (!ps::Parasyte::GetCurrentHandler()->RegionPrefix.empty())
 			{
-				soundFilePath = ps::Parasyte::Instance().CurrentHandler->RegionPrefix + soundFilePath;
+				soundFilePath = ps::Parasyte::GetCurrentHandler()->RegionPrefix + soundFilePath;
 			}
 			else
 			{
@@ -115,7 +114,7 @@ void MW2CR_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset,
 	}
 	else
 	{
-		ps::log::Log(ps::LogType::Verbose, "WARNING:  Failed to open sound file for sound: %s.", name);
+		ps::log::Log(ps::LogType::Verbose, "WARNING: Failed to open sound file for sound: %s.", name);
 	}
 }
 
@@ -328,7 +327,7 @@ void MW2CR_DB_ReadXFile(void* ptr, size_t size)
 		if (result != MW2CR_DecompressedBufferSize)
 		{
 			ps::log::Log(ps::LogType::Error, "Failed to decompress data.");
-			throw new std::exception();
+			throw std::exception();
 		}
 
 		MW2CR_CurrentBlock++;
@@ -421,7 +420,7 @@ MW2CR_XAssetEntry* DB_LinkMW2CR_XAssetEntry(MW2CR_XAssetType xassetType, MW2CR_X
 	};
 
 	auto name = MW2CR_DB_GetXAssetName(&xasset);
-	auto pool = &ps::Parasyte::Instance().CurrentHandler->XAssetPools[xassetType];
+	auto pool = &ps::Parasyte::GetCurrentHandler()->XAssetPools[xassetType];
 	auto temp = name[0] == ',';
 	auto size = MW2CR_DB_GetXAssetTypeSize(xassetType);
 
@@ -550,7 +549,7 @@ MW2CR_XAssetEntry* DB_LinkMW2CR_XAssetEntry(MW2CR_XAssetType xassetType, MW2CR_X
 
 void* DB_FindMW2CR_XAssetHeader(MW2CR_XAssetType xassetType, const char* name, int allowCreateDefault)
 {
-	auto pool = &ps::Parasyte::Instance().CurrentHandler->XAssetPools[xassetType];
+	auto pool = &ps::Parasyte::GetCurrentHandler()->XAssetPools[xassetType];
 	auto result = pool->FindXAssetEntry(name, strlen(name), xassetType);
 
 	if (result != nullptr)
@@ -585,17 +584,17 @@ __int64 MW2CR_DB_GetString(const char* str, unsigned int user)
 {
 	auto strLen = strlen(str) + 1;
 	auto id = XXHash64::hash(str, strLen, 0);
-	auto potentialEntry = ps::Parasyte::Instance().CurrentHandler->StringLookupTable->find(id);
+	auto potentialEntry = ps::Parasyte::GetCurrentHandler()->StringLookupTable->find(id);
 
-	if (potentialEntry != ps::Parasyte::Instance().CurrentHandler->StringLookupTable->end())
+	if (potentialEntry != ps::Parasyte::GetCurrentHandler()->StringLookupTable->end())
 	{
 		return (int)potentialEntry->second;
 	}
 
-	auto offset = ps::Parasyte::Instance().CurrentHandler->StringPoolSize;
-	std::memcpy(&ps::Parasyte::Instance().CurrentHandler->Strings[offset], str, strLen);
-	ps::Parasyte::Instance().CurrentHandler->StringPoolSize += strLen;
-	ps::Parasyte::Instance().CurrentHandler->StringLookupTable->operator[](id) = offset;
+	auto offset = ps::Parasyte::GetCurrentHandler()->StringPoolSize;
+	std::memcpy(&ps::Parasyte::GetCurrentHandler()->Strings[offset], str, strLen);
+	ps::Parasyte::GetCurrentHandler()->StringPoolSize += strLen;
+	ps::Parasyte::GetCurrentHandler()->StringLookupTable->operator[](id) = offset;
 
 	return offset;
 }
@@ -1054,13 +1053,13 @@ bool ps::CoDMW2RHandler::Initialize(const std::string& gameDirectory)
 
 	GameDirectory = gameDirectory;
 
-	XAssetPoolCount   = 256;
-	XAssetPools       = std::make_unique<XAssetPool[]>(XAssetPoolCount);
-	Strings           = std::make_unique<char[]>(0x2000000);
-	StringPoolSize    = 0;
-	Initialized       = true;
-	StringLookupTable = std::make_unique<std::map<uint64_t, size_t>>();
-	MW2CR_FastFileHandle    = INVALID_HANDLE_VALUE;
+	XAssetPoolCount      = 256;                                                         
+	XAssetPools          = std::make_unique<XAssetPool[]>(XAssetPoolCount);
+	Strings              = std::make_unique<char[]>(0x2000000);                         
+	StringPoolSize       = 0;                                                           
+	Initialized          = true;                                                        
+	StringLookupTable    = std::make_unique<std::map<uint64_t, size_t>>();
+	MW2CR_FastFileHandle = INVALID_HANDLE_VALUE;                                        
 
 	Module.SaveCache("Data\\Dumps\\MW2CR_dump.cache");
 
@@ -1079,31 +1078,31 @@ bool ps::CoDMW2RHandler::Deinitialize()
 {
 	MW2CR_DB_Reset();
 
-	Module.Free();
-	XAssetPoolCount   = 256;
-	XAssetPools       = nullptr;
-	Strings           = nullptr;
-	StringPoolSize    = 0;
-	Initialized       = false;
-	StringLookupTable = nullptr;
-	FileSystem        = nullptr;
+	Module.Free();                    
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	for (auto& MW2CR_SoundFile : MW2CR_SoundFiles)
 	{
-		if (MW2CR_SoundFile != NULL && MW2CR_SoundFile != INVALID_HANDLE_VALUE)
+		if (MW2CR_SoundFile != nullptr && MW2CR_SoundFile != INVALID_HANDLE_VALUE)
 		{
 			CascCloseFile(MW2CR_SoundFile);
-			MW2CR_SoundFile = NULL;
+			MW2CR_SoundFile = nullptr;
 		}
 	}
 
 	for (auto& MW2CR_LocalizedSoundFile : MW2CR_LocalizedSoundFiles)
 	{
-		if (MW2CR_LocalizedSoundFile != NULL && MW2CR_LocalizedSoundFile != INVALID_HANDLE_VALUE)
+		if (MW2CR_LocalizedSoundFile != nullptr && MW2CR_LocalizedSoundFile != INVALID_HANDLE_VALUE)
 		{
 			CascCloseFile(MW2CR_LocalizedSoundFile);
-			MW2CR_LocalizedSoundFile = NULL;
+			MW2CR_LocalizedSoundFile = nullptr;
 		}
 	}
 
@@ -1201,7 +1200,7 @@ bool ps::CoDMW2RHandler::LoadFastFile(const std::string& ffName, FastFile* paren
 
 	// We must fix up any XModel surfs, as we may have overrode previous
 	// temporary entries, etc.
-	ps::Parasyte::Instance().CurrentHandler->XAssetPools[7].EnumerateEntries([](ps::XAsset* asset)
+	ps::Parasyte::GetCurrentHandler()->XAssetPools[7].EnumerateEntries([](ps::XAsset* asset)
 	{
 		MW2CR_DB_XModelSurfsFixup((__int64)asset->Header);
 	});
@@ -1226,7 +1225,7 @@ bool ps::CoDMW2RHandler::LoadFastFile(const std::string& ffName, FastFile* paren
 			LoadFastFile(pathName, newFastFile, flags);
 
 		// Check for locale prefix
-		if (RegionPrefix.size() > 0)
+		if (!RegionPrefix.empty())
 		{
 			auto localeName = RegionPrefix + ffName;
 			auto localePatchName = RegionPrefix + "patch_" + ffName;

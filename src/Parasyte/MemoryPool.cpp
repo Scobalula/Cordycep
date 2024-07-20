@@ -23,7 +23,7 @@ ps::MemoryPool::MemoryPool(const size_t elemSize, const size_t poolSize)
 void* ps::MemoryPool::Allocate(const size_t elemSize)
 {
 	auto freeSlot = FreeSlot;
-	*(uintptr_t*)&FreeSlot = (uintptr_t)(*(uintptr_t**)FreeSlot);
+	FreeSlot = (char*)(*(uintptr_t**)FreeSlot);
 	Allocations++;
 	return freeSlot;
 }
@@ -33,13 +33,13 @@ void ps::MemoryPool::Deallocate(void* elem)
 	std::memset(elem, 0, ElementSize - 16);
 
 	*(uintptr_t*)elem = *(uintptr_t*)FreeSlot;
-	*(uintptr_t*)&FreeSlot = (uintptr_t)elem;
+	FreeSlot = (char*)elem;
 	Allocations--;
 }
 
 bool ps::MemoryPool::HasFreeSlot() const
 {
-	return *(uintptr_t*)FreeSlot != 0;
+	return FreeSlot != nullptr && *(uintptr_t*)FreeSlot != 0;
 }
 
 const size_t ps::MemoryPool::AllocationCount() const

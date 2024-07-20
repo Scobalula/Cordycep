@@ -4,7 +4,7 @@
 
 namespace ps
 {
-	// A class to handle V2 Oodle Fast Files.
+	// A class to handle Oodle V2 Fast Files.
 	class OodleDecompressorV2 : public Decompressor
 	{
 	private:
@@ -19,7 +19,7 @@ namespace ps
 		// Decompress data.
 		size_t Decompress(uint8_t* input, size_t inputSize, uint8_t* output, size_t outputSize);
 		// Reads decompressed data from the data stream.
-		size_t Read(void* ptr, const size_t size, const size_t offset);
+		size_t Read(void* ptr, const size_t size, const size_t offset) override;
 	};
 }
 

@@ -12,7 +12,7 @@ bool ps::GameHandler::GetFiles(const std::string& pattern, std::vector<std::stri
 		return false;
 	}
 
-	ps::log::Log(ps::LogType::Normal, "GameHandler filesDirectory: %s.", CurrentConfig->FilesDirectory.c_str());
+	ps::log::Log(ps::LogType::Normal, "Game files sub-directory: \"%s\".", CurrentConfig->FilesDirectory.c_str());
 
 	// Get all the files in the directory and convert them to the form we want
 	FileSystem->EnumerateFiles(CurrentConfig->FilesDirectory, pattern + ".ff", true, [&results](const std::string& fileName, const size_t size)
@@ -78,7 +78,7 @@ bool ps::GameHandler::LogFiles()
 		ps::log::Log(ps::LogType::Normal, "File: %s", file.c_str());
 	}
 
-	ps::log::Log(ps::LogType::Normal, "Listed: %lu files.", files.size());
+	ps::log::Log(ps::LogType::Normal, "Listed: %llu files.", files.size());
 
 	return true;
 }
@@ -183,6 +183,12 @@ bool ps::GameHandler::IsFastFileLoaded(const std::string& ffName)
     });
 
 	return isFound;
+}
+
+bool ps::GameHandler::DumpAliases()
+{
+    // TODO: Log for unsupported handlers
+	return false;
 }
 
 bool ps::GameHandler::UnloadAllFastFiles()
@@ -406,23 +412,34 @@ bool ps::GameHandler::SetConfig()
 		// TODO: Log 
 		return false;
 	}
-
-	// Use the config with the flag set when we have more than one config.
-	if (Configs.size() > 1)
+	else // Use the config with the flag set when we have more than one config.
 	{
-		for (auto& [flag, config] : Configs)
+		// TODO: Optimize
+		if (Flags.empty())
 		{
-			if (HasFlag(flag))
+			for (auto& [flag, config] : Configs)
 			{
-				CurrentConfig = &config;
-				return true;
+				if (flag == "default")
+				{
+					CurrentConfig = &config;
+					return true;
+				}
 			}
 		}
-	}
+		else
+		{
+			for (auto& [flag, config] : Configs)
+			{
+				if (HasFlag(flag))
+				{
+					CurrentConfig = &config;
+					return true;
+				}
+			}
+		}
 
-	// If no flag is set or we just have only one config, the first config is used.
-	CurrentConfig = &Configs.begin()->second;
-	return true;
+		return false;
+	}
 }
 
 bool ps::GameHandler::ResolvePatterns()

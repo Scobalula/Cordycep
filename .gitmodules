@@ -1,0 +1,8 @@
+[submodule "ext/libtomcrypt"]
+	path = ext/libtomcrypt
+	url = https://github.com/libtom/libtomcrypt.git
+	branch = develop
+[submodule "ext/libtommath"]
+	path = ext/libtommath
+	url = https://github.com/libtom/libtommath.git
+	branch = develop

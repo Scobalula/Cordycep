@@ -7,7 +7,7 @@ namespace ps
 	class CoDMW6Handler : public GameHandler
 	{
 	public:
-		// Creates a new handler for MW6.
+		// Creates a new handler for the given title.
 		CoDMW6Handler() : GameHandler(0x4B4F4D41594D4159) {}
 
 		// Gets the shorthand used for setting the handler.
@@ -22,6 +22,8 @@ namespace ps
 		bool IsValid(const std::string& param) override;
 		// Loads the fast file with the given name, along with any children such as localized files.
 		bool LoadFastFile(const std::string& ffName, FastFile* parent, BitFlags<FastFileFlags> flags) override;
+		// Dumps the aliases.
+		bool DumpAliases() override;
 		// Cleans up any left over data after calling load.
 		bool CleanUp() override;
 		// Gets a file path for the provided fast file name with the current flags and directory.

@@ -3,11 +3,11 @@
 
 namespace ps
 {
-	// A class to handle Call of Duty: Modern Warfare (2019) Files
+	// A class to handle Call of Duty: Infinite Warfare Files
 	class CoDIWHandler : public GameHandler
 	{
 	public:
-		// Creates a new handler for MW4.
+		// Creates a new handler for the given title.
 		CoDIWHandler() : GameHandler(0x4652415749464E49) {}
 
 		// Gets the shorthand used for setting the handler.

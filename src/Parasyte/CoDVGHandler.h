@@ -7,7 +7,7 @@ namespace ps
 	class CoDVGHandler : public GameHandler
 	{
 	public:
-		// Creates a new handler for this title.
+		// Creates a new handler for the given title.
 		CoDVGHandler() : GameHandler(0x44524155474E4156) {}
 
 		// Gets the shorthand used for setting the handler.

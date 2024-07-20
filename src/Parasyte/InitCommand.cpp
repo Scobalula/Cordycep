@@ -35,8 +35,8 @@ void ps::InitCommand::Execute(ps::CommandParser& parser) const
 		auto poolsAddress   = (uintptr_t)ps::Parasyte::GetCurrentHandler()->XAssetPools.get();
 		auto stringsAddress = (uintptr_t)ps::Parasyte::GetCurrentHandler()->Strings.get();
 		auto stringSize     = (uint32_t)gameDirectory.size();
-		auto numFlags       = (uint32_t)ps::Parasyte::GetCurrentHandler()->Flags.size();
 		auto& gameDirectory = ps::Parasyte::GetCurrentHandler()->GameDirectory;
+		auto numFlags       = (uint32_t)ps::Parasyte::GetCurrentHandler()->Flags.size();
 
 		output.write((const char*)&ps::Parasyte::GetCurrentHandler()->ID, sizeof(ps::Parasyte::GetCurrentHandler()->ID));
 		output.write((const char*)&poolsAddress, sizeof(poolsAddress));

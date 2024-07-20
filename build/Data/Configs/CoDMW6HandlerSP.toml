@@ -1,0 +1,298 @@
+# Updated 2024/05/09
+Flag = "sp"
+ModuleName = "Data/Dumps/sp23-cod_dump.exe"
+CacheName = "Data/Dumps/sp23-cod_dump.cache"
+FilesDirectory = "sp23"
+AliasesName = ""
+Dependencies = [ "oo2core_8_win64.dll", "_retail_/oo2core_8_win64.dll" ]
+CommonFiles = [
+  "global",
+  "global_cp_jup",
+  "global_shared_mp_cp_jup",
+  "global_sp_cp_jup",
+  "global_sp_jup",
+  "global_stream_mp_cp_jup",
+  "ingame",
+  "ingame_cp_jup",
+  "ingame_shared_mp_cp_jup",
+  "ingame_sp_jup",
+  "frontend_ui",
+  "frontend_ui_boot"
+]
+
+[[Patterns]]
+PatternSignature = "75 1C E8 ?? ?? ?? ?? 0F B7 D8 E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 3
+
+[[Patterns]]
+PatternSignature = "75 1C E8 ?? ?? ?? ?? 0F B7 D8 E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 11
+
+[[Patterns]]
+PatternSignature = "75 1C E8 ?? ?? ?? ?? 0F B7 D8 E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 26
+
+[[Patterns]]
+PatternSignature = "41 B8 01 00 00 00 48 8B 09 E8 ?? ?? ?? ?? 89 43 18"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 10
+
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 8D 53 E0 48 8B CB E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 13
+
+[[Patterns]]
+PatternSignature = "B1 01 E8 ?? ?? ?? ?? 48 8B D7 48 8B CB E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 14
+
+[[Patterns]]
+PatternSignature = "B9 50 00 00 00 E8 ?? ?? ?? ?? 48 89 03 E8 ?? ?? ?? ?? 48 8B 0B 84 C0 0F 95 C2"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 14
+
+[[Patterns]]
+PatternSignature = "B9 50 00 00 00 E8 ?? ?? ?? ?? 48 89 03 E8 ?? ?? ?? ?? 48 8B 0B 84 C0 0F 95 C2"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 27
+
+[[Patterns]]
+PatternSignature = "48 89 42 18 E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8B 0B"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 5
+
+[[Patterns]]
+PatternSignature = "48 89 42 18 E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8B 0B"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 10
+
+[[Patterns]]
+PatternSignature = "48 89 42 18 E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8B 0B"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 20
+
+[[Patterns]]
+PatternSignature = "48 8B D7 48 8D 4F 38 E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 8
+
+[[Patterns]]
+PatternSignature = "B9 ?? 00 00 00 E8 ?? ?? ?? ?? 48 8B C8 48 89 03 E8 ?? ?? ?? ?? 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 17
+
+[[Patterns]]
+PatternSignature = "B9 25 00 00 00 48 C1 EB 3F E8 ?? ?? ?? ?? 48 89 07 84 DB 75"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 33
+
+[[Patterns]]
+PatternSignature = "B9 0E 00 00 00 E8 ?? ?? ?? ?? 48 89 03 E8 ?? ?? ?? ?? E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 14
+
+[[Patterns]]
+PatternSignature = "B9 0E 00 00 00 E8 ?? ?? ?? ?? 48 89 03 E8 ?? ?? ?? ?? E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 19
+
+[[Patterns]]
+PatternSignature = "B9 0E 00 00 00 E8 ?? ?? ?? ?? 48 89 03 E8 ?? ?? ?? ?? E8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 29
+
+[[Patterns]]
+PatternSignature = "8B CD 48 8B F0 E8 ?? ?? ?? ?? 49 8B ?? 48"
+PatternName = "ps::CoDMW6Internal::GetXAssetHeaderSize"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 6
+
+[[Patterns]]
+PatternSignature = "4C 8D 05 4F 02 00 00 48 8B CB E8 ?? ?? ?? 01 84 C0"
+PatternName = "ps::CoDMW6Internal::RequestPatchedData"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 11
+
+[[Patterns]]
+PatternSignature = "4C 89 64 24 20 4C 8D 05 ?? ?? ?? ?? 48 8B CB E8"
+PatternName = "ps::CoDMW6Internal::RequestFastFileData"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+[[Patterns]]
+PatternSignature = "4C 89 BB D8 01 00 00 4C 8D 0D ?? ?? ?? ?? 4C 89"
+PatternName = "ps::CoDMW6Internal::RequestPatchFileData"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 10
+
+[[Patterns]]
+PatternSignature = "48 83 EC 28 E8 ?? ?? ?? ?? 89 05 ?? ?? ?? ?? 48 83 C4 28 C3"
+PatternName = "ps::CoDMW6Internal::InitializePatch"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 5
+
+[[Patterns]]
+PatternSignature = "49 8B E8 4C 89 7C 24 68 4C 8D 25 ?? ?? ?? ? 48"
+PatternName = "ps::CoDMW6Internal::RequestFinalFileData"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 11
+
+[[Patterns]]
+PatternSignature = "48 81 C1 88 07 00 00 E8 ?? ?? ?? ?? 48 89 1D ?? ?? ?? ?? 48"
+PatternName = "ps::CoDMW6Internal::AssignFastFileMemoryPointers"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+[[Patterns]]
+PatternSignature = "48 8B CF E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 84 C0 74 05 E8"
+PatternName = "ps::CoDMW6Internal::InitAssetAlignmentInternal"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 9
+
+[[Patterns]]
+PatternSignature = "48 89 5C 24 28 E8 ?? ?? ?? ?? 48 8B C7 49"
+PatternName = "ps::CoDMW6Internal::AddAssetOffset"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 6
+
+[[Patterns]]
+PatternSignature = "48 63 C1 4C 8D 15 ?? ?? ?? ?? 4D 8B 14 C2"
+PatternName = "ps::CoDMW6Internal::XAssetOffsetList"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 6
+
+[[Patterns]]
+PatternSignature = "40 53 80 3D ?? ?? ?? ?? 00 4C 8D 1D ?? ?? ?? FD"
+PatternName = "ps::CoDMW6Internal::ZoneLoaderFlag"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfByteCmp" ]
+Offset = 4
+
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? 00 EB 05 E8 ?? ?? ?? 00 8B D8 83"
+PatternName = "ps::CoDMW6Internal::ParseFastFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+[[Patterns]]
+PatternSignature = "48 8B 12 48 8B F9 8B CB E8 ?? ?? ?? ?? 8B"
+PatternName = "ps::CoDMW6Internal::GetXAssetHash"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 9
+
+[[Patterns]]
+PatternSignature = "0F B6 4B 11 48 8B 13 E8 ?? ?? ?? ?? 48 8B F8"
+PatternName = "ps::CoDMW6Internal::GetXAssetName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 8
+
+[[Patterns]]
+PatternSignature = "0F B6 4B 11 E8 ?? ?? ?? ?? 84 C0 74 ?? 0F"
+PatternName = "ps::CoDMW6Internal::XAssetTypeHasName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 5
+
+[[Patterns]]
+PatternSignature = "4D 8B C6 BA 00 10 00 00 E8 ?? ?? ?? ?? 4C 8B F0"
+PatternName = "ps::CoDMW6Internal::DecryptString"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 9
+
+[[Patterns]]
+PatternSignature = "48 8B CB E8 ?? ?? ?? ?? 8D 4E 0E E8 ?? ?? ?? ?? 48 8B D3"
+PatternName = "ps::CoDMW6Internal::ReadXFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 4
+
+[[Patterns]]
+PatternSignature = "41 B8 04 00 00 00 48 8D 4C 24 40 E8 ?? ?? ?? ?? 8B 08 48"
+PatternName = "ps::CoDMW6Internal::AllocateUniqueString"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 12
+
+[[Patterns]]
+PatternSignature = "B9 09 00 00 00 E8 ?? ?? ?? ?? 48 8B 4C 24 30 48"
+PatternName = "ps::CoDMW6Internal::LinkGenericXAsset"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 6
+
+[[Patterns]]
+PatternSignature = "4C 8B C5 E8 ?? ?? ?? ?? 48 03 FD 48 01 AB 08 02 00 00"
+PatternName = "ps::CoDMW6Internal::ReadPatchFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 4
+
+[[Patterns]]
+PatternSignature = "48 83 BB 18 02 00 00 00 48 8D 05 ?? ?? ?? ?? 48 89 B3 ?? ?? ?? ?? 48"
+PatternName = "ps::CoDMW6Internal::ReadFastFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 25
+
+[[Patterns]]
+PatternSignature = "4C 69 C7 B8 00 00 00 48 8B D3 E8 ?? ?? ?? ?? 84 C0"
+PatternName = "ps::CoDMW6Internal::LoadStream"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 11
+
+[[Patterns]]
+PatternSignature = "84 C9 74 ?? 48 8B 05 ?? ?? ?? ?? 4C 8D 4C 24 50"
+PatternName = "ps::CoDMW6Internal::LoadStreamFuncPointers"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 7
+
+[[Patterns]]
+PatternSignature = "48 8B C8 E8 ?? ?? ?? ?? 8B CD 48 89 44 24 30 E8 ?? ?? ?? ?? 4C 8D 4C 24"
+PatternName = "ps::CoDMW6Internal::GetXAssetTypeName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 16
+
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? E9 9F 00 00 00 E8 ?? ?? ?? ?? B9"
+PatternName = "ps::CoDMW6Internal::ResolveStreamPosition"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1

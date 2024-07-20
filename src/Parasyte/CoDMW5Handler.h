@@ -3,11 +3,11 @@
 
 namespace ps
 {
-	// A class to handle Call of Duty: Modern Warfare (2019) Files
+	// A class to handle Call of Duty: Modern Warfare 2 (2022) Files
 	class CoDMW5Handler : public GameHandler
 	{
 	public:
-		// Creates a new handler for MW4.
+		// Creates a new handler for the given title.
 		CoDMW5Handler() : GameHandler(0x3232524157444F4D) {}
 
 		// Gets the shorthand used for setting the handler.

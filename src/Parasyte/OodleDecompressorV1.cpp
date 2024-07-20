@@ -88,7 +88,9 @@ size_t ps::OodleDecompressorV1::Read(void* ptr, const size_t size, const size_t 
 			DecompressedBufferSize);
 
 		if (result != DecompressedBufferSize)
-			throw new std::exception("Failed to decompress Oodle Data.");
+		{
+			throw std::exception("Failed to decompress Oodle Data.");
+		}
 	}
 
 	return size;

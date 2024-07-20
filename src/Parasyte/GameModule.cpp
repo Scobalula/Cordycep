@@ -4,28 +4,44 @@
 #include "Parasyte.h"
 #include "detours/detours.h"
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <imagehlp.h>
+#pragma comment(lib, "imagehlp.lib")
+#include <stdio.h>
+
 // For manipulating PE Module
-#include <DbgHelp.h>
-#pragma comment(lib, "dbghelp.lib")
+//#include <DbgHelp.h>
+//#pragma comment(lib, "dbghelp.lib")
 
-bool ps::GameModule::Load(std::string filePath)
+
+
+bool ps::GameModule::Load(const std::string& filePath)
 {
-    if (Handle != NULL)
-    {
-        // Free if already loaded
+    // Free game handle if already loaded
+    if (Handle != nullptr)
         FreeLibrary(Handle);
-    }
 
-    Handle = LoadLibraryA(filePath.c_str());
+    // Set game dir for finding dlls game need
+    SetDllDirectory(ps::Parasyte::GetCurrentHandler()->GameDirectory.c_str());
+    // Now we can load game handle
+    // TODO:
+    Handle = LoadLibraryEx(filePath.c_str(), nullptr, DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
 
-    if (Handle == NULL)
+    // When we failed to load game handle
+    if (Handle == nullptr)
     {
-        // TODO: Log
-        Checksum = 0;
         Loaded = false;
+        Checksum = 0;
+
         return false;
     }
 
+    // We need to fix the IAT of game handle for using imported functions from dlls
+    // TODO:
+    FixIAT(Handle);
+
+    // Loaded well
     Loaded = true;
     Checksum = CalculateModuleCodeChecksum();
 
@@ -34,7 +50,7 @@ bool ps::GameModule::Load(std::string filePath)
 
 bool ps::GameModule::Free()
 {
-    if (Handle != NULL)
+    if (Handle != nullptr)
     {
         FreeLibrary(Handle);
         return true;
@@ -112,16 +128,18 @@ char* ps::GameModule::FindVariableAddress(const Pattern& pattern, size_t offsetT
     }
 
     ps::log::Log(ps::LogType::Verbose, "Successfully located: %s", name.c_str());
+
     return resolved;
 }
 
 bool ps::GameModule::FindVariableAddress(void* variable, const Pattern& pattern, size_t offsetToData, std::string name, ScanType type)
 {
     *(uint64_t*)variable = (uint64_t)FindVariableAddress(pattern, offsetToData, name, type);
+
     return *(uint64_t*)variable != 0;
 }
 
-bool ps::GameModule::NullifyFunction(const Pattern& pattern, size_t offsetFromSig, std::string name, bool multiple, bool relative)
+bool ps::GameModule::NullifyFunction(const Pattern& pattern, size_t offsetFromSig, const std::string& name, bool multiple, bool relative)
 {
     ps::log::Log(ps::LogType::Verbose, "Attempting to locate: %s", name.c_str());
 
@@ -212,7 +230,7 @@ bool ps::GameModule::CreateDetour(uintptr_t source, uintptr_t destination)
     DetourUpdateThread(GetCurrentThread());
     DetourAttach(&(PVOID&)source, (PVOID)destination);
 
-    auto error = DetourTransactionCommit();
+    const auto error = DetourTransactionCommit();
 
     if (error != NO_ERROR)
     {
@@ -234,7 +252,7 @@ bool ps::GameModule::CreateDetourEx(uintptr_t* source, uintptr_t destination)
     DetourUpdateThread(GetCurrentThread());
     DetourAttach(&(PVOID&)*source, (PVOID)destination);
 
-    auto error = DetourTransactionCommit();
+    const auto error = DetourTransactionCommit();
 
     if (error != NO_ERROR)
     {
@@ -366,4 +384,118 @@ const void ps::GameModule::SaveCache(const std::string& cachePath) const
             cacheStream.write((const char*)&cachedOffset, sizeof(cachedOffset));
         }
     }
+}
+
+void ps::GameModule::FixIAT(const HINSTANCE handle)
+{
+	// Get IAT size
+	DWORD ulSize = 0;
+	auto pImportDesc = (PIMAGE_IMPORT_DESCRIPTOR)ImageDirectoryEntryToData(handle, TRUE, IMAGE_DIRECTORY_ENTRY_IMPORT, &ulSize);
+	if (!pImportDesc || ulSize <= 0)
+		return;
+
+	// Loop module names
+	for (; pImportDesc->Name; pImportDesc++)
+	{
+		const auto pszModName = (PSTR)((PBYTE)handle + pImportDesc->Name);
+		if (!pszModName)
+			break;
+
+		// Load dll
+        const auto hImportDLL = LoadLibraryEx(pszModName, nullptr, DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
+		// Failed to load dll
+		if (!hImportDLL)
+		{
+		    // printf_s("[*] Failed to load module: %s \n", pszModName);
+			ps::log::Log(ps::LogType::Error, "Failed to load module: %s", pszModName);
+			continue;
+		}
+
+		// printf_s("[*] module: %s \n", pszModName);
+		ps::log::Log(ps::LogType::Normal, "Loaded module: %s", pszModName);
+
+		// Get caller's import address table (IAT) for the callee's functions
+		auto pThunkCur = (PIMAGE_THUNK_DATA)((PBYTE)handle + pImportDesc->FirstThunk);
+		auto pThunk = (PIMAGE_THUNK_DATA)((PBYTE)handle + pImportDesc->OriginalFirstThunk);
+
+		// Replace current function address with new function address
+		for (; pThunk->u1.Function; pThunk++, pThunkCur++)
+		{
+			FARPROC pfnNew = nullptr;
+			const size_t rva = (size_t)pThunkCur;
+
+#ifdef _WIN64
+			if (pThunk->u1.Ordinal & IMAGE_ORDINAL_FLAG64)
+#else
+			if (pThunk->u1.Ordinal & IMAGE_ORDINAL_FLAG32)
+#endif
+			{
+				// Ordinal
+#ifdef _WIN64
+				size_t ord = IMAGE_ORDINAL64(pThunk->u1.Ordinal);
+#else
+				size_t ord = IMAGE_ORDINAL32(pThunk->u1.Ordinal);
+#endif
+
+				// printf_s("ord: %08llu \r\n", ord);
+				// printf_s("ord - \t %08llu \n", ord);
+
+				auto ppfn = (PROC*)&pThunk->u1.Function;
+				if (!ppfn)
+				{
+					continue;
+				}
+
+				pfnNew = GetProcAddress(hImportDLL, (LPCSTR)ord);
+				if (!pfnNew)
+				{
+					continue;
+				}
+			}
+			else
+			{
+				// Get the address of the function address
+				auto ppfn = (PROC*)&pThunk->u1.Function;
+				if (!ppfn)
+				{
+					continue;
+				}
+
+				auto fNameOffset = (PSTR)pThunk->u1.Function;
+				auto fName = (PSTR)handle + pThunk->u1.Function + 2;
+
+				// printf_s("func offset - \t %llx \n", (size_t)fNameAddr);
+				// printf_s("func - \t %s \n", fName);
+
+				if (!fName)
+					break;
+				pfnNew = GetProcAddress(hImportDLL, fName);
+				if (!pfnNew)
+				{
+					continue;
+				}
+			}
+
+			// Patch it now...
+			const auto hp = GetCurrentProcess();
+
+			if (!WriteProcessMemory(hp,(LPVOID*)rva, &pfnNew, sizeof(pfnNew), nullptr)
+			    && ERROR_NOACCESS == GetLastError())
+			{
+				DWORD dwOldProtect;
+				if (VirtualProtect((LPVOID)rva, sizeof(pfnNew), PAGE_WRITECOPY, &dwOldProtect))
+				{
+				    // TODO: Need log?
+					if (!WriteProcessMemory(GetCurrentProcess(), (LPVOID*)rva, &pfnNew, sizeof(pfnNew), nullptr))
+					{
+						continue;
+					}
+					if (!VirtualProtect((LPVOID)rva, sizeof(pfnNew), dwOldProtect, &dwOldProtect))
+					{
+						continue;
+					}
+				}
+			}
+		}
+	}
 }

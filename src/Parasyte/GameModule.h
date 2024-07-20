@@ -42,7 +42,7 @@ namespace ps
 
 
 		// Loads the module from the given file path.
-		bool Load(std::string filePath);
+		bool Load(const std::string& filePath);
 
 		// Frees the module.
 		bool Free();
@@ -60,7 +60,7 @@ namespace ps
 
 		bool FindVariableAddress(void* variable, const Pattern& pattern, size_t offsetToData, std::string name, ScanType type);
 
-		bool NullifyFunction(const Pattern& pattern, size_t offsetFromSig, std::string name, bool multiple, bool relative);
+		bool NullifyFunction(const Pattern& pattern, size_t offsetFromSig, const std::string& name, bool multiple, bool relative);
 
 		bool PatchBytes(const Pattern& pattern, size_t offsetFromSig, std::string name, PBYTE data, size_t dataLen, bool multiple, bool relative);
 
@@ -72,10 +72,12 @@ namespace ps
 		// Scans the module for the provided signature.
 		std::vector<char*> Scan(const Pattern& pattern, bool multiple);
 
+		// Cache functions
 		const void LoadCache(const std::string& cachePath);
-
 		const void SaveCache(const std::string& cachePath) const;
 
+		// Parse and fix the IAT of the game handle. (is called in GameModule.Load())
+		void FixIAT(HINSTANCE handle);
 
 		// Disposes of the module.
 		~GameModule()

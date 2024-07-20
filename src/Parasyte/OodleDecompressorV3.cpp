@@ -70,7 +70,7 @@ size_t ps::OodleDecompressorV3::Read(void* ptr, const size_t size, const size_t 
 
 		if (result != DecompressedBufferSize)
 		{
-			throw new std::exception();
+			throw std::exception("Failed to decompress Oodle Data.");
 		}
 
 		BlockIndex++;

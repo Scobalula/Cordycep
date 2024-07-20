@@ -1,8 +1,7 @@
 #include "pch.h"
-#include "../../ext/CascLib/src/CascLib.h"
+#include "CascLib.h"
 #include "CascFileSystem.h"
 #include "Parasyte.h"
-#include "../../ext/CascLib/src/CascCommon.h"
 
 bool progress(    // Return 'true' to cancel the loading process
     void* PtrUserParam,                        // User-specific parameter passed to the callback

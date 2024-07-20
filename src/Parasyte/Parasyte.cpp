@@ -74,7 +74,7 @@ void ps::Parasyte::VerifyHandler(bool needsInit)
 
 bool ps::Parasyte::LoadFile(const std::string& name, size_t index, size_t count, BitFlags<FastFileFlags> flags)
 {
-	ps::log::Print("MAIN", "Loading: %s (%llu/%llu)...", name.c_str(), index, count);
+	ps::log::Print("MAIN", "Loading: %s (%lu/%lu)...", name.c_str(), index, count);
 
 	try
 	{
@@ -107,6 +107,49 @@ bool ps::Parasyte::LoadFile(const std::string& name, size_t index, size_t count,
 	{
 		ps::log::Print("ERROR", "An internal error has occured while loading the file: %s", ex.what());
 		ps::Parasyte::GetCurrentHandler()->UnloadFastFile(name);
+		ps::Parasyte::GetCurrentHandler()->CleanUp();
+		return false;
+	}
+}
+
+bool ps::Parasyte::DumpAliases()
+{
+	//ps::log::Print("MAIN", "Loading: %s (%lu/%lu)...", name.c_str(), index, count);
+	ps::log::Print("MAIN", "Dumping...");
+
+	try
+	{
+		//if (!ps::Parasyte::GetCurrentHandler()->DoesFastFileExists(name))
+		//{
+		//	ps::log::Print("ERROR", "The file: %s could not be found.", name.c_str());
+		//	return false;
+		//}
+		//if (ps::Parasyte::GetCurrentHandler()->IsFastFileLoaded(name))
+		//{
+		//	ps::log::Print("WARNING", "The file: %s is already loaded.", name.c_str());
+		//	return true;
+		//}
+		if (!ps::Parasyte::GetCurrentHandler()->DumpAliases())
+		{
+			ps::log::Print("ERROR", "Failed to dump aliases.");
+			//ps::log::Print("ERROR", "The file: %s failed to load, the log file has more information on why this happened.", name.c_str());
+			//ps::log::Print("ERROR", "If the game recently received an update, you may need to re-dump the required data.", name.c_str());
+			//ps::Parasyte::GetCurrentHandler()->UnloadFastFile(name);
+			//ps::Parasyte::GetCurrentHandler()->CleanUp();
+			return false;
+		}
+		else
+		{
+			//ps::log::Print("SUCCESS", "Loaded: %s successfully.", name.c_str());
+			ps::log::Print("SUCCESS", "Dumped aliases successfully.");
+			ps::Parasyte::GetCurrentHandler()->CleanUp();
+			return true;
+		}
+	}
+	catch (std::exception& ex)
+	{
+		ps::log::Print("ERROR", "An internal error has occured while dumping aliases: %s", ex.what());
+		//ps::Parasyte::GetCurrentHandler()->UnloadFastFile(name);
 		ps::Parasyte::GetCurrentHandler()->CleanUp();
 		return false;
 	}

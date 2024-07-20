@@ -15,6 +15,8 @@ int FileCompression = -1;
 ps::FastFile* MWR_CurrentFastFile = nullptr;
 // Sound Files
 std::array<HANDLE, 512> SoundFiles;
+// Localized Sound Files
+std::array<HANDLE, 512> LocalizedSoundFiles;
 
 const char* (__fastcall* MWR_DB_GetXAssetName)(void* xassetHeader);
 
@@ -56,36 +58,57 @@ struct MWR_XZoneMemory
 };
 
 // Requests sound file data for loaded audio.
-void MWR_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset, size_t size, const char* name)
+void MWR_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset, size_t size, const char* name, bool isLocalized)
 {
 	if (!ptr)
 		return;
 	if (fileOffset == 0 || size == 0)
 		return;
 
-	HANDLE handle = SoundFiles[index];
+	HANDLE handle = isLocalized ? LocalizedSoundFiles[index] : SoundFiles[index];
 
-	if (handle == NULL || handle == INVALID_HANDLE_VALUE)
+	if (handle == nullptr || handle == INVALID_HANDLE_VALUE)
 	{
-		auto soundFilePath = ps::Parasyte::Instance().CurrentHandler->GameDirectory + "\\" + "soundfile" + std::to_string(index) + ".pak";
-		SoundFiles[index] = CreateFileA(
+		auto soundFilePath = "soundfile" + std::to_string(index) + ".pak";
+
+		if (isLocalized)
+		{
+			if (!ps::Parasyte::GetCurrentHandler()->RegionPrefix.empty())
+			{
+				soundFilePath = ps::Parasyte::GetCurrentHandler()->RegionPrefix + soundFilePath;
+			}
+			else
+			{
+				ps::log::Log(ps::LogType::Verbose, "WARNING: Localized audio requested by: %s but no localization prefix is set.", name);
+				return;
+			}
+		}
+
+		soundFilePath = ps::Parasyte::GetCurrentHandler()->GameDirectory + "\\" + soundFilePath;
+
+		handle = CreateFileA(
 			soundFilePath.c_str(),
 			FILE_READ_DATA | FILE_READ_ATTRIBUTES,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
-			NULL,
+		   nullptr,
 			OPEN_EXISTING,
 			0,
-			NULL);
+		nullptr);
+
+		if(isLocalized)
+			LocalizedSoundFiles[index] = handle;
+		else
+			SoundFiles[index] = handle;
 	}
 
-	if (handle != NULL && handle != INVALID_HANDLE_VALUE)
+	if (handle != nullptr && handle != INVALID_HANDLE_VALUE)
 	{
 		LARGE_INTEGER Input{};
 		Input.QuadPart = fileOffset;
 
-		if (SetFilePointerEx(handle, Input, NULL, FILE_BEGIN))
+		if (SetFilePointerEx(handle, Input, nullptr, FILE_BEGIN))
 		{
-			if (!ReadFile(handle, ptr, (DWORD)size, NULL, NULL))
+			if (!ReadFile(handle, ptr, (DWORD)size, nullptr, nullptr))
 			{
 				ps::log::Log(ps::LogType::Verbose, "WARNING: Failed to load sound data for sound: %s.", name);
 			}
@@ -93,7 +116,7 @@ void MWR_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset, s
 	}
 	else
 	{
-		ps::log::Log(ps::LogType::Verbose, "WARNING:  Failed to open sound file for sound: %s.", name);
+		ps::log::Log(ps::LogType::Verbose, "WARNING: Failed to open sound file for sound: %s.", name);
 	}
 }
 
@@ -309,7 +332,7 @@ void MWR_DB_ReadXFile(void* ptr, size_t size)
 		if (result != MWR_DecompressedBufferSize)
 		{
 			ps::log::Log(ps::LogType::Error, "Failed to decompress data.");
-			throw new std::exception();
+			throw std::exception();
 		}
 
 		MWR_CurrentBlock++;
@@ -402,7 +425,7 @@ MWR_XAssetEntry* DB_LinkMWR_XAssetEntry(MWR_XAssetType xassetType, MWR_XAssetHea
 	};
 
 	auto name = MWR_DB_GetXAssetName(&xasset);
-	auto pool = &ps::Parasyte::Instance().CurrentHandler->XAssetPools[xassetType];
+	auto pool = &ps::Parasyte::GetCurrentHandler()->XAssetPools[xassetType];
 	auto temp = name[0] == ',';
 	auto size = DB_GetXAssetTypeSize(xassetType);
 
@@ -519,7 +542,8 @@ MWR_XAssetEntry* DB_LinkMWR_XAssetEntry(MWR_XAssetType xassetType, MWR_XAssetHea
 				*(uint16_t*)(header + 10),
 				*(uint64_t*)(header + 16),
 				*(uint32_t*)(header + 24),
-				name);
+				name,
+				*(uint8_t*)(header + 8));
 			break;
 		}
 		}
@@ -530,7 +554,7 @@ MWR_XAssetEntry* DB_LinkMWR_XAssetEntry(MWR_XAssetType xassetType, MWR_XAssetHea
 
 void* DB_FindMWR_XAssetHeader(MWR_XAssetType xassetType, const char* name, int allowCreateDefault)
 {
-	auto pool = &ps::Parasyte::Instance().CurrentHandler->XAssetPools[xassetType];
+	auto pool = &ps::Parasyte::GetCurrentHandler()->XAssetPools[xassetType];
 	auto result = pool->FindXAssetEntry(name, strlen(name), xassetType);
 
 	if (result != nullptr)
@@ -565,17 +589,17 @@ __int64 MWR_DB_GetString(const char* str, unsigned int user)
 {
 	auto strLen = strlen(str) + 1;
 	auto id = XXHash64::hash(str, strLen, 0);
-	auto potentialEntry = ps::Parasyte::Instance().CurrentHandler->StringLookupTable->find(id);
+	auto potentialEntry = ps::Parasyte::GetCurrentHandler()->StringLookupTable->find(id);
 
-	if (potentialEntry != ps::Parasyte::Instance().CurrentHandler->StringLookupTable->end())
+	if (potentialEntry != ps::Parasyte::GetCurrentHandler()->StringLookupTable->end())
 	{
 		return (int)potentialEntry->second;
 	}
 
-	auto offset = ps::Parasyte::Instance().CurrentHandler->StringPoolSize;
-	std::memcpy(&ps::Parasyte::Instance().CurrentHandler->Strings[offset], str, strLen);
-	ps::Parasyte::Instance().CurrentHandler->StringPoolSize += strLen;
-	ps::Parasyte::Instance().CurrentHandler->StringLookupTable->operator[](id) = offset;
+	auto offset = ps::Parasyte::GetCurrentHandler()->StringPoolSize;
+	std::memcpy(&ps::Parasyte::GetCurrentHandler()->Strings[offset], str, strLen);
+	ps::Parasyte::GetCurrentHandler()->StringPoolSize += strLen;
+	ps::Parasyte::GetCurrentHandler()->StringLookupTable->operator[](id) = offset;
 
 	return offset;
 }
@@ -1043,23 +1067,32 @@ bool ps::CoDMWRHandler::Deinitialize()
 {
 	MWR_DB_Reset();
 
-	Module.Free();
-	XAssetPoolCount   = 256;
-	XAssetPools       = nullptr;
-	Strings           = nullptr;
-	StringPoolSize    = 0;
-	Initialized       = false;
-	StringLookupTable = nullptr;
-	FileSystem        = nullptr;
+	Module.Free();                    
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	// Clear out open handles to reference files.
 	for (auto& SoundFile : SoundFiles)
 	{
-		if (SoundFile != NULL && SoundFile != INVALID_HANDLE_VALUE)
+		if (SoundFile != nullptr && SoundFile != INVALID_HANDLE_VALUE)
 		{
 			CloseHandle(SoundFile);
-			SoundFile = NULL;
+			SoundFile = nullptr;
+		}
+	}
+
+	for (auto& LocalizedSoundFile : LocalizedSoundFiles)
+	{
+		if (LocalizedSoundFile != nullptr && LocalizedSoundFile != INVALID_HANDLE_VALUE)
+		{
+			CloseHandle(LocalizedSoundFile);
+			LocalizedSoundFile = nullptr;
 		}
 	}
 
@@ -1100,7 +1133,7 @@ bool ps::CoDMWRHandler::DoesFastFileExists(const std::string& ffName)
 
 bool ps::CoDMWRHandler::LoadFastFile(const std::string& ffName, FastFile* parent, BitFlags<FastFileFlags> flags)
 {
-	ps::log::Log(ps::LogType::Normal, "Attempting to load: %s using handler: Call of Duty: Modern Warfare", ffName.c_str());
+	ps::log::Log(ps::LogType::Normal, "Attempting to load: %s using handler: Call of Duty: Modern Warfare Remastered", ffName.c_str());
 
 	if (!Initialized)
 	{
@@ -1127,7 +1160,7 @@ bool ps::CoDMWRHandler::LoadFastFile(const std::string& ffName, FastFile* parent
 
 	MWR_DB_Reset();
 
-	auto fullPath = ps::Parasyte::Instance().CurrentHandler->GameDirectory + "\\" + ffName + ".ff";
+	auto fullPath = ps::Parasyte::GetCurrentHandler()->GameDirectory + "\\" + ffName + ".ff";
 
 	MWR_CurrentFastFile = newFastFile;
 	MWR_FastFileHandle = CreateFileA(
@@ -1155,7 +1188,7 @@ bool ps::CoDMWRHandler::LoadFastFile(const std::string& ffName, FastFile* parent
 
 	// We must fix up any XModel surfs, as we may have overrode previous
 	// temporary entries, etc.
-	ps::Parasyte::Instance().CurrentHandler->XAssetPools[7].EnumerateEntries([](ps::XAsset* asset)
+	ps::Parasyte::GetCurrentHandler()->XAssetPools[7].EnumerateEntries([](ps::XAsset* asset)
 	{
 		DB_XModelSurfsFixup((__int64)asset->Header);
 	});

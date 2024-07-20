@@ -8,9 +8,10 @@ ps::ZLIBDecompressorV1::ZLIBDecompressorV1(ps::FileHandle& file, bool secure) :
 	CompressedBufferSize = 262144;
 	CompressedBuffer = std::make_unique<uint8_t[]>(CompressedBufferSize);
 
+	// TODO: Check the return value of inflateInit(), and make a Destructor function for inflateEnd
 	if (inflateInit(&ZStream))
 	{
-		printf("Ok");
+		// printf("Ok");
 	}
 }
 
@@ -71,4 +72,9 @@ size_t ps::ZLIBDecompressorV1::Read(void* ptr, const size_t size, const size_t o
 	}
 
 	return ZStream.total_out;
+}
+
+size_t ps::ZLIBDecompressorV1::ReadUncompressed(uint8_t* buffer, const size_t size) const
+{
+	return File.Read(buffer, 0, size);
 }

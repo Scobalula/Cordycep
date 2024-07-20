@@ -17,31 +17,37 @@ void ps::LoadAliasCommand::Execute(ps::CommandParser& parser) const
 	std::string aliasName = parser.Next();
 	std::ranges::transform(aliasName, aliasName.begin(), toupper);
 
-	const auto alias = ps::Parasyte::GetCurrentHandler()->Aliases.find(aliasName);
-	if (alias == ps::Parasyte::GetCurrentHandler()->Aliases.end())
+	auto& aliases = ps::Parasyte::GetCurrentHandler()->Aliases;
+	const auto range = aliases.equal_range(aliasName);
+
+	if (range.first == range.second)
 	{
 		ps::log::Print("ERROR", "Cordycep couldn't find an alias matching that name, check the JSON file in the Data folder for valid aliases.");
 		return;
 	}
 
-	const auto& files = alias->second.Files;
-	ps::log::Print("MAIN", "Found %llu files.", files.size());
-	ps::log::Print("MAIN", "Loading %llu files, please wait...", files.size());
-
-	size_t idx = 1;
-	size_t loadedFilesCount = 0;
-	const size_t count = files.size();
-
-	for (auto& fileName : files)
+	for (auto it = range.first; it != range.second; ++it)
 	{
-		const bool isLoaded = ps::Parasyte::LoadFile(fileName, idx, count, FastFileFlags::None);
-		idx++;
+		const auto& files = it->second.Files;
+		const size_t count = files.size();
 
-		if (isLoaded)
-			loadedFilesCount++;
+		ps::log::Print("MAIN", "Found %llu files.", count);
+		ps::log::Print("MAIN", "Loading %llu files, please wait...", count);
+
+		size_t idx = 1;
+		size_t loadedFilesCount = 0;
+
+		for (const auto& fileName : files)
+		{
+			const bool isLoaded = ps::Parasyte::LoadFile(fileName, idx, count, FastFileFlags::None);
+			idx++;
+
+			if (isLoaded)
+				loadedFilesCount++;
+		}
+
+		ps::log::Print("MAIN", "Loaded (%lu/%lu) files successfully.", loadedFilesCount, count);
 	}
-
-	ps::log::Print("MAIN", "Loaded (%llu/%llu) files successfully.", loadedFilesCount, files.size());
 }
 
 PS_CINIT(ps::Command, ps::LoadAliasCommand, ps::Command::GetCommands());

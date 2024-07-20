@@ -190,11 +190,6 @@ namespace ps::CoDVGInternal
 		if (PatchFileState != nullptr)
 			*(uint64_t*)(PatchFileState.get() + 384) = headerDecompressedSize;
 	}
-	// Calls memset.
-	void* Memset(void* ptr, size_t val, size_t size)
-	{
-		return std::memset(ptr, (int)val, size);
-	}
 	// Allocates a unique string entry.
 	size_t AllocateUniqueString(char* str, int type)
 	{
@@ -239,45 +234,8 @@ namespace ps::CoDVGInternal
 			std::memmove((void*)&name[0], &name[1], strlen(name));
 		}
 
-		auto nameLen = strlen(**asset);
-
 		// Our result
-		auto result = pool->FindXAssetEntry(**asset, nameLen, assetType);
-
-		// We need to check if we have an existing asset to override
-		// If we have, we need to override or append, maintaining same pointer
-		// to the address of the header so that if we unload this ff, etc.
-		// the pointers from other assets are maintained
-		if (result != nullptr)
-		{
-			if (temp)
-			{
-				result->AppendChild(
-					ps::Parasyte::GetCurrentFastFile(),
-					(uint8_t*)*asset,
-					temp);
-			}
-			else
-			{
-				result->Override(
-					ps::Parasyte::GetCurrentFastFile(),
-					(uint8_t*)*asset,
-					temp);
-			}
-		}
-
-		// If we got to this point, we haven't found the entry, so let's create it
-		if (result == nullptr)
-		{
-			result = pool->CreateEntry(
-				**asset,
-				nameLen,
-				assetType,
-				size,
-				ps::Parasyte::GetCurrentFastFile(),
-				(uint8_t*)*asset,
-				temp);
-		}
+		auto result = pool->LinkXAssetEntry(name, assetType, size, temp, (uint8_t*)*asset, ps::Parasyte::GetCurrentFastFile());
 
 		// If we're an image, we need to check if we want to allocate an image slot
 		//if (assetType == 19)
@@ -295,10 +253,15 @@ namespace ps::CoDVGInternal
 		//	}
 		//}
 // #if PRIVATE_GRAM_GRAM
-		//if (assetType == 41 && ModernWarfare_Str_Decrypt != nullptr)
-		//{
-		//	*(uint64_t*)(result->Header + 8) = (uint64_t)ModernWarfare_Str_Decrypt(*(char**)(result->Header + 8));
-		//}
+		if (assetType == 0x2B && DecryptString != nullptr)
+		{
+			char* str = *(char**)(result->Header + 8);
+			if ((*str & 0xC0) == 0x80)
+			{
+				str = DecryptString(ps::CoDVGInternal::StrDecryptBuffer.get(), ps::CoDVGInternal::StrDecryptBufferSize, str);
+			}
+			memcpy(*(char**)(result->Header + 8), str, strlen(str) + 1);
+		}
 // #else
 // 		if (assetType == 41)
 // 		{
@@ -312,7 +275,8 @@ namespace ps::CoDVGInternal
 		AddAssetOffset(toPop);
 
 		// Loggary for Stiggary
-		// ps::log::Log(ps::LogType::Verbose, "%s Type: %i @ %llu.", asset->Header->Name, assetType, (uint64_t)result->Header);
+		ps::log::Log(ps::LogType::Verbose, "Linked: (Name: %s) Type: 0x%llx @ 0x%llx", name, (uint64_t)assetType, (uint64_t)result->Header);
+		//ps::log::Log(ps::LogType::Verbose, "Linked: (Name: %s) Type: 0x%llx (%s) @ 0x%llx", name, (uint64_t)assetType, GetXAssetTypeName(assetType), (uint64_t)result->Header);
 
 		return result->Header;
 	}
@@ -400,13 +364,13 @@ bool ps::CoDVGHandler::Deinitialize()
 {
 	Module.Free();
 
-	XAssetPoolCount   = 256;
-	XAssetPools       = nullptr;
-	Strings           = nullptr;
-	StringPoolSize    = 0;
-	Initialized       = false;
-	StringLookupTable = nullptr;
-	FileSystem        = nullptr;
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	// Clear game specific buffers

@@ -40,6 +40,8 @@ namespace ps
 		static void VerifyHandler(bool needsInit = true);
 		// Loads the provided prefix.
 		static bool LoadFile(const std::string& name, size_t index, size_t count, BitFlags<FastFileFlags> flags);
+		// Dumps the aliases.
+		static bool DumpAliases();
 		// Pushes telemtry.
 		static void PushTelemtry(const char* key, const char* value);
 		// Pushes telemtry.

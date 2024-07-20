@@ -71,7 +71,6 @@ ps::XAsset* ps::XAssetPool::CreateEntry(const uint64_t hash, const size_t type, 
 
 ps::XAsset* ps::XAssetPool::LinkXAssetEntry(const char* name, const size_t type, const size_t size, const bool temp, uint8_t* header, ps::FastFile* owner)
 {
-
 	// Our result
 	auto result = FindXAssetEntry(name, strlen(name), type);
 
@@ -96,7 +95,7 @@ ps::XAsset* ps::XAssetPool::LinkXAssetEntry(const char* name, const size_t type,
 				temp);
 		}
 	}
-	else
+	else // If we got to this point, we haven't found the entry, so let's create it
 	{
 		result = CreateEntry(
 			name,

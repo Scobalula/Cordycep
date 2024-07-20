@@ -89,7 +89,7 @@ size_t ps::LZ4DecompressorV2::Read(void* ptr, const size_t size, const size_t of
 			DecompressedBufferSize);
 
 		if (result != DecompressedBufferSize)
-			throw new std::exception("Failed to decompress LZ4 Data.");
+			throw std::exception("Failed to decompress LZ4 Data.");
 	}
 
 	return size;

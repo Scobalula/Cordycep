@@ -36,19 +36,15 @@ namespace ps::CoDMW4Internal
 	void(__cdecl* InitAssetAlignmentInternal)();
 
 	// Gets the xasset type name.
-	// const char* (__fastcall* GetXAssetTypeName)(uint32_t xassetType);
-	const char* __fastcall GetXAssetTypeName(uint32_t xassetType)
+    // TODO: Make it a new way
+	const char* GetXAssetTypeName(uint32_t xassetType)
 	{
-		// TODO: Unsafe
-		const auto handle = ps::Parasyte::GetCurrentHandler()->Module.Handle;
-		const auto typeName = *(char**)((uint64_t)handle + 0x74206B0 + (uint64_t)xassetType * 8);
-
-		if (typeName)
-		{
-			return typeName;
-		}
-
-		return nullptr;
+		// const auto handle = ps::Parasyte::GetCurrentHandler()->Module.Handle;
+		// const auto g_assetNames = (char**)((uint64_t)handle + 0x74206B0);
+		// const auto typeName = g_assetNames[xassetType];
+		//
+		// return typeName ? typeName : nullptr;
+		return "null";
 	}
 
 	// Zone Loader Flag (must be 1)
@@ -202,11 +198,6 @@ namespace ps::CoDMW4Internal
 		if (PatchFileState != nullptr)
 			*(uint64_t*)(PatchFileState.get() + 384) = headerDecompressedSize;
 	}
-	// Calls memset.
-	void* Memset(void* ptr, size_t val, size_t size)
-	{
-		return std::memset(ptr, (int)val, size);
-	}
 	// Allocates a unique string entry.
 	size_t AllocateUniqueString(char* str, int type)
 	{
@@ -248,9 +239,10 @@ namespace ps::CoDMW4Internal
 		pool->Initialize(XAssetHeaderSizes[assetType], capacity);
 
 		if (temp)
+		{
 			std::memmove((void*)&name[0], &name[1], strlen(name));
+		}
 
-		// auto nameLen = strlen(**asset);
 		auto result = pool->LinkXAssetEntry(name, assetType, size, temp, (uint8_t*)*asset, ps::Parasyte::GetCurrentFastFile());
 
 		// If we're an image, we need to check if we want to allocate an image slot
@@ -267,7 +259,8 @@ namespace ps::CoDMW4Internal
 				result->ExtendedDataPtrOffset = 224;
 				std::memcpy(result->ExtendedData.get(), imageData, result->ExtendedDataSize);
 				*(uint8_t**)(gfxImage + 224) = result->ExtendedData.get();
-				// ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for %s, Type: 0x%llx.", **asset, assetType);
+
+				ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for image, Name: %s, Type: 0x%llx.", name, (uint64_t)assetType);
 			}
 		}
 
@@ -355,7 +348,6 @@ bool ps::CoDMW4Handler::Initialize(const std::string& gameDirectory)
 	PS_DETGAMEVAR(ps::CoDMW4Internal::LinkGenericXAsset);
 	PS_DETGAMEVAR(ps::CoDMW4Internal::ReadPatchFile);
 	PS_DETGAMEVAR(ps::CoDMW4Internal::ReadFastFile);
-	PS_DETGAMEVAR(ps::CoDMW4Internal::Memset);
 	PS_INTGAMEVAR(ps::CoDMW4Internal::ResolveStreamPosition, ps::CoDMW4Internal::ResolveStreamPositionOriginal);
 
 	XAssetPoolCount   = 256;
@@ -385,13 +377,13 @@ bool ps::CoDMW4Handler::Deinitialize()
 {
 	Module.Free();
 
-	XAssetPoolCount       = 256;
-	XAssetPools           = nullptr;
-	Strings               = nullptr;
-	StringPoolSize        = 0;
-	Initialized           = false;
-	StringLookupTable     = nullptr;
-	FileSystem			  = nullptr;
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	// Clear game specific buffers
@@ -466,12 +458,14 @@ bool ps::CoDMW4Handler::LoadFastFile(const std::string& ffName, FastFile* parent
 		*(uint64_t*)&fpHeader[48]);
 
 	// Verify XFile Version
+	// DB_CheckXFileVersion
 	if (ps::CoDMW4Internal::XFileVersions[*(uint8_t*)(ffHeader + 18)] != *(uint32_t*)(ffHeader + 12))
 	{
 		ps::log::Log(ps::LogType::Error, "Invalid XFile Version, got version: 0x%llx expected: 0x%llx", *(uint32_t*)(ffHeader + 12), ps::CoDMW4Internal::XFileVersions[*(uint8_t*)(ffHeader + 18)]);
 		return false;
 	}
 
+	// DB_AllocateFastfileMemory
 	uint64_t* bufferSizes = (uint64_t*)&ffHeader[48];
 
 	for (size_t i = 0; i < 11; i++)

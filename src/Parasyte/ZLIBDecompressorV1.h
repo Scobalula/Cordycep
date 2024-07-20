@@ -4,7 +4,7 @@
 
 namespace ps
 {
-	// A class to handle V1 ZLIB Fast Files.
+	// A class to handle ZLIB V1 Fast Files.
 	class ZLIBDecompressorV1 : public Decompressor
 	{
 	private:
@@ -27,7 +27,10 @@ namespace ps
 			return r;
 		}
 		// Reads decompressed data from the data stream.
-		size_t Read(void* ptr, const size_t size, const size_t offset);
+		size_t Read(void* ptr, const size_t size, const size_t offset) override;
+
+		// Reads uncompressed data from the data stream.
+		size_t ReadUncompressed(uint8_t *buffer, size_t size) const;
 	};
 }
 

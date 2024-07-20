@@ -7,7 +7,7 @@ namespace ps
 	class CoDMW2RHandler : public GameHandler
 	{
 	public:
-		// Creates a new instance of this handler.
+		// Creates a new handler for the given title.
 		CoDMW2RHandler() : GameHandler(0x32305453414D4552) {}
 
 		// Gets the shorthand used for setting the handler.

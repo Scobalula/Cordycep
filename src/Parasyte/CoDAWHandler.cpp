@@ -16,6 +16,8 @@ int AW_FileCompression = -1;
 ps::FastFile* AW_CurrentFastFile = nullptr;
 // Sound Files
 std::array<HANDLE, 512> AW_SoundFiles;
+// Localized Sound Files
+std::array<HANDLE, 512> AW_LocalizedSoundFiles;
 
 const char* (__fastcall* AW_DB_GetXAssetName)(void* xassetHeader);
 
@@ -57,36 +59,57 @@ struct AW_XZoneMemory
 };
 
 // Requests sound file data for loaded audio.
-void AW_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset, size_t size, const char* name)
+void AW_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset, size_t size, const char* name, bool isLocalized)
 {
 	if (!ptr)
 		return;
 	if (fileOffset == 0 || size == 0)
 		return;
 
-	HANDLE handle = AW_SoundFiles[index];
+	HANDLE handle = isLocalized ? AW_LocalizedSoundFiles[index] : AW_SoundFiles[index];
 
-	if (handle == NULL || handle == INVALID_HANDLE_VALUE)
+	if (handle == nullptr || handle == INVALID_HANDLE_VALUE)
 	{
-		auto soundFilePath = ps::Parasyte::GetCurrentHandler()->GameDirectory + "\\" + "soundfile" + std::to_string(index) + ".pak";
-		AW_SoundFiles[index] = CreateFileA(
+		auto soundFilePath = "soundfile" + std::to_string(index) + ".pak";
+
+		if (isLocalized)
+		{
+			if (!ps::Parasyte::GetCurrentHandler()->RegionPrefix.empty())
+			{
+				soundFilePath = ps::Parasyte::GetCurrentHandler()->RegionPrefix + soundFilePath;
+			}
+			else
+			{
+				ps::log::Log(ps::LogType::Verbose, "WARNING: Localized audio requested by: %s but no localization prefix is set.", name);
+				return;
+			}
+		}
+
+		soundFilePath = ps::Parasyte::GetCurrentHandler()->GameDirectory + "\\" + soundFilePath;
+
+		handle = CreateFileA(
 			soundFilePath.c_str(),
 			FILE_READ_DATA | FILE_READ_ATTRIBUTES,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
-			NULL,
+		   nullptr,
 			OPEN_EXISTING,
 			0,
-			NULL);
+		nullptr);
+
+		if(isLocalized)
+			AW_LocalizedSoundFiles[index] = handle;
+		else
+			AW_SoundFiles[index] = handle;
 	}
 
-	if (handle != NULL && handle != INVALID_HANDLE_VALUE)
+	if (handle != nullptr && handle != INVALID_HANDLE_VALUE)
 	{
 		LARGE_INTEGER Input{};
 		Input.QuadPart = fileOffset;
 
-		if (SetFilePointerEx(handle, Input, NULL, FILE_BEGIN))
+		if (SetFilePointerEx(handle, Input, nullptr, FILE_BEGIN))
 		{
-			if (!ReadFile(handle, ptr, (DWORD)size, NULL, NULL))
+			if (!ReadFile(handle, ptr, (DWORD)size, nullptr, nullptr))
 			{
 				ps::log::Log(ps::LogType::Verbose, "WARNING: Failed to load sound data for sound: %s.", name);
 			}
@@ -94,7 +117,7 @@ void AW_DB_RequestSoundFileData(void* ptr, uint16_t index, size_t fileOffset, si
 	}
 	else
 	{
-		ps::log::Log(ps::LogType::Verbose, "WARNING:  Failed to open sound file for sound: %s.", name);
+		ps::log::Log(ps::LogType::Verbose, "WARNING: Failed to open sound file for sound: %s.", name);
 	}
 }
 
@@ -226,23 +249,23 @@ void AW_DB_AllocFastFileHeaders()
 // Resets all data.
 void AW_DB_Reset()
 {
-	AW_ImageIndex                  = 0;
-	AW_CurrentBlock				= 0;
-	AW_DecompressedBuffer			= nullptr;
-	AW_DecompressedBufferOffset	= 0;
-	AW_DecompressedBufferSize		= 0;
-	AW_DecompressedBufferCapacity	= 0;
-	AW_CompressedBuffer			= nullptr;
-	AW_CompressedBufferOffset	    = 0;
-	AW_CompressedBufferSize		= 0;
-	AW_CompressedBufferCapacity	= 0;
-	AW_CurrentRawFilePosition		= 0;
-	AW_CurrentFastFile				= nullptr;
-	AW_DistanceToNextHashBlock		= 0;
-	AW_FileIsSecure                = 0;
-	AW_CompressedFilePosition      = 0;
-	AW_CompressedFileSize			= 0;
-	AW_AuthBlockConsumed = false;
+	AW_ImageIndex                 = 0;
+	AW_CurrentBlock               = 0;
+	AW_DecompressedBuffer         = nullptr;
+	AW_DecompressedBufferOffset   = 0;
+	AW_DecompressedBufferSize     = 0;
+	AW_DecompressedBufferCapacity = 0;
+	AW_CompressedBuffer           = nullptr;
+	AW_CompressedBufferOffset     = 0;
+	AW_CompressedBufferSize       = 0;
+	AW_CompressedBufferCapacity   = 0;
+	AW_CurrentRawFilePosition     = 0;
+	AW_CurrentFastFile            = nullptr;
+	AW_DistanceToNextHashBlock    = 0;
+	AW_FileIsSecure               = 0;
+	AW_CompressedFilePosition     = 0;
+	AW_CompressedFileSize         = 0;
+	AW_AuthBlockConsumed          = false;
 
 	CloseHandle(AW_FastFileHandle);
 	AW_FastFileHandle = INVALID_HANDLE_VALUE;
@@ -310,7 +333,7 @@ void AW_DB_ReadXFile(void* ptr, size_t size)
 		if (result != AW_DecompressedBufferSize)
 		{
 			ps::log::Log(ps::LogType::Error, "Failed to decompress data.");
-			throw new std::exception();
+			throw std::exception();
 		}
 
 		AW_CurrentBlock++;
@@ -520,7 +543,8 @@ AW_XAssetEntry* DB_LinkAW_XAssetEntry(AW_XAssetType xassetType, AW_XAssetHeader*
 				*(uint16_t*)(header + 10),
 				*(uint64_t*)(header + 16),
 				*(uint32_t*)(header + 24),
-				name);
+				name,
+				*(uint8_t*)(header + 8));
 			break;
 		}
 		}
@@ -562,6 +586,7 @@ void* DB_FindAW_XAssetHeader(AW_XAssetType xassetType, const char* name, int all
 	return nullptr;
 }
 
+// TODO: __int64 __fastcall sub_1403F1440(_BYTE *a1) // The second parameter is redundant
 __int64 AW_DB_GetString(const char* str, unsigned int user)
 {
 	auto strLen = strlen(str) + 1;
@@ -681,7 +706,7 @@ bool ps::CoDAWHandler::Initialize(const std::string& gameDirectory)
 		return false;
 	}
 
-	ps::log::Log(ps::LogType::Normal, "Successfully opened %'s directory: %s", gameName.c_str(), gameDirectory.c_str());
+	ps::log::Log(ps::LogType::Normal, "Successfully opened %s's directory: %s", gameName.c_str(), gameDirectory.c_str());
 
 	if (!Module.Load("Data\\Dumps\\s1_mp64_ship_dump.exe"))
 	{
@@ -1017,13 +1042,13 @@ bool ps::CoDAWHandler::Initialize(const std::string& gameDirectory)
 
 		GameDirectory = gameDirectory;
 
-		XAssetPoolCount = 256;
-		XAssetPools = std::make_unique<XAssetPool[]>(XAssetPoolCount);
-		Strings = std::make_unique<char[]>(0x2000000);
-		StringPoolSize = 0;
-		Initialized = true;
+		XAssetPoolCount   = 256;                                                         
+		XAssetPools       = std::make_unique<XAssetPool[]>(XAssetPoolCount);
+		Strings           = std::make_unique<char[]>(0x2000000);                         
+		StringPoolSize    = 0;                                                           
+		Initialized       = true;                                                        
 		StringLookupTable = std::make_unique<std::map<uint64_t, size_t>>();
-		AW_FastFileHandle = INVALID_HANDLE_VALUE;
+		AW_FastFileHandle = INVALID_HANDLE_VALUE;                                        
 
 		Module.SaveCache("Data\\Dumps\\s1_mp64_ship_dump.cache");
 
@@ -1043,23 +1068,32 @@ bool ps::CoDAWHandler::Deinitialize()
 {
 	AW_DB_Reset();
 
-	Module.Free();
-	XAssetPoolCount   = 256;
-	XAssetPools       = nullptr;
-	Strings           = nullptr;
-	StringPoolSize    = 0;
-	Initialized       = false;
-	StringLookupTable = nullptr;
-	FileSystem        = nullptr;
+	Module.Free();                    
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	// Clear out open handles to reference files.
 	for (auto& AW_SoundFile : AW_SoundFiles)
 	{
-		if (AW_SoundFile != NULL && AW_SoundFile != INVALID_HANDLE_VALUE)
+		if (AW_SoundFile != nullptr && AW_SoundFile != INVALID_HANDLE_VALUE)
 		{
 			CloseHandle(AW_SoundFile);
-			AW_SoundFile = NULL;
+			AW_SoundFile = nullptr;
+		}
+	}
+
+	for (auto& LocalizedSoundFile : AW_LocalizedSoundFiles)
+	{
+		if (LocalizedSoundFile != nullptr && LocalizedSoundFile != INVALID_HANDLE_VALUE)
+		{
+			CloseHandle(LocalizedSoundFile);
+			LocalizedSoundFile = nullptr;
 		}
 	}
 

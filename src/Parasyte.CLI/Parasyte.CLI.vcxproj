@@ -117,14 +117,16 @@
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+      <AdditionalOptions>/NODEFAULTLIB /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);Ws2_32.Lib;Wldap32.Lib;Crypt32.Lib</AdditionalDependencies>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
-      <BaseAddress>0x00100000</BaseAddress>
+      <BaseAddress>0x20000000</BaseAddress>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <FixedBaseAddress>true</FixedBaseAddress>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
@@ -147,6 +149,7 @@
       </PrecompiledHeaderOutputFile>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+      <AdditionalOptions>/NODEFAULTLIB /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,8 +158,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);Ws2_32.Lib;Wldap32.Lib;Crypt32.Lib</AdditionalDependencies>
       <UACExecutionLevel>AsInvoker</UACExecutionLevel>
-      <BaseAddress>0x00100000</BaseAddress>
+      <BaseAddress>0x20000000</BaseAddress>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <FixedBaseAddress>true</FixedBaseAddress>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
@@ -176,6 +180,7 @@
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
+      <AdditionalOptions>/NODEFAULTLIB /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -204,7 +209,7 @@
       </PrecompiledHeaderOutputFile>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
-      <AdditionalOptions>/NODEFAULTLIB %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/NODEFAULTLIB /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -235,6 +240,9 @@
   <ItemGroup>
     <Image Include="Icon.ico" />
     <Image Include="Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="Parasyte.CLI.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

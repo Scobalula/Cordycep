@@ -4,6 +4,11 @@
 #include "CoDMW6Handler.h"
 #include "OodleDecompressorV3.h"
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::ordered_json;
+
+#include <unordered_set>
+
 namespace ps::CoDMW6Internal
 {
 	// The fast file decompressor.
@@ -11,9 +16,11 @@ namespace ps::CoDMW6Internal
 	// The patch file decompressor.
 	std::unique_ptr<Decompressor> FPDecompressor;
 
+	// Resolves the stream position from within the game.
+	__int64(__cdecl* ResolveStreamPositionOriginal)(__int64* a1) = nullptr;
 	// Initializes the patch function info.
 	uint64_t(__fastcall* InitializePatch)();
-	// Requests data from the patch file.
+	// Loads from the data stream.
 	bool (__fastcall* LoadStream)(uint8_t* a1, uint64_t* a2, uint64_t* a3);
 	// Requests data from the patch file.
 	void* (__fastcall* RequestPatchFileData)();
@@ -65,6 +72,24 @@ namespace ps::CoDMW6Internal
 	// Current string offset being allocated.
 	uint32_t StrBufferOffset = 0;
 
+	// Resolves the stream position, running bounds checks.
+	__int64 __fastcall ResolveStreamPosition(__int64* a1)
+	{
+		size_t zoneIndex = (*a1 >> 32) & 0xF;
+		size_t zoneOffset = (size_t)((uint32_t)*a1 - 1);
+
+		// A very basic check to see if this offset is
+		// outside the bounds of the zone buffers.
+		// Seems to work pretty well to avoid crashing for invalid files
+		// from previous updates.
+		// TODO:
+		// if (zoneIndex >= 11)
+		// 	throw std::exception("This file is from a previous update, skipping.");
+		if (zoneOffset >= ps::Parasyte::GetCurrentFastFile()->MemoryBlocks[zoneIndex].MemorySize)
+			throw std::exception("This file is from a previous update, skipping.");
+
+		return ResolveStreamPositionOriginal(a1);
+	}
 	// Loads from the data stream.
 	bool LoadStreamNew(void* doesntSeemUsedlmao, uint8_t** a1, uint64_t** a2, uint64_t** a3)
 	{
@@ -207,11 +232,6 @@ namespace ps::CoDMW6Internal
 
 		return &StrBufferOffset;
 	}
-	// Calls memset.
-	void* Memset(void* ptr, size_t val, size_t size)
-	{
-		return std::memset(ptr, (int)val, size);
-	}
 	// Initializes Asset Alignment.
 	void InitAssetAlignment()
 	{
@@ -258,6 +278,7 @@ namespace ps::CoDMW6Internal
 		// Remove status flag from the hash
 		hash &= 0x7FFFFFFFFFFFFFFF;
 
+		// TODO: Make a hash version of LinkXAssetEntry()
 		auto result = pool->FindXAssetEntry(hash, assetType);
 
 		// We need to check if we have an existing asset to override
@@ -294,8 +315,32 @@ namespace ps::CoDMW6Internal
 				temp);
 		}
 
+		// If we're an image, we need to check if we want to allocate an image slot
+		if (assetType == 0x15)
+		{
+			// Get the image data offsets
+			constexpr size_t imageDataPtrOffset = 0x38;
+			constexpr size_t imageDataSizeOffset = 0x18;
+
+			const auto gfxImage = result->Header;
+
+			if (*(uint64_t*)(gfxImage + imageDataPtrOffset) != 0 && result->ExtendedData == nullptr)
+			{
+				const auto imageData = *(uint8_t**)(gfxImage + imageDataPtrOffset);
+				const auto imageDataSize = (size_t)*(uint32_t*)(gfxImage + imageDataSizeOffset);
+
+				result->ExtendedDataSize = imageDataSize;
+				result->ExtendedData = std::make_unique<uint8_t[]>(result->ExtendedDataSize);
+				result->ExtendedDataPtrOffset = imageDataPtrOffset;
+				std::memcpy(result->ExtendedData.get(), imageData, result->ExtendedDataSize);
+				*(uint64_t*)(gfxImage + imageDataPtrOffset) = (uint64_t)result->ExtendedData.get();
+
+				ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for image, Hash: 0x%llx, Type: 0x%llx.", hash, (uint64_t)assetType);
+			}
+		}
+
 // #if PRIVATE_GRAM_GRAM
-		if (assetType == 0x3b && DecryptString != nullptr)
+		if (assetType == 0x3B && DecryptString != nullptr)
 		{
 			char* str = *(char**)(result->Header + 8);
 			if ((*str & 0xC0) == 0x80)
@@ -374,8 +419,12 @@ namespace ps::CoDMW6Internal
 	// yer boio
 	void __fastcall FixUpXModelSurfsPtr(uint8_t* xmodel)
 	{
+		// Get the lods data offset
+		const bool isSpGame = ps::Parasyte::GetCurrentHandler()->HasFlag("sp");
+		const size_t lodsDataPtrOffset = isSpGame ? 272 : 152;
+
 		size_t lodCount = *(uint8_t*)(xmodel + 18);
-		uint8_t* lods = *(uint8_t**)(xmodel + 272);
+		uint8_t* lods = *(uint8_t**)(xmodel + lodsDataPtrOffset);
 
 		for (size_t i = 0; i < lodCount; i++)
 		{
@@ -387,6 +436,22 @@ namespace ps::CoDMW6Internal
 				*(uint64_t*)(xmodelLod + 8) = *(uint64_t*)(xmodelSurfs + 8);
 			}
 		}
+	}
+	uint64_t HashAsset(const char* data)
+	{
+		uint64_t result = 0x47F5817A5EF961BA;
+
+		for (size_t i = 0; i < strlen(data); i++)
+		{
+			uint64_t value = tolower(data[i]);
+
+			if (value == '\\')
+				value = '/';
+
+			result = 0x100000001B3 * (value ^ result);
+		}
+
+		return result & 0x7FFFFFFFFFFFFFFF;
 	}
 }
 
@@ -449,7 +514,8 @@ bool ps::CoDMW6Handler::Initialize(const std::string& gameDirectory)
 	PS_DETGAMEVAR(ps::CoDMW6Internal::LinkGenericXAssetEx);
 	PS_DETGAMEVAR(ps::CoDMW6Internal::ReadPatchFile);
 	PS_DETGAMEVAR(ps::CoDMW6Internal::ReadFastFile);
-	PS_DETGAMEVAR(ps::CoDMW6Internal::Memset);
+
+	PS_INTGAMEVAR(ps::CoDMW6Internal::ResolveStreamPosition, ps::CoDMW6Internal::ResolveStreamPositionOriginal);
 
 	XAssetPoolCount   = 256;
 	XAssetPools       = std::make_unique<XAssetPool[]>(XAssetPoolCount);
@@ -470,14 +536,14 @@ bool ps::CoDMW6Handler::Initialize(const std::string& gameDirectory)
 
 bool ps::CoDMW6Handler::Deinitialize()
 {
-	Module.Free();
-	XAssetPoolCount       = 256;
-	XAssetPools           = nullptr;
-	Strings               = nullptr;
-	StringPoolSize        = 0;
-	Initialized           = false;
-	StringLookupTable     = nullptr;
-	FileSystem            = nullptr;
+	Module.Free();                    
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	// Clear game specific buffers
@@ -613,6 +679,199 @@ bool ps::CoDMW6Handler::LoadFastFile(const std::string& ffName, FastFile* parent
 				LoadFastFile(localeName, newFastFile, flags);
 		}
 	}
+
+	return true;
+}
+
+bool DumpAliasesInternal()
+{
+	// AssetType: 0x3B
+	constexpr size_t localizeEntryAssetPoolIdx = 0x3B;
+	struct LocalizeEntry
+	{
+		uint64_t hash;
+		char* value;
+	};
+
+	// Store localizeEntries as map:(hash - value)
+	std::map<size_t, std::string> localizeEntries;
+	// Read localizeEntries
+	ps::Parasyte::GetCurrentHandler()->XAssetPools[localizeEntryAssetPoolIdx].EnumerateEntries([&](ps::XAsset* asset)
+	{
+		auto entry = (LocalizeEntry*)asset->Header;
+		localizeEntries[entry->hash] = entry->value;
+
+		//ps::log::Print("MAIN", "hash: %llx", entry->hash);
+		//ps::log::Print("MAIN", "value: %s", entry->value);
+	});
+
+	// Read weapon asset data
+	constexpr size_t weaponAssetPoolIdx = 0x3D;
+
+	json resultJson;
+	ps::Parasyte::GetCurrentHandler()->XAssetPools[weaponAssetPoolIdx].EnumerateEntries([&](ps::XAsset* asset)
+	{
+		const std::string wpnAssetName = ps::CoDMW6Internal::GetXAssetName(weaponAssetPoolIdx, asset->Header);
+
+		// For singe asset test
+		// if (wpnAssetName != /*"jup_jp36_ar_anov94_mp"*/"jup_cp15_lm_mkilo3_mp")
+		// {
+		// 	return;
+		// }
+
+		json wpnJson;
+		std::unordered_set<std::string> xmodelNames;
+		std::unordered_set<size_t> xmodelHashes;
+
+		auto header = (size_t)asset->Header;
+
+		auto szInternalNamePtr = header + 8;
+		auto szDisplayNamePtr = header + 64;
+		auto _attSlotPtr = header + 88;
+
+		auto szInternalName = *(char**)(szInternalNamePtr);
+		auto szDisplayName = *(char**)(szDisplayNamePtr);
+
+		for (size_t i = 0; i < 17; ++i) // 17 is not sure, just guess
+		{
+			auto attSlotPtr = _attSlotPtr + i * 16;
+
+			auto attCount = *(size_t*)attSlotPtr;
+			auto _attsPtr = *(size_t*)(attSlotPtr + 8);
+
+			if (!_attsPtr || !attCount)
+			{
+				continue;
+			}
+
+			for (size_t j = 0; j < attCount; ++j)
+			{
+				auto attsPtr = _attsPtr + j * 8;
+
+				auto att = *(size_t*)attsPtr;
+
+				// Read Base WM
+				if (auto baseWmPtrPtr = *(size_t*)(att + 376))
+				{
+					if (auto baseWmPtr = *(size_t*)baseWmPtrPtr)
+					{
+						auto wmName = *(char**)(baseWmPtr + 8);
+						//ps::log::Print("MAIN", "wm: %s", wmName);
+						xmodelNames.insert(wmName);
+						xmodelHashes.insert(*(size_t*)baseWmPtr);
+					}
+				}
+
+				// Read Base VM
+				if (auto baseVmPtrPtr = *(size_t*)(att + 384))
+				{
+					if (auto baseVmPtr = *(size_t*)baseVmPtrPtr)
+					{
+						auto vmName = *(char**)(baseVmPtr + 8);
+						//ps::log::Print("MAIN", "vm: %s", vmName);
+						xmodelNames.insert(vmName);
+						xmodelHashes.insert(*(size_t*)baseVmPtr);
+					}
+				}
+
+				auto bpCount = *(uint32_t*)(att + 48);
+				auto _bpsPtr = *(size_t*)(att + 56);
+
+				//ps::log::Print("MAIN", "att: %llx", att);
+				//ps::log::Print("MAIN", "bpCount: %d", bpCount);
+				//ps::log::Print("MAIN", "_bpsPtr: %llx", _bpsPtr);
+
+				if (!bpCount || !_bpsPtr)
+				{
+					continue;
+				}
+
+				for (size_t k = 0; k < bpCount; ++k)
+				{
+					auto bpsPtr = _bpsPtr + k * 8;
+					//ps::log::Print("MAIN", "k: %lld", k);
+
+					auto bp = *(size_t*)bpsPtr;
+
+					if (bp == 0)
+					{
+						continue;
+					}
+
+					auto wmPtr = *(size_t*)(bp + 16);
+					auto vmPtr = *(size_t*)(bp + 40);
+
+					if (wmPtr != 0)
+					{
+						auto wmName = *(char**)(wmPtr + 8);
+						//ps::log::Print("MAIN", "wm: %s", wmName);
+						xmodelNames.insert(wmName);
+						xmodelHashes.insert(*(size_t*)wmPtr);
+					}
+
+					if (vmPtr != 0)
+					{
+						auto vmName = *(char**)(vmPtr + 8);
+						//ps::log::Print("MAIN", "vm: %s", vmName);
+						xmodelNames.insert(vmName);
+						xmodelHashes.insert(*(size_t*)vmPtr);
+					}
+				}
+			}
+		}
+
+		std::unordered_set<std::string> ffNames;
+		constexpr size_t xmodelAssetPoolIdx = 0x9;
+		auto xmodelPool = &ps::Parasyte::GetCurrentHandler()->XAssetPools[xmodelAssetPoolIdx];
+		for (const auto& hash : xmodelHashes)
+		{
+			auto xmodelAsset = xmodelPool->FindXAssetEntry(hash, xmodelAssetPoolIdx);
+
+			// Failed to find loaded xmodel asset
+			if (!xmodelAsset)
+			{
+				continue;
+			}
+
+			const auto& ffName = xmodelAsset->Owner->Name;
+			if (xmodelAsset->Temp || ffNames.contains(ffName))
+			{
+				continue;
+			}
+
+			const auto xmodelName = ps::CoDMW6Internal::GetXAssetName((uint32_t)xmodelAssetPoolIdx, xmodelAsset->Header);
+
+			// ps::log::Print("MAIN", "[ff: %s] - [xmodel: %s]", ffName.c_str(), xmodelName);
+			ffNames.insert(ffName);
+		}
+
+		std::string aliasName = szInternalName ? szInternalName : "*None*";
+		if (szDisplayName)
+		{
+			auto pair = localizeEntries.find(ps::CoDMW6Internal::HashAsset(szDisplayName));
+			if (pair != localizeEntries.end())
+			{
+				aliasName = pair->second;
+			}
+		}
+
+		wpnJson["alias"] = aliasName;
+		wpnJson["name"] = szInternalName;
+		wpnJson["fast_files"] = ffNames;
+
+		resultJson.emplace_back(wpnJson);
+	});
+
+	std::ofstream out_file("Data/Aliases/ModernWarfare6Aliases.json");
+	out_file << resultJson.dump(4);
+	out_file.close();
+
+	return true; 
+}
+
+bool ps::CoDMW6Handler::DumpAliases()
+{
+	DumpAliasesInternal();
 
 	return true;
 }

@@ -8,6 +8,5 @@ ps::Library::Library(const char* lib)
 
 ps::Library::Library(const std::string& lib)
 {
-
 	Handle = LoadLibrary(lib.c_str());
 }

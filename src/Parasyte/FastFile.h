@@ -60,6 +60,7 @@ namespace ps
         // The fast file parent.
         FastFile* Parent;
         // Whether or not this fast file is a common fast file.
+        // TODO: Used ever in: ps::GameHandler::UnloadNonCommonFastFiles(), but unused for now.
         bool Common;
         // The fast file memory blocks.
         FastFileMemoryBlock MemoryBlocks[FastFileBlockCount];

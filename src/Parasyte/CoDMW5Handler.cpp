@@ -11,6 +11,8 @@ namespace ps::CoDMW5Internal
 	// The patch file decompressor.
 	std::unique_ptr<Decompressor> FPDecompressor;
 
+	// Resolves the stream position from within the game.
+	__int64(__cdecl* ResolveStreamPositionOriginal)(__int64* a1) = nullptr;
 	// Initializes the patch function info.
 	uint64_t(__fastcall* InitializePatch)();
 	// Requests data from the patch file.
@@ -63,6 +65,24 @@ namespace ps::CoDMW5Internal
 	// XFile Versions
 	// int* XFileVersions = nullptr;
 
+	// Resolves the stream position, running bounds checks.
+	__int64 __fastcall ResolveStreamPosition(__int64* a1)
+	{
+		size_t zoneIndex = (*a1 >> 32) & 0xF;
+		size_t zoneOffset = (size_t)((uint32_t)*a1 - 1);
+
+		// A very basic check to see if this offset is
+		// outside the bounds of the zone buffers.
+		// Seems to work pretty well to avoid crashing for invalid files
+		// from previous updates.
+		// TODO:
+		// if (zoneIndex >= 11)
+		// 	throw std::exception("This file is from a previous update, skipping.");
+		if (zoneOffset >= ps::Parasyte::GetCurrentFastFile()->MemoryBlocks[zoneIndex].MemorySize)
+			throw std::exception("This file is from a previous update, skipping.");
+
+		return ResolveStreamPositionOriginal(a1);
+	}
 	// Reads patch data from the patch file.
 	void ReadPatchFile(void* state, void* ptr, size_t size)
 	{
@@ -196,11 +216,6 @@ namespace ps::CoDMW5Internal
 
 		return &StrBufferOffset;
 	}
-	// Calls memset.
-	void* Memset(void* ptr, size_t val, size_t size)
-	{
-		return std::memset(ptr, (int)val, size);
-	}
 	// Initializes Asset Alignment.
 	void InitAssetAlignment()
 	{
@@ -247,6 +262,7 @@ namespace ps::CoDMW5Internal
 		// Remove status flag from the hash
 		hash &= 0x7FFFFFFFFFFFFFFF;
 
+		// TODO: Make a hash version of LinkXAssetEntry()
 		auto result = pool->FindXAssetEntry(hash, assetType);
 
 		// We need to check if we have an existing asset to override
@@ -284,14 +300,30 @@ namespace ps::CoDMW5Internal
 		}
 
 		// If we're an image, we need to check if we want to allocate an image slot
-		if (assetType == 19 && *(uint64_t*)(result->Header + 0x40) != 0 && result->ExtendedData == nullptr)
+		if (assetType == 19)
 		{
-			result->ExtendedDataSize = *(uint32_t*)(result->Header + 0x18);
-			result->ExtendedData = std::make_unique<uint8_t[]>(result->ExtendedDataSize);
-			result->ExtendedDataPtrOffset = 0x40;
-			std::memcpy(result->ExtendedData.get(), *(uint8_t**)(result->Header + 0x40), result->ExtendedDataSize);
-			*(uint64_t*)(result->Header + 0x40) = (uint64_t)result->ExtendedData.get();
+			// Get the image data offsets
+			const bool isBetaGame = ps::Parasyte::GetCurrentHandler()->HasFlag("beta");
+			const size_t imageDataPtrOffset = isBetaGame ? 0x48 : 0x40;
+			const size_t imageDataSizeOffset = isBetaGame ? 0x20 : 0x18;
+
+			const auto gfxImage = result->Header;
+
+			if (*(uint64_t*)(gfxImage + imageDataPtrOffset) != 0 && result->ExtendedData == nullptr)
+			{
+				const auto imageData = *(uint8_t**)(gfxImage + imageDataPtrOffset);
+				const auto imageDataSize = (size_t)*(uint32_t*)(gfxImage + imageDataSizeOffset);
+
+				result->ExtendedDataSize = imageDataSize;
+				result->ExtendedData = std::make_unique<uint8_t[]>(result->ExtendedDataSize);
+				result->ExtendedDataPtrOffset = imageDataPtrOffset;
+				std::memcpy(result->ExtendedData.get(), imageData, result->ExtendedDataSize);
+				*(uint64_t*)(gfxImage + imageDataPtrOffset) = (uint64_t)result->ExtendedData.get();
+
+				ps::log::Log(ps::LogType::Verbose, "Resolved loaded data for image, Hash: 0x%llx, Type: 0x%llx.", hash, (uint64_t)assetType);
+			}
 		}
+
 // #if PRIVATE_GRAM_GRAM
 		if (assetType == 60 && DecryptString != nullptr)
 		{
@@ -453,7 +485,8 @@ bool ps::CoDMW5Handler::Initialize(const std::string& gameDirectory)
 	PS_DETGAMEVAR(ps::CoDMW5Internal::LinkGenericXAssetEx);
 	PS_DETGAMEVAR(ps::CoDMW5Internal::ReadPatchFile);
 	PS_DETGAMEVAR(ps::CoDMW5Internal::ReadFastFile);
-	PS_DETGAMEVAR(ps::CoDMW5Internal::Memset);
+
+	PS_INTGAMEVAR(ps::CoDMW5Internal::ResolveStreamPosition, ps::CoDMW5Internal::ResolveStreamPositionOriginal);
 
 	XAssetPoolCount   = 256;
 	XAssetPools       = std::make_unique<XAssetPool[]>(XAssetPoolCount);
@@ -474,14 +507,14 @@ bool ps::CoDMW5Handler::Initialize(const std::string& gameDirectory)
 
 bool ps::CoDMW5Handler::Deinitialize()
 {
-	Module.Free();
-	XAssetPoolCount       = 256;
-	XAssetPools           = nullptr;
-	Strings               = nullptr;
-	StringPoolSize        = 0;
-	Initialized           = false;
-	StringLookupTable     = nullptr;
-	FileSystem            = nullptr;
+	Module.Free();                    
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	// Clear game specific buffers

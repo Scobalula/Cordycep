@@ -10,8 +10,6 @@ namespace ps::CoDIWInternal
 {
 	// The fast file decompressor.
 	std::unique_ptr<Decompressor> FFDecompressor;
-	// The patch file decompressor.
-	std::unique_ptr<Decompressor> FPDecompressor;
 
 	// The xasset buffer sizes definition.
 	struct BufferSizes
@@ -47,7 +45,8 @@ namespace ps::CoDIWInternal
 	// The current xasset header being read.
 	void** VarXAssetHeader = nullptr;
 	// The current zone loader mode.
-	uint8_t* ZoneLoader_Mode = nullptr;
+	// TODO: Not in used
+	// uint8_t* ZoneLoader_Mode = nullptr;
 
 
 	// The function to handle parsing the fast file within the game's exe.
@@ -75,6 +74,7 @@ namespace ps::CoDIWInternal
 	void(__fastcall* PopZoneBlock)();
 
 	// Requests a handle to an asset file for use with shared data loading.
+	// TODO: Not in used
 	HANDLE AssetFile_RequestFile(uint16_t index)
 	{
 		ps::log::Log(ps::LogType::Verbose, "Requesting asset file index: %i", index);
@@ -250,7 +250,7 @@ namespace ps::CoDIWInternal
 		{
 			switch (xassetType)
 			{
-			case 18:
+			case 18: // ASSET_TYPE_IMAGE
 			{
 				// Check are we a streamed image, if we are, we need to grab the streaming
 				// info that was loaded from the fast file's header. The game resolves this 
@@ -482,14 +482,14 @@ bool ps::CoDIWHandler::Initialize(const std::string& gameDirectory)
 
 bool ps::CoDIWHandler::Deinitialize()
 {
-	Module.Free();
-	XAssetPoolCount   = 256;
-	XAssetPools       = nullptr;
-	Strings           = nullptr;
-	StringPoolSize    = 0;
-	Initialized       = false;
-	StringLookupTable = nullptr;
-	FileSystem        = nullptr;
+	Module.Free();                    
+	XAssetPoolCount        = 256;     
+	XAssetPools            = nullptr;
+	Strings                = nullptr;
+	StringPoolSize         = 0;       
+	Initialized            = false;   
+	StringLookupTable      = nullptr;
+	FileSystem             = nullptr;
 	GameDirectory.clear();
 
 	// Clear out open handles to reference files.
@@ -549,7 +549,6 @@ bool ps::CoDIWHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 	ps::Parasyte::SetCurrentFastFile(newFastFile);
 
 	ps::FileHandle ffHandle(FileSystem->OpenFile(GetFileName(ffName + ".ff"), "r"), FileSystem.get());
-	ps::FileHandle fpHandle(FileSystem->OpenFile(GetFileName(ffName + ".fp"), "r"), FileSystem.get());
 
 	if (!ffHandle.IsValid())
 	{
@@ -564,7 +563,10 @@ bool ps::CoDIWHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 	auto magic = ffHandle.Read<uint64_t>();
 	auto version = ffHandle.Read<uint32_t>();
 
-	if (magic != 0x3030313066665749 && magic != 0x3030317566665749)
+	constexpr size_t secureMagic = 0x3030313066665749;
+	constexpr size_t usualMagic = 0x3030317566665749;
+
+	if (magic != secureMagic && magic != usualMagic)
 		throw std::exception("Invalid fast file magic number.");
 	if (version != 0x653)
 		throw std::exception("Invalid fast file version.");
@@ -625,7 +627,7 @@ bool ps::CoDIWHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 			if (!assetFileHandle.IsValid())
 				ps::log::Log(ps::LogType::Error, "Failed to find asset file index: %i", assetFileRef.PackageIndex);
 
-			ps::CoDIWInternal::FFDecompressor = std::make_unique<LZ4DecompressorV2>(assetFileHandle, assetFileHandle.Read<uint64_t>() == 0x3030313066665749);
+			ps::CoDIWInternal::FFDecompressor = std::make_unique<LZ4DecompressorV2>(assetFileHandle, assetFileHandle.Read<uint64_t>() == secureMagic);
 
 			assetFileHandle.Seek(assetFileBuffer[i].StartOffset, FILE_BEGIN);
 
@@ -638,14 +640,13 @@ bool ps::CoDIWHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 	}
 
 
-	ps::CoDIWInternal::FFDecompressor = std::make_unique<LZ4DecompressorV2>(ffHandle, magic == 0x3030313066665749);
-	ps::CoDIWInternal::FPDecompressor = std::make_unique<LZ4DecompressorV2>(fpHandle, magic == 0x3030313066665749);
+	ps::CoDIWInternal::FFDecompressor = std::make_unique<LZ4DecompressorV2>(ffHandle, magic == secureMagic);
 
 	// Now we can set up our fast file, secure means we have hash blocks.
 	ps::CoDIWInternal::ImageIndex = 0;
 	ps::CoDIWInternal::ImageCount = b3;
 	ps::CoDIWInternal::ImageBuffer = imageFileBuffer.get();
-	ps::CoDIWInternal::ParseFastFile(nullptr, ps::Parasyte::GetCurrentFastFile()->AssetList, ffName.c_str(), 0);
+	ps::CoDIWInternal::ParseFastFile(nullptr, ps::Parasyte::GetCurrentFastFile()->AssetList, ffName.c_str(), false);
 
 	// We must fix up any XModel surfs, as we may have overrode previous
 	// temporary entries, etc.
@@ -689,6 +690,7 @@ bool ps::CoDIWHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 
 bool ps::CoDIWHandler::CleanUp()
 {
+	ps::CoDIWInternal::FFDecompressor = nullptr;
 	return true;
 }
 

@@ -19,7 +19,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 // File Version
-const char* FileVersion = "2.4.0.1";
+const char* FileVersion = "2.4.1.0";
 
 // Our exception handler for when a fatal error occurs.
 LONG WINAPI MyUnhandledExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
@@ -157,6 +157,10 @@ int main_ex(int argc, const char** argv)
 
     InitializeConsole();
 
+    // UTF-8 support
+    std::setlocale(LC_ALL, ".UTF-8");
+    SetConsoleOutputCP(CP_UTF8);
+
     // Ensure our working directory is our exe
     ps::helper::SetWorkingDirectoryToExe();
 
@@ -167,14 +171,15 @@ int main_ex(int argc, const char** argv)
     ps::log::SetOnPrint(Print);
 
     // Print the initialization information
-    ps::log::Print("INIT", "-----------------------");
-    ps::log::Print("INIT", "Cordycep - Version: %s", FileVersion);
-    ps::log::Print("INIT", "Fast File Loader");
-    ps::log::Print("INIT", "Discord: https://discord.gg/eY2Y5p2PEp");
+    ps::log::Print("INIT", "----------------------------------------------");
+    ps::log::Print("INIT", "Cordycep - Fast File Loader");
+    ps::log::Print("INIT", "Version: %s", FileVersion);
     ps::log::Print("INIT", "Support: https://github.com/Scobalula/Cordycep");
-    ps::log::Print("INIT", "Developed by Scobalula");
+    ps::log::Print("INIT", "Discord: https://discord.gg/eY2Y5p2PEp");
+    ps::log::Print("INIT", "Donate:  https://ko-fi.com/dest1yo");
+    ps::log::Print("INIT", "Developed  by Scobalula");
     ps::log::Print("INIT", "Maintained by dest1yo");
-    ps::log::Print("INIT", "-----------------------");
+    ps::log::Print("INIT", "----------------------------------------------");
     ps::log::Print("INIT", "Cordycep is initializing, please wait...");
 
     // Now we can do funky

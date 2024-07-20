@@ -44,7 +44,7 @@ void ps::LoadWildCardCommand::Execute(ps::CommandParser& parser) const
 			loadedFilesCount++;
 	}
 
-	ps::log::Print("MAIN", "Loaded (%llu/%llu) files matching pattern successfully.", loadedFilesCount, files.size());
+	ps::log::Print("MAIN", "Loaded (%lu/%lu) files matching pattern successfully.", loadedFilesCount, files.size());
 }
 
 PS_CINIT(ps::Command, ps::LoadWildCardCommand, ps::Command::GetCommands());

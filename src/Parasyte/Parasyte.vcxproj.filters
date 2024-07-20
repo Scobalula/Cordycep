@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Handlers">
       <UniqueIdentifier>{c8a286cc-2ebf-48bf-90a5-611a0f711350}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{3a3d6747-4118-4c82-a2a5-41d09e7b21ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -294,6 +297,18 @@
     <ClInclude Include="OodleDecompressorV3.h">
       <Filter>Header Files\Decompressors</Filter>
     </ClInclude>
+    <ClInclude Include="DumpAliasesCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDOLHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDOLMisc.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDBO3Handler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -547,6 +562,15 @@
     </ClCompile>
     <ClCompile Include="OodleDecompressorV3.cpp">
       <Filter>Source Files\Decompressors</Filter>
+    </ClCompile>
+    <ClCompile Include="DumpAliasesCommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="CoDOLHandler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CoDBO3Handler.cpp">
+      <Filter>Source Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

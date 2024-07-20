@@ -16,7 +16,12 @@
     },
     {
       "name": "tomlplusplus"
+    },
+    {
+      "name": "zydis"
+    },
+    {
+      "name": "casclib"
     }
-  ],
-  "builtin-baseline": "48e95d1aa3fedd24234f1d436226d07fc2b4f45f"
+  ]
 }

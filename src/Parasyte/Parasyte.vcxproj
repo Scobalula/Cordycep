@@ -72,23 +72,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>..\CascLib\src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>..\CascLib\src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>..\CascLib\src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>..\CascLib\src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
@@ -115,8 +107,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../ext/libtomcrypt/src/headers</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -137,8 +128,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../ext/libtomcrypt/src/headers</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
     </ClCompile>
@@ -160,8 +150,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../ext/libtomcrypt/src/headers</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -182,8 +171,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../ext/libtomcrypt/src/headers</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <DisableSpecificWarnings>28251</DisableSpecificWarnings>
     </ClCompile>
@@ -208,6 +196,8 @@
     <ClInclude Include="CoDMW5Handler.h" />
     <ClInclude Include="CoDMW6Handler.h" />
     <ClInclude Include="CoDMWRHandler.h" />
+    <ClInclude Include="CoDBO3Handler.h" />
+    <ClInclude Include="CoDOLHandler.h" />
     <ClInclude Include="CoDVGHandler.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandParser.h" />
@@ -240,6 +230,7 @@
     <ClInclude Include="LoadCommand.h" />
     <ClInclude Include="LoadCommonFilesCommand.h" />
     <ClInclude Include="LoadListCommand.h" />
+    <ClInclude Include="DumpAliasesCommand.h" />
     <ClInclude Include="LoadWildCardCommand.h" />
     <ClInclude Include="LZ4DecompressorV2.h" />
     <ClInclude Include="MemoryStream.h" />
@@ -295,6 +286,9 @@
     <ClCompile Include="CoDMW5Handler.cpp" />
     <ClCompile Include="CoDMW6Handler.cpp" />
     <ClCompile Include="CoDMWRHandler.cpp" />
+    <ClCompile Include="CoDBO3Handler.cpp" />
+    <ClCompile Include="CoDOLHandler.cpp" />
+    <ClInclude Include="CoDOLMisc.h" />
     <ClCompile Include="CoDVGHandler.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandParser.cpp" />
@@ -327,6 +321,7 @@
     <ClCompile Include="LoadCommand.cpp" />
     <ClCompile Include="LoadCommonFilesCommand.cpp" />
     <ClCompile Include="LoadListCommand.cpp" />
+    <ClCompile Include="DumpAliasesCommand.cpp" />
     <ClCompile Include="LoadWildCardCommand.cpp" />
     <ClCompile Include="LZ4DecompressorV2.cpp" />
     <ClCompile Include="MemoryStream.cpp" />
@@ -380,8 +375,11 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ext\CascLib\CascLib.vcxproj">
-      <Project>{78424708-1f6e-4d4b-920c-fb6d26847055}</Project>
+    <ProjectReference Include="..\..\ext\libtomcrypt\libtomcrypt_VS2008.vcxproj">
+      <Project>{e3802982-dcb6-4d85-a2bd-6b08f0657e79}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ext\libtommath\libtommath_VS2008.vcxproj">
+      <Project>{42109fee-b0b9-4fcd-9e56-2863bf8c55d2}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

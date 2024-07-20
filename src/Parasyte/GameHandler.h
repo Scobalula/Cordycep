@@ -37,7 +37,7 @@ namespace ps
 		// The current game directory.
 		std::string GameDirectory;
 		// The xasset aliases.
-		std::map<std::string, XAssetAlias> Aliases;
+		std::multimap<std::string, XAssetAlias> Aliases;
 		// The current file system handler.
 		std::unique_ptr<ps::FileSystem> FileSystem;
 		// The game configs.
@@ -96,6 +96,8 @@ namespace ps
 		virtual bool IsFastFileLoaded(const std::string& ffName);
 		// Loads the fast file with the given name, along with any children such as localized files.
 		virtual bool LoadFastFile(const std::string& ffName, FastFile* parent, BitFlags<FastFileFlags> flags) = 0;
+		// Dumps the aliases.
+		virtual bool DumpAliases();
 		// Cleans up any left over data after calling load.
 		virtual bool CleanUp() = 0;
 		// Unloads all fast files, along with any children such as localized files.

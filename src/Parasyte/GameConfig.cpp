@@ -99,6 +99,7 @@ bool ps::GameConfig::LoadConfigsJson(const std::string& filePath, std::map<std::
 
 bool ps::GameConfig::LoadConfigsToml(const std::string& filePath, std::map<std::string, GameConfig>& configs)
 {
+	// TODO: Check if the property exists
 	try
 	{
 		// Parse the toml file
@@ -123,20 +124,23 @@ bool ps::GameConfig::LoadConfigsToml(const std::string& filePath, std::map<std::
 		}
 
 		// Append some information we need.
-		tbl.get_as<toml::array>("CommonFiles")->for_each([&config](auto&& file)
+		if (const auto commonFiles = tbl.get_as<toml::array>("CommonFiles"))
+		commonFiles->for_each([&config](auto&& file)
 		{
 			// std::cout << file.value_or(std::string("None")) << "\n";
 			config.CommonFiles.push_back(file.value_or(std::string("None")));
 		});
 
-		tbl.get_as<toml::array>("Dependencies")->for_each([&config](auto&& file)
+		if (const auto deps = tbl.get_as<toml::array>("Dependencies"))
+		deps->for_each([&config](auto&& file)
 		{
 			// std::cout << file.value_or(std::string("None")) << "\n";
 			config.Dependencies.push_back(file.value_or(std::string("None")));
 		});
 
 		// Append patterns
-		tbl.get_as<toml::array>("Patterns")->for_each([&config](toml::table& pattern)
+		if (const auto patterns = tbl.get_as<toml::array>("Patterns"))
+		patterns->for_each([&config](toml::table& pattern)
 		{
 			GamePattern gamePattern;
 

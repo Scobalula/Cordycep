@@ -3,11 +3,11 @@
 
 namespace ps
 {
-	// A class to handle Call of Duty: Modern Warfare (2019) Files
+	// A class to handle Call of Duty: Modern Warfare Remastered Files
 	class CoDMWRHandler : public GameHandler
 	{
 	public:
-		// Creates a new handler for MW4.
+		// Creates a new handler for the given title.
 		CoDMWRHandler() : GameHandler(0x30305453414D4552) {}
 
 		// Gets the shorthand used for setting the handler.

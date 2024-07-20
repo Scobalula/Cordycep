@@ -1,0 +1,256 @@
+# Updated 2024/07/20 V1
+Flag = "default"
+ModuleName = "Data/Dumps/iw6mp64_ship_dump.exe"
+CacheName = "Data/Dumps/iw6mp64_ship_dump.cache"
+FilesDirectory = ""
+AliasesName = ""
+Dependencies = []
+CommonFiles = [
+  "code_pre_gfx",
+  "code_pre_gfx_mp",
+  "code_post_gfx",
+  "code_post_gfx_mp",
+  "code_nvidia",
+  "code_nvidia_mp",
+  "ui",
+  "ui_install",
+  "ui_mp",
+  "common",
+  "common_mp",
+  "common_core_mp",
+  "common_core_dlc_mp",
+  "common_core_dlc_updated_mp",
+  "common_alien_mp",
+  "common_alien_dlc_mp",
+  "common_alien_dlc_updated_mp",
+  "common_bots_mp",
+  "common_bots_fireteam_mp"
+]
+
+# Var PatternFlags: ResolveFromModuleBegin
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 49 8B 94 ED ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? E8"
+PatternName = "ps::CoDGhostsInternal::g_assetNames"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromModuleBegin" ]
+Offset = 9
+
+# Var
+[[Patterns]]
+PatternSignature = "48 8B 05 ?? ?? ?? ?? 4C 8B D2 80 78 10 00"
+PatternName = "ps::CoDGhostsInternal::G_GraphicsDvar"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 3
+
+# Var
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 8B 05 ?? ?? ?? ?? 3D 80 62 00 00"
+PatternName = "ps::CoDGhostsInternal::G_ImageCount"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 7
+
+# Var
+[[Patterns]]
+PatternSignature = "4C 8D 3D ?? ?? ?? ?? 66 66 66 0F 1F 84 00 00 00 00 00 8B C3"
+PatternName = "ps::CoDGhostsInternal::G_ImagesBuffer"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 3
+
+# Var
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 45 85 E4 74 31"
+PatternName = "ps::CoDGhostsInternal::DB_LoadXFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Var
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 45 33 F6 80 38 2C"
+PatternName = "ps::CoDGhostsInternal::DB_GetXAssetName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Var
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 0F B6 45 11"
+PatternName = "ps::CoDGhostsInternal::DB_SetXAssetName"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Var
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 8B 4D 08 48 8B D3 44 8B C0"
+PatternName = "ps::CoDGhostsInternal::DB_GetXAssetTypeSize"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8B B4 24 D8 00 00 00"
+PatternName = "ps::CoDGhostsInternal::DB_ReadXFile"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 8B 44 24 40 48 3B 05"
+PatternName = "ps::CoDGhostsInternal::DB_ReadXFileUncompressed"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 49 8B CE E8 ?? ?? ?? ?? 45 33 C0"
+PatternName = "ps::CoDGhostsInternal::DB_AllocXZoneMemory"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 8B C8 E8 ?? ?? ?? ?? 48 8B CD"
+PatternName = "ps::CoDGhostsInternal::SL_GetString"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? 48 8B 40 08 48 89 03 F0 FF 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 80 3D ?? ?? ?? ?? ?? 74 1C"
+PatternName = "ps::CoDGhostsInternal::DB_LinkXAssetEntry1"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 85 C0 75 14 4C 8D 44 24 30"
+PatternName = "ps::CoDGhostsInternal::DB_FindXAssetHeader"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 8B 43 18 85 C0"
+PatternName = "ps::CoDGhostsInternal::DB_XModelSurfsFixup"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 45 33 C0 48 8D 4C 24 60"
+PatternName = "ps::CoDGhostsInternal::DB_InflateInit"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Det
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 8D 0D ?? ?? ?? ?? BA 04 00 00 00"
+PatternName = "ps::CoDGhostsInternal::DB_SetFileLoadCompressor"
+PatternType = "Variable"
+PatternFlags = [ "ResolveFromEndOfData" ]
+Offset = 1
+
+# Null DB_InitLoadXFile()
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 8D 4C 24 40 BA 08 00 00 00 E8 ?? ?? ?? ?? 48 8B 44 24 40"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null Global1
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? B9 02 00 00 00 E8 ?? ?? ?? ?? 48 8B 1D ?? ?? ?? ?? 48 83 7B 20 00"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null Global2
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8B 0D ?? ?? ?? ?? 48 83 79 38 00"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null Global3
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? B9 02 00 00 00 E8 ?? ?? ?? ?? 48 8B 1D ?? ?? ?? ?? 48 83 7B 58 00"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null x3: ppDevice->lpVtbl->CreateComputeShader() CreateHullShader() CreatePixelShader()
+# TODO: if have any better one
+[[Patterns]]
+PatternSignature = "E9 ?? ?? ?? ?? 48 8B CB 48 83 C4 20 5B E9 ?? ?? ?? ?? 48 83 C4 20 5B C3 48"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null Hunk_AllocateTempMemoryHighInternal()
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 44 8B C7 48 8B CD 48 8B D0 48 8B D8"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null Hunk_AllocateTempMemoryHigh()(not Internal)?
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 33 C9 4C 8D 15"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null About Hunk_AllocateTempMemoryHigh()?
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 85 FF 74 06 48 8B 03 48 89 07 48 8B 7C 24 20"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null ppDevice->lpVtbl->CreateBuffer()
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 48 8B 8C 24 80 00 00 00 48 8B 44 24 70"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null ppDevice->lpVtbl->CreateShaderResourceView()
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 8B 8F 74 FF FF FF"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null ppDevice->lpVtbl->CreateUnorderedAccessView()
+[[Patterns]]
+PatternSignature = "48 8D 15 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8B 5C 24 40 48 83 C4 30"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 8
+
+# Null BG_AISystemEnabled() (ASSET_TYPE_PATHDATA = 0x16)
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 85 C0 74 0A 48 83 C4 30 5B E9"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 1
+
+# Null SV_BotAllocateSystemMemory() (ASSET_TYPE_PATHDATA = 0x16)
+[[Patterns]]
+PatternSignature = "E8 ?? ?? ?? ?? 85 C0 74 0A 48 83 C4 30 5B E9"
+PatternType = "Null"
+PatternFlags = [ "ResolveFromEndOfData", "ResolveMultipleValues" ]
+Offset = 15

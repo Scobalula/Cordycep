@@ -3,11 +3,11 @@
 
 namespace ps
 {
-	// A class to handle Call of Duty: Modern Warfare (2019) Files
+	// A class to handle Call of Duty: Ghosts Files
 	class CoDGhostsHandler : public GameHandler
 	{
 	public:
-		// Creates a new handler for MW4.
+		// Creates a new handler for the given title.
 		CoDGhostsHandler() : GameHandler(0xA0A5354534F4847) {}
 
 		// Gets the shorthand used for setting the handler.

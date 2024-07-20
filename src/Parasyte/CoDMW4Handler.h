@@ -7,7 +7,7 @@ namespace ps
 	class CoDMW4Handler : public GameHandler
 	{
 	public:
-		// Creates a new handler for MW4.
+		// Creates a new handler for the given title.
 		CoDMW4Handler() : GameHandler(0x3931524157444F4D) {}
 
 		// Gets the shorthand used for setting the handler.
