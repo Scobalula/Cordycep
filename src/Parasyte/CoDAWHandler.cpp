@@ -650,11 +650,24 @@ const std::vector<std::string>& ps::CoDAWHandler::GetCommonFileNames() const
 {
 	static std::vector<std::string> results
 	{
-		"code_post_gfx_mp",
 		"code_pre_gfx_mp",
+		"code_post_gfx_mp",
 		"ui_mp",
 		"common_mp",
 		"mp_vlobby_room",
+
+		"code_pre_gfx",
+		"code_post_gfx",
+		"code_post_gfx_zm_mp",
+		"ui",
+		"ui_zm_mp",
+		"common",
+		"common_zm_mp",
+		"common_zombie_mp",
+		"common_horde_mp",
+		"common_bots_mp",
+		"common_core_mp",
+		"common_core_zm_mp",
 	};
 
 	return results;
@@ -1025,6 +1038,13 @@ bool ps::CoDAWHandler::Initialize(const std::string& gameDirectory)
 		"MWR::Null32",
 		true,
 		true)) success = false;
+	pattern.Update("E8 ?? ?? ?? ?? 85 C0 75 08 38 05 ?? ?? ?? ?? 74 0A");
+	if (!Module.NullifyFunction(
+		pattern,
+		1,
+		"AW::Null",
+		true,
+		true)) success = false; // Func like BG_AISystemEnabled() in Load_XAssetHeader() type 27 (ASSET_TYPE_PATHDATA)
 
 	pattern.Update("48 83 C3 10 48 FF CF 75 E9 E8 ?? ?? ?? ?? 90 E9");
 	if (!Module.PatchBytes(
