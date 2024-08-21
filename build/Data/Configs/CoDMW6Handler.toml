@@ -1,8 +1,9 @@
-# Updated 2024/05/09 MW2023 S3R V3
+# Updated 2024/08/22 MW2023 S5R V1
+# V1: Updated FilesDirectory to "cod23"
 Flag = "default"
 ModuleName = "Data/Dumps/cod_dump.exe"
 CacheName = "Data/Dumps/cod_dump.cache"
-FilesDirectory = ""
+FilesDirectory = "cod23"
 AliasesName = "Data/Aliases/ModernWarfare6Aliases.json"
 Dependencies = [ "oo2core_8_win64.dll", "_retail_/oo2core_8_win64.dll" ]
 CommonFiles = [
