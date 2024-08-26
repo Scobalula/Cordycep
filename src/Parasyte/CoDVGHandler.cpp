@@ -515,6 +515,22 @@ bool ps::CoDVGHandler::LoadFastFile(const std::string& ffName, FastFile* parent,
 	return true;
 }
 
+char* ps::CoDVGHandler::DecryptString(char* str)
+{
+	if (!ps::CoDVGInternal::DecryptString)
+	{
+		throw std::exception("Can't find DecryptString function.");
+	}
+
+	if ((*str & 0xC0) == 0x80)
+	{
+		const char* dstr = ps::CoDVGInternal::DecryptString(ps::CoDVGInternal::StrDecryptBuffer.get(), ps::CoDVGInternal::StrDecryptBufferSize, str);
+		memcpy(str, dstr, strlen(dstr) + 1);
+	}
+
+	return str;
+}
+
 bool ps::CoDVGHandler::CleanUp()
 {
 	ps::CoDVGInternal::FFDecompressor = nullptr;

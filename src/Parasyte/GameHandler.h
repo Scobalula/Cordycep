@@ -128,6 +128,8 @@ namespace ps
 		virtual bool ResolvePatterns();
 		// Copies dependencies.
 		virtual bool CopyDependencies();
+		// Decrypt a string
+		virtual char* DecryptString(char* str);
 
 		// Gets the list of handlers.
 		static std::list<std::unique_ptr<GameHandler>>& GetHandlers();

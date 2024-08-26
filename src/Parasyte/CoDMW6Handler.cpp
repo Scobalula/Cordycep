@@ -1015,6 +1015,22 @@ bool ps::CoDMW6Handler::CleanUp()
 	return false;
 }
 
+char* ps::CoDMW6Handler::DecryptString(char* str)
+{
+	if (!ps::CoDMW6Internal::DecryptString)
+	{
+		throw std::exception("Can't find DecryptString function.");
+	}
+
+	if ((*str & 0xC0) == 0x80)
+	{
+		const char* dstr = ps::CoDMW6Internal::DecryptString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
+		memcpy(str, dstr, strlen(dstr) + 1);
+	}
+
+	return str;
+}
+
 std::string ps::CoDMW6Handler::GetFileName(const std::string& name)
 {
 	return (CurrentConfig->FilesDirectory.empty()) ? (name) : (CurrentConfig->FilesDirectory + "/" + name);

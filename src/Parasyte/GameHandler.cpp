@@ -543,6 +543,11 @@ bool ps::GameHandler::CopyDependencies()
 	return true;
 }
 
+char* ps::GameHandler::DecryptString(char* str)
+{
+	return str; // no decryption by default
+}
+
 std::list<std::unique_ptr<ps::GameHandler>>& ps::GameHandler::GetHandlers()
 {
 	static std::list<std::unique_ptr<ps::GameHandler>> handlers;

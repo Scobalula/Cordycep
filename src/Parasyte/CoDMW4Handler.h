@@ -28,6 +28,9 @@ namespace ps
 		// Loads the fast file with the given name, along with any children such as localized files.
 		bool LoadFastFile(const std::string& ffName, FastFile* parent, BitFlags<FastFileFlags> flags) override;
 
+		// Decrypt string
+		char* DecryptString(char* str) override;
+
 		// Cleans up any left over data after calling load.
 		bool CleanUp() override;
 	};
