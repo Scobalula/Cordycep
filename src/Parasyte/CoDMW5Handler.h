@@ -24,6 +24,8 @@ namespace ps
 		bool LoadFastFile(const std::string& ffName, FastFile* parent, BitFlags<FastFileFlags> flags) override;
 		// Cleans up any left over data after calling load.
 		bool CleanUp() override;
+		// Decrypt string
+		char* DecryptString(char* str) override;
 		// Gets a file path for the provided fast file name with the current flags and directory.
 		std::string GetFileName(const std::string& name) override;
 	};

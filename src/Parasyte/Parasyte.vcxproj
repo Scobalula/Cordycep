@@ -202,6 +202,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandParser.h" />
     <ClInclude Include="Decompressor.h" />
+    <ClInclude Include="DecryptScriptCommand.h" />
     <ClInclude Include="DeinitCommand.h" />
     <ClInclude Include="DisableVerbosityCommand.h" />
     <ClInclude Include="DumpCommand.h" />
@@ -293,6 +294,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="Decompressor.cpp" />
+    <ClCompile Include="DecryptScriptsCommand.cpp" />
     <ClCompile Include="DeinitCommand.cpp" />
     <ClCompile Include="DisableVerbosityCommand.cpp" />
     <ClCompile Include="DumpCommand.cpp" />

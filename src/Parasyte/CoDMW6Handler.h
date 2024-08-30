@@ -26,6 +26,8 @@ namespace ps
 		bool DumpAliases() override;
 		// Cleans up any left over data after calling load.
 		bool CleanUp() override;
+		// Decrypt string
+		char* DecryptString(char* str) override;
 		// Gets a file path for the provided fast file name with the current flags and directory.
 		std::string GetFileName(const std::string& name) override;
 	};

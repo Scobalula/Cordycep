@@ -521,6 +521,22 @@ bool ps::CoDMW4Handler::LoadFastFile(const std::string& ffName, FastFile* parent
 	return true;
 }
 
+char* ps::CoDMW4Handler::DecryptString(char* str)
+{
+	if (!ps::CoDMW4Internal::DecryptString)
+	{
+		throw std::exception("Can't find DecryptString function.");
+	}
+
+	if ((*str & 0xC0) == 0x80)
+	{
+		const char* dstr = ps::CoDMW4Internal::DecryptString(str);
+		memcpy(str, dstr, strlen(dstr) + 1);
+	}
+
+	return str;
+}
+
 bool ps::CoDMW4Handler::CleanUp()
 {
 	ps::CoDMW4Internal::FFDecompressor = nullptr;

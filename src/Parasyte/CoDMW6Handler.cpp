@@ -349,6 +349,137 @@ namespace ps::CoDMW6Internal
 			}
 			memcpy(*(char**)(result->Header + 8), str, strlen(str) + 1);
 		}
+
+		if (assetType == 0x45 && DecryptString != nullptr)
+		{
+			struct GSC_USEANIMTREE_ITEM
+			{
+				uint32_t num_address;
+				uint32_t address;
+			};
+
+			struct GSC_ANIMTREE_ITEM
+			{
+				uint32_t num_address;
+				uint32_t address_str1;
+				uint32_t address_str2;
+			};
+			struct GSC_STRINGTABLE_ITEM
+			{
+				uint32_t string;
+				uint8_t num_address;
+				uint8_t type;
+				uint16_t pad;
+			};
+
+			struct GSC_OBJ_8B
+			{
+				uint8_t magic[8];
+				uint64_t name;
+				uint16_t unk10;
+				uint16_t animtree_use_count;
+				uint16_t animtree_count;
+				uint16_t devblock_string_count;
+				uint16_t export_count;
+				uint16_t fixup_count;
+				uint16_t unk1C;
+				uint16_t imports_count;
+				uint16_t includes_count;
+				uint16_t unk22;
+				uint16_t string_count;
+				uint16_t unk26;
+				uint32_t checksum;
+				uint32_t animtree_use_offset;
+				uint32_t animtree_offset;
+				uint32_t cseg_offset;
+				uint32_t cseg_size;
+				uint32_t devblock_string_offset;
+				uint32_t export_offset;
+				uint32_t fixup_offset;
+				uint32_t size1;
+				uint32_t import_table;
+				uint32_t include_table;
+				uint32_t size2;
+				uint32_t string_table;
+			};
+
+			struct GscObjEntry
+			{
+				uint64_t name;
+				int len;
+				int padc;
+				GSC_OBJ_8B* buffer;
+			};
+
+			const auto gscObj = (GscObjEntry*)result->Header;
+
+			if (gscObj->len && gscObj->buffer && *(uint64_t*)gscObj->buffer == 0xa0d4353478b)
+			{
+				// encrypted script (VM 8B)
+				GSC_OBJ_8B* script = gscObj->buffer;
+
+
+				// string table
+				GSC_STRINGTABLE_ITEM* strings = reinterpret_cast<GSC_STRINGTABLE_ITEM*>(script->magic + script->string_table);
+
+				for (int j = 0; j < script->string_count; j++)
+				{
+					char* str = (char*)(script->magic + strings->string);
+
+					if ((*str & 0xC0) == 0x80)
+					{
+						const char* dstr = DecryptString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
+						memcpy(str, dstr, strlen(dstr) + 1);
+					}
+
+					strings = reinterpret_cast<GSC_STRINGTABLE_ITEM*>(reinterpret_cast<uint32_t*>(&strings[1]) + strings->num_address);
+				}
+
+				// animtree tables
+
+				GSC_ANIMTREE_ITEM* animt = reinterpret_cast<GSC_ANIMTREE_ITEM*>(script->magic + script->animtree_offset);
+
+				for (int j = 0; j < script->animtree_count; j++)
+				{
+					{
+						char* str = (char*)(script->magic + animt->address_str1);
+
+						if ((*str & 0xC0) == 0x80)
+						{
+							const char* dstr = DecryptString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
+							memcpy(str, dstr, strlen(dstr) + 1);
+						}
+					}
+					{
+						char* str = (char*)(script->magic + animt->address_str2);
+
+						if ((*str & 0xC0) == 0x80)
+						{
+							const char* dstr = DecryptString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
+							memcpy(str, dstr, strlen(dstr) + 1);
+						}
+					}
+
+					animt = reinterpret_cast<GSC_ANIMTREE_ITEM*>(reinterpret_cast<uint32_t*>(&animt[1]) + animt->num_address);
+				}
+
+				GSC_USEANIMTREE_ITEM* animtu = reinterpret_cast<GSC_USEANIMTREE_ITEM*>(script->magic + script->animtree_use_offset);
+
+				for (int j = 0; j < script->animtree_use_count; j++) {
+					char* str = (char*)(script->magic + animtu->address);
+
+					if ((*str & 0xC0) == 0x80)
+					{
+						const char* dstr = DecryptString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
+						memcpy(str, dstr, strlen(dstr) + 1);
+					}
+
+					animtu = reinterpret_cast<GSC_USEANIMTREE_ITEM*>(reinterpret_cast<uint32_t*>(&animtu[1]) + animtu->num_address);
+				}
+
+			}
+		}
+
 // #else
 // 		switch (assetType)
 // 		{
@@ -882,6 +1013,22 @@ bool ps::CoDMW6Handler::CleanUp()
 	ps::CoDMW6Internal::FPDecompressor = nullptr;
 	ps::CoDMW6Internal::ResetPatchState(0, 0, 0, 0);
 	return false;
+}
+
+char* ps::CoDMW6Handler::DecryptString(char* str)
+{
+	if (!ps::CoDMW6Internal::DecryptString)
+	{
+		throw std::exception("Can't find DecryptString function.");
+	}
+
+	if ((*str & 0xC0) == 0x80)
+	{
+		const char* dstr = ps::CoDMW6Internal::DecryptString(ps::CoDMW6Internal::StrDecryptBuffer.get(), ps::CoDMW6Internal::StrDecryptBufferSize, str, nullptr);
+		memcpy(str, dstr, strlen(dstr) + 1);
+	}
+
+	return str;
 }
 
 std::string ps::CoDMW6Handler::GetFileName(const std::string& name)
