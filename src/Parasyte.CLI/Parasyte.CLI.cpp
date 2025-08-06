@@ -5,6 +5,7 @@
 #include "../Parasyte/Parasyte.h"
 #include "../Parasyte/CommandParser.h"
 #include "../Parasyte/Command.h"
+#include "../Parasyte/Utility.h"
 
 // Debug
 #include <dbghelp.h>
@@ -85,6 +86,44 @@ LONG WINAPI MyUnhandledExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
     MessageBoxA(NULL, msg.str().c_str(), "Fatal Error | Cordycep.CLI", MB_ICONERROR | MB_OK);
 
     return EXCEPTION_EXECUTE_HANDLER;
+}
+
+// If there is another instance of us running, pull it into focus and return TRUE
+// https://github.com/kweatherman/Folcolor/blob/33ecf0251263da04853400a1a5f47b4e957cf421/src/Controller/main.cpp#L24
+static BOOL FindDoppelganger()
+{
+    BOOL found = FALSE;
+
+    UINT myPid = GetCurrentProcessId();
+    char myName[_MAX_FNAME];
+    if (!GetModuleBaseNameA(GetCurrentProcess(), NULL, myName, _countof(myName)))
+        strcpy_s(myName, TARGET_NAME);
+
+    PROCESSENTRY32 nfo;
+    nfo.dwSize = sizeof(nfo);
+    HANDLE handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+    if (handle != INVALID_HANDLE_VALUE)
+    {
+        if (Process32First(handle, &nfo))
+        {
+            do
+            {
+                if ((strcmp(myName, nfo.szExeFile) == 0) && (nfo.th32ProcessID != myPid))
+                {
+                    HWND hwnd = ps::utility::GetHwndForPid(nfo.th32ProcessID);
+                    if(hwnd)
+                        ps::utility::ForceWindowFocus(hwnd);
+                    found = TRUE;
+                    break;
+                }
+
+            } while (Process32Next(handle, &nfo));
+        }
+
+        CloseHandle(handle);
+    }
+
+    return found;
 }
 
 void HandleCommands(ps::CommandParser& parser)
@@ -237,5 +276,6 @@ int main_ex(int argc, const char** argv)
 
 int main(int argc, const char** argv)
 {
+    if (!FindDoppelganger())
     return main_ex(argc, argv);
 }

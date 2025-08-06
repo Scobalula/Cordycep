@@ -29,3 +29,25 @@ ps::utility::ReadResult<uint8_t> ps::utility::ReadAllBytes(const std::string& fi
 
     return result;
 }
+
+void ps::utility::ForceWindowFocus(HWND hWnd)
+{
+    SwitchToThisWindow(hWnd, TRUE);
+    BringWindowToTop(hWnd);
+    SetForegroundWindow(hWnd);
+}
+
+HWND ps::utility::GetHwndForPid(UINT pid)
+{
+    HWND hwndNext = FindWindowEx(NULL, NULL, NULL, NULL);
+    while (hwndNext)
+    {
+        DWORD pid2;
+        GetWindowThreadProcessId(hwndNext, &pid2);
+        if (pid == pid2)
+            return hwndNext;
+        else
+            hwndNext = FindWindowEx(NULL, hwndNext, NULL, NULL);
+    };
+    return NULL;
+}
